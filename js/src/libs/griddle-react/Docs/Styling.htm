@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Griddle - React Grid Component</title>
+	<meta name="description" content="Griddle - React Grid component. ">
+	<meta name="author" content="Ryan Lanciaux">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="Styling_files/css.css" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="Styling_files/normalize.css">
+	<link rel="stylesheet" href="Styling_files/skeleton.css">
+	<link rel="stylesheet" href="Styling_files/site.css">
+	<link rel="stylesheet" href="Styling_files/chartist.css">
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="https://griddlegriddle.github.io/v0-docs/images/favicon.png">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script async="" src="Styling_files/analytics.js"></script><script src="Styling_files/react.js"></script>
+  <script src="Styling_files/react-dom.js"></script>
+	<script src="Styling_files/JSXTransformer.js"></script>
+	<script src="Styling_files/underscore-min.js"></script>
+	<script src="Styling_files/Griddle.js"></script>
+	<script src="Styling_files/GriddleWithCallback.js"></script>
+	<script src="Styling_files/fakeData.js"></script>
+	<script src="Styling_files/ChartistGraph.js"></script>
+<script>
+ReactDOM.render(React.createElement(Griddle, {results: fakeData, columns: ["name", "city", "state", "country"], useGriddleStyles: false}), document.getElementById("griddle-nostyle"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0EsUUFBUSxDQUFDLE1BQU0sQ0FBQyxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLFFBQVEsRUFBQyxDQUFDLE9BQUEsRUFBTyxDQUFFLENBQUMsTUFBTSxFQUFFLE1BQU0sRUFBRSxPQUFPLEVBQUUsU0FBUyxDQUFDLEVBQUMsQ0FBQyxnQkFBQSxFQUFnQixDQUFFLEtBQU0sQ0FBRSxDQUFBLEVBQUUsUUFBUSxDQUFDLGNBQWMsQ0FBQyxpQkFBaUIsQ0FBQyxDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJcblJlYWN0RE9NLnJlbmRlcig8R3JpZGRsZSByZXN1bHRzPXtmYWtlRGF0YX0gY29sdW1ucz17W1wibmFtZVwiLCBcImNpdHlcIiwgXCJzdGF0ZVwiLCBcImNvdW50cnlcIl19IHVzZUdyaWRkbGVTdHlsZXM9e2ZhbHNlfS8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImdyaWRkbGUtbm9zdHlsZVwiKSk7XG4iXX0=</script><script>
+ReactDOM.render(React.createElement(Griddle, {results: fakeData, columns: ["name", "city", "state", "country"], sortAscendingComponent: React.createElement("span", {className: "fa fa-sort-alpha-asc"}), sortDescendingComponent: React.createElement("span", {className: "fa fa-sort-alpha-desc"})}), document.getElementById("griddle-subgrid"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICgyKSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLFFBQVEsQ0FBQyxNQUFNLENBQUMsb0JBQUMsT0FBTyxFQUFBLENBQUEsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxRQUFRLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxDQUFDLE1BQU0sRUFBRSxNQUFNLEVBQUUsT0FBTyxFQUFFLFNBQVMsQ0FBQyxFQUFDLEVBQUUsc0JBQUEsRUFBc0IsQ0FBRSxvQkFBQSxNQUFLLEVBQUEsQ0FBQSxDQUFDLFNBQUEsRUFBUyxDQUFDLHNCQUF1QixDQUFPLENBQUEsRUFBQyxDQUFDLHVCQUFBLEVBQXVCLENBQUUsb0JBQUEsTUFBSyxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyx1QkFBd0IsQ0FBTyxDQUFDLENBQUUsQ0FBQSxFQUFFLFFBQVEsQ0FBQyxjQUFjLENBQUMsaUJBQWlCLENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG5SZWFjdERPTS5yZW5kZXIoPEdyaWRkbGUgcmVzdWx0cz17ZmFrZURhdGF9IGNvbHVtbnM9e1tcIm5hbWVcIiwgXCJjaXR5XCIsIFwic3RhdGVcIiwgXCJjb3VudHJ5XCJdfSAgc29ydEFzY2VuZGluZ0NvbXBvbmVudD17PHNwYW4gY2xhc3NOYW1lPVwiZmEgZmEtc29ydC1hbHBoYS1hc2NcIj48L3NwYW4+fSBzb3J0RGVzY2VuZGluZ0NvbXBvbmVudD17PHNwYW4gY2xhc3NOYW1lPVwiZmEgZmEtc29ydC1hbHBoYS1kZXNjXCI+PC9zcGFuPn0vPiwgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJncmlkZGxlLXN1YmdyaWRcIikpO1xuIl19</script></head>
+<body id="docs-page">
+  <header class="background-primary-dark border-bottom border-secondary">
+  	<div class="container">
+  		<div class="row">
+  			<div class="eight columns">
+          <a href="https://griddlegriddle.github.io/v0-docs/index.html"><img src="Styling_files/griddle.png" alt="Griddle"></a>
+  			</div>
+	  		<div class="four columns right">
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=watch&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=fork&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+            <br>
+          <a href="https://griddlegriddle.github.io/v0-docs/quickstart.html" class="button border-light text-light big">Documentation</a>
+	  		</div>
+  		</div>
+  	</div>
+  </header>
+	<div class="container page-content">
+		<div class="row">
+			<div class="two columns">
+				<nav class="side">
+					<ul>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/quickstart.html">Quickstart</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/styling.html">Styling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/subgrids.html">Subgrids</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/customization.html">Customization</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/externalData.html">External Data</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/infiniteScroll.html">Infinite Scrolling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/properties.html">Properties</a></li>
+						<li class="border-top border-lighter-grey"><a href="https://reactjsnews.com/isomorphic-javascript-with-react-node/">Isomorphic Rendering <small>(at ReactJS News)</small></a>
+					</li></ul>
+				</nav>
+			</div>
+			<div class="ten columns docs">
+				<h2 id="styling">Styling</h2>
+<p>Third-party components should work with your styles rather than force
+ you into specific styling structure or framework. Griddle comes with 
+default inline styling, however, it has been designed with the 
+expectation that the inline styling will be augmented or replaced in 
+most circumstances.</p>
+<h3 id="overriding-griddle-s-styles">Overriding Griddle's Styles</h3>
+<p>Don't like Griddle's default styles? No problem -- turn them off entirely by setting the <code>useGriddleStyles</code>
+ property to false. Griddle will render as a plain table (unless 
+infinite scrolling is turned on) that you can apply your styles to. The 
+following is Griddle rendered using <a href="http://getskeleton.com/">Skeleton framework</a>'s default table styling.</p>
+<div id="griddle-nostyle"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container"><div class="griddle-body"><div><table class=""><thead><tr><th data-title="name" class=""><span>name</span></th><th data-title="city" class=""><span>city</span></th><th data-title="state" class=""><span>state</span></th><th data-title="country" class=""><span>country</span></th></tr></thead><tbody><tr class="standard-row"><td><!-- react-text: 21 --><!-- /react-text --><!-- react-text: 22 -->Mayer Leonard<!-- /react-text --></td><td><!-- react-text: 24 --><!-- /react-text --><!-- react-text: 25 -->Kapowsin<!-- /react-text --></td><td><!-- react-text: 27 --><!-- /react-text --><!-- react-text: 28 -->Hawaii<!-- /react-text --></td><td><!-- react-text: 30 --><!-- /react-text --><!-- react-text: 31 -->United Kingdom<!-- /react-text --></td></tr><tr class="standard-row"><td><!-- react-text: 34 --><!-- /react-text --><!-- react-text: 35 -->Koch Becker<!-- /react-text --></td><td><!-- react-text: 37 --><!-- /react-text --><!-- react-text: 38 -->Johnsonburg<!-- /react-text --></td><td><!-- react-text: 40 --><!-- /react-text --><!-- react-text: 41 -->New Jersey<!-- /react-text --></td><td><!-- react-text: 43 --><!-- /react-text --><!-- react-text: 44 -->Madagascar<!-- /react-text --></td></tr><tr class="standard-row"><td><!-- react-text: 47 --><!-- /react-text --><!-- react-text: 48 -->Lowery Hopkins<!-- /react-text --></td><td><!-- react-text: 50 --><!-- /react-text --><!-- react-text: 51 -->Blanco<!-- /react-text --></td><td><!-- react-text: 53 --><!-- /react-text --><!-- react-text: 54 -->Arizona<!-- /react-text --></td><td><!-- react-text: 56 --><!-- /react-text --><!-- react-text: 57 -->Ukraine<!-- /react-text --></td></tr><tr class="standard-row"><td><!-- react-text: 60 --><!-- /react-text --><!-- react-text: 61 -->Walters Mays<!-- /react-text --></td><td><!-- react-text: 63 --><!-- /react-text --><!-- react-text: 64 -->Glendale<!-- /react-text --></td><td><!-- react-text: 66 --><!-- /react-text --><!-- react-text: 67 -->Illinois<!-- /react-text --></td><td><!-- react-text: 69 --><!-- /react-text --><!-- react-text: 70 -->New Zealand<!-- /react-text --></td></tr><tr class="standard-row"><td><!-- react-text: 73 --><!-- /react-text --><!-- react-text: 74 -->Shaw Lowe<!-- /react-text --></td><td><!-- react-text: 76 --><!-- /react-text --><!-- react-text: 77 -->Coultervillle<!-- /react-text --></td><td><!-- react-text: 79 --><!-- /react-text --><!-- react-text: 80 -->Wyoming<!-- /react-text --></td><td><!-- react-text: 82 --><!-- /react-text --><!-- react-text: 83 -->Ecuador<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container"><div class="griddle-footer"><div><div class="griddle-previous"></div><div class="griddle-page"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 148 --> / <!-- /react-text --><!-- react-text: 149 -->56<!-- /react-text --></div><div class="griddle-next"><button type="button"><!-- react-text: 152 -->Next<!-- /react-text --><!-- react-text: 153 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+ReactDOM.render(<Griddle results={fakeData} columns={["name", "city", "state", "country"]} useGriddleStyles={false}/>, document.getElementById("griddle-nostyle"));
+</script>
+
+
+<p>We've <a href="https://griddlegriddle.github.io/v0-docs/styles/griddle.css">included a stylesheet</a> that contains the default, inline styling that can be used as a starting point for creating custom Griddle styles.</p>
+<hr>
+
+<h3 id="icons">Icons</h3>
+<p>Out of the box, Griddle uses standard ascii characters for denoting 
+sort direction, expanding / collapsing, etc. In many cases this is not 
+ideal and better options exist. There are two ways to change the icons 
+used in Griddle -- styling the CSS classes or supplying a configurable, 
+custom component with the desired styling.</p>
+<p>CSS classes:</p>
+<dl>
+  <dt>sortAscendingClassName</dt>
+  <dd><strong>string</strong> - The class that is applied to a column heading when the column is sorted in ascending order. Default: sort-ascending</dd>
+</dl>
+
+<dl>
+  <dt>sortDescendingClassName</dt>
+  <dd><strong>string</strong> - The class that is applied to a column heading when the column is sorted in descending order. Default: sort-descending</dd>
+</dl>
+
+<dl>
+  <dt>parentRowCollapsedClassName</dt>
+  <dd><strong>string</strong> - The class that is applied to the first 
+column of a subgrid row when the row has child data that is not 
+expanded. Default: parent-row</dd>
+</dl>
+
+<dl>
+  <dt>parentRowExpandedClassName</dt>
+  <dd><strong>string</strong> - The class that is applied to the first 
+column of a subgrid row when the row has child data and the data is 
+expanded. Default: parent-row expanded</dd>
+</dl>
+
+<dl>
+  <dt>settingsToggleClassName</dt>
+  <dd><strong>string</strong> - The class applied to the settings toggle. Default: settings</dd>
+</dl>
+
+<dl>
+  <dt>nextClassName</dt>
+  <dd><strong>string</strong> - The class applied to the next button in the pagination section. Default: griddle-next</dd>
+</dl>
+
+<dl>
+  <dt>previousClassName</dt>
+  <dd><strong>string</strong> - The class applied to the previous button in the pagination section. Default: griddle-previous</dd>
+</dl>
+
+<p>Components:</p>
+<dl>
+<dt>sortDefaultComponent</dt>
+<dd><strong>object</strong> - The component or characters that are 
+displayed in a column heading when the column data is not sorted in any 
+order. Default: null</dd>
+</dl>
+
+<dl>
+<dt>sortAscendingComponent</dt>
+<dd><strong>object</strong> - The component or characters that are 
+displayed in a column heading when the column data is sorted in 
+ascending order. Default: ▲</dd>
+</dl>
+
+<dl>
+<dt>sortDescendingComponent</dt>
+<dd><strong>object</strong> - The component or characters that are 
+displayed in a column heading when the column data is sorted in 
+descending order. Default: ▼</dd>
+</dl>
+
+<dl>
+<dt>parentRowCollapsedComponent</dt>
+<dd><strong>object</strong> - The component or characters that are 
+displayed in the first column of a subgrid row when the row has child 
+data that is not expanded. Default: ▶</dd>
+</dl>
+
+<dl>
+<dt>parentRowExpandedComponent</dt>
+<dd><strong>object</strong> - The component or characters that are 
+displayed in the first column of a subgrid row when the row has child 
+data that is expanded. Default: ▼</dd>
+</dl>
+
+<dl>
+<dt>settingsIconComponent</dt>
+<dd><strong>object</strong> - The component or characters that are displayed next to the settings label. Default: null
+</dd></dl>
+
+<dl>
+<dt>nextIconComponent</dt>
+<dd><strong>object</strong> - The component or characters that are displayed next to the next page text. Default: null</dd>
+</dl>
+
+<dl>
+<dt>previousIconComponent</dt>
+<dd><strong>object</strong> - The component or characters that are displayed next to the previous page text. Default: null</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<p>We are going to change the sort characters to icons from the <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> library.</p>
+<p>First off we need to download and include the stylesheet (or include 
+it from a CDN). For this example we're going to be using a CDN version.</p>
+<pre><code><span class="tag">&lt;<span class="title">link</span> <span class="attribute">href</span>=<span class="value">"//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span>&gt;</span></code></pre>
+<p>Once FontAwesome is loaded, we need to load Griddle with the 
+sortAscendingComponent and sortDescendingComponent properties set to 
+elements using FontAwesome's classes.</p>
+<pre><code>React.render(<span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{fakeData}</span>
+  <span class="attribute">sortAscendingComponent</span>=<span class="value">{&lt;span</span> <span class="attribute">className</span>=<span class="value">"fa fa-sort-alpha-asc"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>}
+  sortDescendingComponent={<span class="tag">&lt;<span class="title">span</span> <span class="attribute">className</span>=<span class="value">"fa fa-sort-alpha-desc"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>}/&gt;,
+  document.getElementById("some-id"));</span></code></pre>
+<p>When clicking on the ColumnHeaders, the font-awesome icons are used instead of the default characters.</p>
+<p><link href="Styling_files/font-awesome.css" rel="stylesheet"></p>
+<p><style type="text/css">
+  .fa {margin-left: 5px; }
+</style></p>
+<div id="griddle-subgrid"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="name" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>name</span></th><th data-title="city" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>city</span></th><th data-title="state" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>state</span></th><th data-title="country" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>country</span></th></tr></thead><tbody><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 21 --><!-- /react-text --><!-- react-text: 22 -->Mayer Leonard<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 24 --><!-- /react-text --><!-- react-text: 25 -->Kapowsin<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 27 --><!-- /react-text --><!-- react-text: 28 -->Hawaii<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 30 --><!-- /react-text --><!-- react-text: 31 -->United Kingdom<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 34 --><!-- /react-text --><!-- react-text: 35 -->Koch Becker<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 37 --><!-- /react-text --><!-- react-text: 38 -->Johnsonburg<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 40 --><!-- /react-text --><!-- react-text: 41 -->New Jersey<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 43 --><!-- /react-text --><!-- react-text: 44 -->Madagascar<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 47 --><!-- /react-text --><!-- react-text: 48 -->Lowery Hopkins<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 50 --><!-- /react-text --><!-- react-text: 51 -->Blanco<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 53 --><!-- /react-text --><!-- react-text: 54 -->Arizona<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 56 --><!-- /react-text --><!-- react-text: 57 -->Ukraine<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 60 --><!-- /react-text --><!-- react-text: 61 -->Walters Mays<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 63 --><!-- /react-text --><!-- react-text: 64 -->Glendale<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 66 --><!-- /react-text --><!-- react-text: 67 -->Illinois<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 69 --><!-- /react-text --><!-- react-text: 70 -->New Zealand<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 73 --><!-- /react-text --><!-- react-text: 74 -->Shaw Lowe<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 76 --><!-- /react-text --><!-- react-text: 77 -->Coultervillle<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 79 --><!-- /react-text --><!-- react-text: 80 -->Wyoming<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 82 --><!-- /react-text --><!-- react-text: 83 -->Ecuador<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 148 --> / <!-- /react-text --><!-- react-text: 149 -->56<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 152 -->Next<!-- /react-text --><!-- react-text: 153 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+ReactDOM.render(<Griddle results={fakeData} columns={["name", "city", "state", "country"]}  sortAscendingComponent={<span className="fa fa-sort-alpha-asc"></span>} sortDescendingComponent={<span className="fa fa-sort-alpha-desc"></span>}/>, document.getElementById("griddle-subgrid"));
+</script>
+
+
+			</div>
+		</div>
+	</div>
+  <div class="order-primary content-section background-darker-grey text-light-grey" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="ten columns offset-by-two">
+          <p>Griddle is a project maintained by <a href="http://twitter.com/ryanlanciaux">Ryan Lanciaux</a> and <a href="http://www.twitter.com/joellanciaux">Joel Lanciaux</a> in collaboration with all of <a href="https://github.com/GriddleGriddle/Griddle/graphs/contributors">the awesome contributors!</a></p>
+         	<small>
+        		© 2015 <a href="http://www.twitter.com/ryanlanciaux">Ryan Lanciaux</a> | <a href="https://www.github.com/DynamicTyped">DynamicTyped</a>
+        	</small> 
+        	<br>
+          <small>
+						Example data has been generated with <a href="http://json-generator.com/">json-generator.com</a>. Any data that resembles real people, places, companies, etc. is coincidence.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-58716212-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script> 
+
+
+</body></html>

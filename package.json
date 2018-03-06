@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "name": "portfolio.grid",
+  "private": true,
+  "scripts": {
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS karma.conf.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "chai": "^4.1.2",
+    "css-loader": "^0.28.8",
+    "expose-loader": "^0.7.4",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "karma": "^2.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-webpack": "^2.0.9",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "mocha": "^4.1.0",
+    "style-loader": "^0.19.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "bootstrap": "^3.3.7",
+    "cities.json": "^1.1.2",
+    "create-react-class": "^15.6.2",
+    "jquery": "^3.2.1",
+    "loaders.css": "^0.1.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.20.1",
+    "numeral": "^2.0.6",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-addons-update": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-loaders": "^3.0.1"
+  }
+}

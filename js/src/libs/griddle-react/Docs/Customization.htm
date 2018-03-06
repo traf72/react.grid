@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Griddle - React Grid Component</title>
+	<meta name="description" content="Griddle - React Grid component. ">
+	<meta name="author" content="Ryan Lanciaux">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="Customization_files/css.css" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="Customization_files/normalize.css">
+	<link rel="stylesheet" href="Customization_files/skeleton.css">
+	<link rel="stylesheet" href="Customization_files/site.css">
+	<link rel="stylesheet" href="Customization_files/chartist.css">
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="https://griddlegriddle.github.io/v0-docs/images/favicon.png">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script async="" src="Customization_files/analytics.js"></script><script src="Customization_files/react.js"></script>
+  <script src="Customization_files/react-dom.js"></script>
+	<script src="Customization_files/JSXTransformer.js"></script>
+	<script src="Customization_files/underscore-min.js"></script>
+	<script src="Customization_files/Griddle.js"></script>
+	<script src="Customization_files/GriddleWithCallback.js"></script>
+	<script src="Customization_files/fakeData.js"></script>
+	<script src="Customization_files/ChartistGraph.js"></script>
+<script>
+  var exampleMetadata = [
+  {
+    "columnName": "id",
+    "order": 1,
+    "locked": false,
+    "visible": false,
+    "displayName": "ID"
+  },
+  {
+    "columnName": "name",
+    "order": 9,
+    "locked": false,
+    "visible": true,
+    "displayName": "Employee Name"
+  },
+  {
+    "columnName": "city",
+    "order": 8,
+    "locked": false,
+  },
+  {
+    "columnName": "state",
+    "order": 7,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "country",
+    "order": 6,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "company",
+    "order": 5,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "favoriteNumber",
+    "order":  4,
+    "locked": false,
+    "visible": true,
+    "displayName": "Favorite Number"
+  }
+];
+
+    ReactDOM.render(
+        React.createElement(Griddle, {results: fakeData, columnMetadata: exampleMetadata, tableClassName: "table", showFilter: true, showSettings: true, columns: ["name", "city", "state", "country"]}), document.getElementById('griddle-metadata')
+    );
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsSUFBSSxlQUFlLEdBQUc7RUFDdEI7SUFDRSxZQUFZLEVBQUUsSUFBSTtJQUNsQixPQUFPLEVBQUUsQ0FBQztJQUNWLFFBQVEsRUFBRSxLQUFLO0lBQ2YsU0FBUyxFQUFFLEtBQUs7SUFDaEIsYUFBYSxFQUFFLElBQUk7R0FDcEI7RUFDRDtJQUNFLFlBQVksRUFBRSxNQUFNO0lBQ3BCLE9BQU8sRUFBRSxDQUFDO0lBQ1YsUUFBUSxFQUFFLEtBQUs7SUFDZixTQUFTLEVBQUUsSUFBSTtJQUNmLGFBQWEsRUFBRSxlQUFlO0dBQy9CO0VBQ0Q7SUFDRSxZQUFZLEVBQUUsTUFBTTtJQUNwQixPQUFPLEVBQUUsQ0FBQztJQUNWLFFBQVEsRUFBRSxLQUFLO0dBQ2hCO0VBQ0Q7SUFDRSxZQUFZLEVBQUUsT0FBTztJQUNyQixPQUFPLEVBQUUsQ0FBQztJQUNWLFFBQVEsRUFBRSxLQUFLO0lBQ2YsU0FBUyxFQUFFLElBQUk7R0FDaEI7RUFDRDtJQUNFLFlBQVksRUFBRSxTQUFTO0lBQ3ZCLE9BQU8sRUFBRSxDQUFDO0lBQ1YsUUFBUSxFQUFFLEtBQUs7SUFDZixTQUFTLEVBQUUsSUFBSTtHQUNoQjtFQUNEO0lBQ0UsWUFBWSxFQUFFLFNBQVM7SUFDdkIsT0FBTyxFQUFFLENBQUM7SUFDVixRQUFRLEVBQUUsS0FBSztJQUNmLFNBQVMsRUFBRSxJQUFJO0dBQ2hCO0VBQ0Q7SUFDRSxZQUFZLEVBQUUsZ0JBQWdCO0lBQzlCLE9BQU8sR0FBRyxDQUFDO0lBQ1gsUUFBUSxFQUFFLEtBQUs7SUFDZixTQUFTLEVBQUUsSUFBSTtJQUNmLGFBQWEsRUFBRSxpQkFBaUI7R0FDakM7QUFDSCxDQUFDLENBQUM7O0lBRUUsUUFBUSxDQUFDLE1BQU07UUFDWCxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLFFBQVEsRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFFLGVBQWUsRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLFVBQUEsRUFBVSxDQUFFLElBQUksRUFBQyxDQUFDLFlBQUEsRUFBWSxDQUFFLElBQUksRUFBQyxDQUFDLE9BQUEsRUFBTyxDQUFFLENBQUMsTUFBTSxFQUFFLE1BQU0sRUFBRSxPQUFPLEVBQUUsU0FBUyxDQUFFLENBQUUsQ0FBQSxFQUFFLFFBQVEsQ0FBQyxjQUFjLENBQUMsa0JBQWtCLENBQUM7S0FDMU4sQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIlxuICB2YXIgZXhhbXBsZU1ldGFkYXRhID0gW1xuICB7XG4gICAgXCJjb2x1bW5OYW1lXCI6IFwiaWRcIixcbiAgICBcIm9yZGVyXCI6IDEsXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gICAgXCJ2aXNpYmxlXCI6IGZhbHNlLFxuICAgIFwiZGlzcGxheU5hbWVcIjogXCJJRFwiXG4gIH0sXG4gIHtcbiAgICBcImNvbHVtbk5hbWVcIjogXCJuYW1lXCIsXG4gICAgXCJvcmRlclwiOiA5LFxuICAgIFwibG9ja2VkXCI6IGZhbHNlLFxuICAgIFwidmlzaWJsZVwiOiB0cnVlLFxuICAgIFwiZGlzcGxheU5hbWVcIjogXCJFbXBsb3llZSBOYW1lXCJcbiAgfSxcbiAge1xuICAgIFwiY29sdW1uTmFtZVwiOiBcImNpdHlcIixcbiAgICBcIm9yZGVyXCI6IDgsXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gIH0sXG4gIHtcbiAgICBcImNvbHVtbk5hbWVcIjogXCJzdGF0ZVwiLFxuICAgIFwib3JkZXJcIjogNyxcbiAgICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgICBcInZpc2libGVcIjogdHJ1ZVxuICB9LFxuICB7XG4gICAgXCJjb2x1bW5OYW1lXCI6IFwiY291bnRyeVwiLFxuICAgIFwib3JkZXJcIjogNixcbiAgICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgICBcInZpc2libGVcIjogdHJ1ZVxuICB9LFxuICB7XG4gICAgXCJjb2x1bW5OYW1lXCI6IFwiY29tcGFueVwiLFxuICAgIFwib3JkZXJcIjogNSxcbiAgICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgICBcInZpc2libGVcIjogdHJ1ZVxuICB9LFxuICB7XG4gICAgXCJjb2x1bW5OYW1lXCI6IFwiZmF2b3JpdGVOdW1iZXJcIixcbiAgICBcIm9yZGVyXCI6ICA0LFxuICAgIFwibG9ja2VkXCI6IGZhbHNlLFxuICAgIFwidmlzaWJsZVwiOiB0cnVlLFxuICAgIFwiZGlzcGxheU5hbWVcIjogXCJGYXZvcml0ZSBOdW1iZXJcIlxuICB9XG5dO1xuXG4gICAgUmVhY3RET00ucmVuZGVyKFxuICAgICAgICA8R3JpZGRsZSByZXN1bHRzPXtmYWtlRGF0YX0gY29sdW1uTWV0YWRhdGE9e2V4YW1wbGVNZXRhZGF0YX0gdGFibGVDbGFzc05hbWU9XCJ0YWJsZVwiIHNob3dGaWx0ZXI9e3RydWV9IHNob3dTZXR0aW5ncz17dHJ1ZX0gY29sdW1ucz17W1wibmFtZVwiLCBcImNpdHlcIiwgXCJzdGF0ZVwiLCBcImNvdW50cnlcIl19Lz4sIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdncmlkZGxlLW1ldGFkYXRhJylcbiAgICApO1xuIl19</script><script>
+/** @jsx React.DOM */
+
+var LinkComponent = React.createClass({displayName: "LinkComponent",
+  render: function(){
+    url ="#speakers/" + this.props.rowData.state + "/" + this.props.data;
+    return React.createElement("a", {href: url}, this.props.data)
+  }
+});
+
+var HeaderComponent = React.createClass({displayName: "HeaderComponent",
+  textOnClick: function(e) {
+    e.stopPropagation();
+  },
+
+  filterText: function(e) {
+    this.props.filterByColumn(e.target.value, this.props.columnName)
+  },
+
+  render: function(){
+    return (
+      React.createElement("span", null, 
+        React.createElement("div", null, React.createElement("strong", {style: {color: this.props.color}}, this.props.displayName)), 
+        React.createElement("input", {type: "text", onChange: this.filterText, onClick: this.textOnClick})
+      )
+    );
+  }
+});
+
+var customColumnMetadata = [
+{
+  "columnName": "id",
+  "order": 1,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "name",
+  "order": 2,
+  "locked": false,
+  "visible": true,
+  "customComponent": LinkComponent
+},
+{
+  "columnName": "city",
+  "order": 3,
+  "locked": false,
+  "visible": true,
+  "customHeaderComponent": HeaderComponent,
+  "customHeaderComponentProps": { color: 'red' }
+},
+{
+  "columnName": "state",
+  "order": 4,
+  "locked": false,
+  "visible": true,
+  "customHeaderComponent": HeaderComponent,
+  "customHeaderComponentProps": { color: 'blue' }
+},
+{
+  "columnName": "country",
+  "order": 5,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "company",
+  "order": 6,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "favoriteNumber",
+  "order":  7,
+  "locked": false,
+  "visible": true
+}
+];
+
+ReactDOM.render(
+React.createElement(Griddle, {results: fakeData, columnMetadata: customColumnMetadata, columns: ["name", "city", "state", "country"]}), document.getElementById('customLink')
+);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICgyKSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLHFCQUFxQjs7QUFFckIsSUFBSSxtQ0FBbUMsNkJBQUE7RUFDckMsTUFBTSxFQUFFLFVBQVU7SUFDaEIsR0FBRyxFQUFFLFlBQVksR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLE9BQU8sQ0FBQyxLQUFLLEdBQUcsR0FBRyxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDO0lBQ3JFLE9BQU8sb0JBQUEsR0FBRSxFQUFBLENBQUEsQ0FBQyxJQUFBLEVBQUksQ0FBRSxHQUFLLENBQUEsRUFBQyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQVMsQ0FBQTtHQUMzQztBQUNILENBQUMsQ0FBQyxDQUFDOztBQUVILElBQUkscUNBQXFDLCtCQUFBO0VBQ3ZDLFdBQVcsRUFBRSxTQUFTLENBQUMsRUFBRTtJQUN2QixDQUFDLENBQUMsZUFBZSxFQUFFLENBQUM7QUFDeEIsR0FBRzs7RUFFRCxVQUFVLEVBQUUsU0FBUyxDQUFDLEVBQUU7SUFDdEIsSUFBSSxDQUFDLEtBQUssQ0FBQyxjQUFjLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxLQUFLLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxVQUFVLENBQUM7QUFDcEUsR0FBRzs7RUFFRCxNQUFNLEVBQUUsVUFBVTtJQUNoQjtNQUNFLG9CQUFBLE1BQUssRUFBQSxJQUFDLEVBQUE7UUFDSixvQkFBQSxLQUFJLEVBQUEsSUFBQyxFQUFBLG9CQUFBLFFBQU8sRUFBQSxDQUFBLENBQUMsS0FBQSxFQUFLLENBQUUsQ0FBQyxLQUFLLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxLQUFLLENBQUcsQ0FBQSxFQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsV0FBcUIsQ0FBTSxDQUFBLEVBQUE7UUFDdEYsb0JBQUEsT0FBTSxFQUFBLENBQUEsQ0FBQyxJQUFBLEVBQUksQ0FBQyxNQUFBLEVBQU0sQ0FBQyxRQUFBLEVBQVEsQ0FBRSxJQUFJLENBQUMsVUFBVSxFQUFDLENBQUMsT0FBQSxFQUFPLENBQUUsSUFBSSxDQUFDLFdBQVksQ0FBQSxDQUFHLENBQUE7TUFDdEUsQ0FBQTtNQUNQO0dBQ0g7QUFDSCxDQUFDLENBQUMsQ0FBQzs7QUFFSCxJQUFJLG9CQUFvQixHQUFHO0FBQzNCO0VBQ0UsWUFBWSxFQUFFLElBQUk7RUFDbEIsT0FBTyxFQUFFLENBQUM7RUFDVixRQUFRLEVBQUUsS0FBSztFQUNmLFNBQVMsRUFBRSxJQUFJO0NBQ2hCO0FBQ0Q7RUFDRSxZQUFZLEVBQUUsTUFBTTtFQUNwQixPQUFPLEVBQUUsQ0FBQztFQUNWLFFBQVEsRUFBRSxLQUFLO0VBQ2YsU0FBUyxFQUFFLElBQUk7RUFDZixpQkFBaUIsRUFBRSxhQUFhO0NBQ2pDO0FBQ0Q7RUFDRSxZQUFZLEVBQUUsTUFBTTtFQUNwQixPQUFPLEVBQUUsQ0FBQztFQUNWLFFBQVEsRUFBRSxLQUFLO0VBQ2YsU0FBUyxFQUFFLElBQUk7RUFDZix1QkFBdUIsRUFBRSxlQUFlO0VBQ3hDLDRCQUE0QixFQUFFLEVBQUUsS0FBSyxFQUFFLEtBQUssRUFBRTtDQUMvQztBQUNEO0VBQ0UsWUFBWSxFQUFFLE9BQU87RUFDckIsT0FBTyxFQUFFLENBQUM7RUFDVixRQUFRLEVBQUUsS0FBSztFQUNmLFNBQVMsRUFBRSxJQUFJO0VBQ2YsdUJBQXVCLEVBQUUsZUFBZTtFQUN4Qyw0QkFBNEIsRUFBRSxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUU7Q0FDaEQ7QUFDRDtFQUNFLFlBQVksRUFBRSxTQUFTO0VBQ3ZCLE9BQU8sRUFBRSxDQUFDO0VBQ1YsUUFBUSxFQUFFLEtBQUs7RUFDZixTQUFTLEVBQUUsSUFBSTtDQUNoQjtBQUNEO0VBQ0UsWUFBWSxFQUFFLFNBQVM7RUFDdkIsT0FBTyxFQUFFLENBQUM7RUFDVixRQUFRLEVBQUUsS0FBSztFQUNmLFNBQVMsRUFBRSxJQUFJO0NBQ2hCO0FBQ0Q7RUFDRSxZQUFZLEVBQUUsZ0JBQWdCO0VBQzlCLE9BQU8sR0FBRyxDQUFDO0VBQ1gsUUFBUSxFQUFFLEtBQUs7RUFDZixTQUFTLEVBQUUsSUFBSTtDQUNoQjtBQUNELENBQUMsQ0FBQzs7QUFFRixRQUFRLENBQUMsTUFBTTtBQUNmLG9CQUFDLE9BQU8sRUFBQSxDQUFBLENBQUMsT0FBQSxFQUFPLENBQUUsUUFBUSxFQUFDLENBQUMsY0FBQSxFQUFjLENBQUUsb0JBQW9CLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxDQUFDLE1BQU0sRUFBRSxNQUFNLEVBQUUsT0FBTyxFQUFFLFNBQVMsQ0FBRSxDQUFFLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLFlBQVksQ0FBQztDQUN4SixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG4vKiogQGpzeCBSZWFjdC5ET00gKi9cblxudmFyIExpbmtDb21wb25lbnQgPSBSZWFjdC5jcmVhdGVDbGFzcyh7XG4gIHJlbmRlcjogZnVuY3Rpb24oKXtcbiAgICB1cmwgPVwiI3NwZWFrZXJzL1wiICsgdGhpcy5wcm9wcy5yb3dEYXRhLnN0YXRlICsgXCIvXCIgKyB0aGlzLnByb3BzLmRhdGE7XG4gICAgcmV0dXJuIDxhIGhyZWY9e3VybH0+e3RoaXMucHJvcHMuZGF0YX08L2E+XG4gIH1cbn0pO1xuXG52YXIgSGVhZGVyQ29tcG9uZW50ID0gUmVhY3QuY3JlYXRlQ2xhc3Moe1xuICB0ZXh0T25DbGljazogZnVuY3Rpb24oZSkge1xuICAgIGUuc3RvcFByb3BhZ2F0aW9uKCk7XG4gIH0sXG5cbiAgZmlsdGVyVGV4dDogZnVuY3Rpb24oZSkge1xuICAgIHRoaXMucHJvcHMuZmlsdGVyQnlDb2x1bW4oZS50YXJnZXQudmFsdWUsIHRoaXMucHJvcHMuY29sdW1uTmFtZSlcbiAgfSxcblxuICByZW5kZXI6IGZ1bmN0aW9uKCl7XG4gICAgcmV0dXJuIChcbiAgICAgIDxzcGFuPlxuICAgICAgICA8ZGl2PjxzdHJvbmcgc3R5bGU9e3tjb2xvcjogdGhpcy5wcm9wcy5jb2xvcn19Pnt0aGlzLnByb3BzLmRpc3BsYXlOYW1lfTwvc3Ryb25nPjwvZGl2PlxuICAgICAgICA8aW5wdXQgdHlwZT0ndGV4dCcgb25DaGFuZ2U9e3RoaXMuZmlsdGVyVGV4dH0gb25DbGljaz17dGhpcy50ZXh0T25DbGlja30gLz5cbiAgICAgIDwvc3Bhbj5cbiAgICApO1xuICB9XG59KTtcblxudmFyIGN1c3RvbUNvbHVtbk1ldGFkYXRhID0gW1xue1xuICBcImNvbHVtbk5hbWVcIjogXCJpZFwiLFxuICBcIm9yZGVyXCI6IDEsXG4gIFwibG9ja2VkXCI6IGZhbHNlLFxuICBcInZpc2libGVcIjogdHJ1ZVxufSxcbntcbiAgXCJjb2x1bW5OYW1lXCI6IFwibmFtZVwiLFxuICBcIm9yZGVyXCI6IDIsXG4gIFwibG9ja2VkXCI6IGZhbHNlLFxuICBcInZpc2libGVcIjogdHJ1ZSxcbiAgXCJjdXN0b21Db21wb25lbnRcIjogTGlua0NvbXBvbmVudFxufSxcbntcbiAgXCJjb2x1bW5OYW1lXCI6IFwiY2l0eVwiLFxuICBcIm9yZGVyXCI6IDMsXG4gIFwibG9ja2VkXCI6IGZhbHNlLFxuICBcInZpc2libGVcIjogdHJ1ZSxcbiAgXCJjdXN0b21IZWFkZXJDb21wb25lbnRcIjogSGVhZGVyQ29tcG9uZW50LFxuICBcImN1c3RvbUhlYWRlckNvbXBvbmVudFByb3BzXCI6IHsgY29sb3I6ICdyZWQnIH1cbn0sXG57XG4gIFwiY29sdW1uTmFtZVwiOiBcInN0YXRlXCIsXG4gIFwib3JkZXJcIjogNCxcbiAgXCJsb2NrZWRcIjogZmFsc2UsXG4gIFwidmlzaWJsZVwiOiB0cnVlLFxuICBcImN1c3RvbUhlYWRlckNvbXBvbmVudFwiOiBIZWFkZXJDb21wb25lbnQsXG4gIFwiY3VzdG9tSGVhZGVyQ29tcG9uZW50UHJvcHNcIjogeyBjb2xvcjogJ2JsdWUnIH1cbn0sXG57XG4gIFwiY29sdW1uTmFtZVwiOiBcImNvdW50cnlcIixcbiAgXCJvcmRlclwiOiA1LFxuICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgXCJ2aXNpYmxlXCI6IHRydWVcbn0sXG57XG4gIFwiY29sdW1uTmFtZVwiOiBcImNvbXBhbnlcIixcbiAgXCJvcmRlclwiOiA2LFxuICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgXCJ2aXNpYmxlXCI6IHRydWVcbn0sXG57XG4gIFwiY29sdW1uTmFtZVwiOiBcImZhdm9yaXRlTnVtYmVyXCIsXG4gIFwib3JkZXJcIjogIDcsXG4gIFwibG9ja2VkXCI6IGZhbHNlLFxuICBcInZpc2libGVcIjogdHJ1ZVxufVxuXTtcblxuUmVhY3RET00ucmVuZGVyKFxuPEdyaWRkbGUgcmVzdWx0cz17ZmFrZURhdGF9IGNvbHVtbk1ldGFkYXRhPXtjdXN0b21Db2x1bW5NZXRhZGF0YX0gY29sdW1ucz17W1wibmFtZVwiLCBcImNpdHlcIiwgXCJzdGF0ZVwiLCBcImNvdW50cnlcIl19Lz4sIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjdXN0b21MaW5rJylcbik7XG4iXX0=</script><script>
+  var exampleMetadata = [
+  {
+    "columnName": "id",
+    "order": 1,
+    "locked": false,
+    "visible": false,
+    "displayName": "ID"
+  },
+  {
+    "columnName": "name",
+    "order": 9,
+    "locked": false,
+    "visible": true,
+    "displayName": "Employee Name",
+    "compare": function(name) {
+        var a = name.split(" ");
+        return a[1] + " " + a[0];
+    }
+  },
+  {
+    "columnName": "city",
+    "order": 8,
+    "locked": false,
+  },
+  {
+    "columnName": "state",
+    "order": 7,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "country",
+    "order": 6,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "company",
+    "order": 5,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "favoriteNumber",
+    "order":  4,
+    "locked": false,
+    "visible": true,
+    "displayName": "Favorite Number"
+  }
+];
+
+    ReactDOM.render(
+        React.createElement(Griddle, {results: fakeData, columnMetadata: exampleMetadata, tableClassName: "table", showFilter: true, showSettings: true, columns: ["name", "city", "state", "country"], initialSort: "name"}), document.getElementById('griddle-sorting')
+    );
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICgzKSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLElBQUksZUFBZSxHQUFHO0VBQ3RCO0lBQ0UsWUFBWSxFQUFFLElBQUk7SUFDbEIsT0FBTyxFQUFFLENBQUM7SUFDVixRQUFRLEVBQUUsS0FBSztJQUNmLFNBQVMsRUFBRSxLQUFLO0lBQ2hCLGFBQWEsRUFBRSxJQUFJO0dBQ3BCO0VBQ0Q7SUFDRSxZQUFZLEVBQUUsTUFBTTtJQUNwQixPQUFPLEVBQUUsQ0FBQztJQUNWLFFBQVEsRUFBRSxLQUFLO0lBQ2YsU0FBUyxFQUFFLElBQUk7SUFDZixhQUFhLEVBQUUsZUFBZTtJQUM5QixTQUFTLEVBQUUsU0FBUyxJQUFJLEVBQUU7UUFDdEIsSUFBSSxDQUFDLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQztRQUN4QixPQUFPLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxHQUFHLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0tBQzVCO0dBQ0Y7RUFDRDtJQUNFLFlBQVksRUFBRSxNQUFNO0lBQ3BCLE9BQU8sRUFBRSxDQUFDO0lBQ1YsUUFBUSxFQUFFLEtBQUs7R0FDaEI7RUFDRDtJQUNFLFlBQVksRUFBRSxPQUFPO0lBQ3JCLE9BQU8sRUFBRSxDQUFDO0lBQ1YsUUFBUSxFQUFFLEtBQUs7SUFDZixTQUFTLEVBQUUsSUFBSTtHQUNoQjtFQUNEO0lBQ0UsWUFBWSxFQUFFLFNBQVM7SUFDdkIsT0FBTyxFQUFFLENBQUM7SUFDVixRQUFRLEVBQUUsS0FBSztJQUNmLFNBQVMsRUFBRSxJQUFJO0dBQ2hCO0VBQ0Q7SUFDRSxZQUFZLEVBQUUsU0FBUztJQUN2QixPQUFPLEVBQUUsQ0FBQztJQUNWLFFBQVEsRUFBRSxLQUFLO0lBQ2YsU0FBUyxFQUFFLElBQUk7R0FDaEI7RUFDRDtJQUNFLFlBQVksRUFBRSxnQkFBZ0I7SUFDOUIsT0FBTyxHQUFHLENBQUM7SUFDWCxRQUFRLEVBQUUsS0FBSztJQUNmLFNBQVMsRUFBRSxJQUFJO0lBQ2YsYUFBYSxFQUFFLGlCQUFpQjtHQUNqQztBQUNILENBQUMsQ0FBQzs7SUFFRSxRQUFRLENBQUMsTUFBTTtRQUNYLG9CQUFDLE9BQU8sRUFBQSxDQUFBLENBQUMsT0FBQSxFQUFPLENBQUUsUUFBUSxFQUFDLENBQUMsY0FBQSxFQUFjLENBQUUsZUFBZSxFQUFDLENBQUMsY0FBQSxFQUFjLENBQUMsT0FBQSxFQUFPLENBQUMsVUFBQSxFQUFVLENBQUUsSUFBSSxFQUFDLENBQUMsWUFBQSxFQUFZLENBQUUsSUFBSSxFQUFDLENBQUMsT0FBQSxFQUFPLENBQUUsQ0FBQyxNQUFNLEVBQUUsTUFBTSxFQUFFLE9BQU8sRUFBRSxTQUFTLENBQUMsRUFBQyxDQUFDLFdBQUEsRUFBVyxDQUFDLE1BQU0sQ0FBRSxDQUFBLEVBQUUsUUFBUSxDQUFDLGNBQWMsQ0FBQyxpQkFBaUIsQ0FBQztLQUM1TyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG4gIHZhciBleGFtcGxlTWV0YWRhdGEgPSBbXG4gIHtcbiAgICBcImNvbHVtbk5hbWVcIjogXCJpZFwiLFxuICAgIFwib3JkZXJcIjogMSxcbiAgICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgICBcInZpc2libGVcIjogZmFsc2UsXG4gICAgXCJkaXNwbGF5TmFtZVwiOiBcIklEXCJcbiAgfSxcbiAge1xuICAgIFwiY29sdW1uTmFtZVwiOiBcIm5hbWVcIixcbiAgICBcIm9yZGVyXCI6IDksXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gICAgXCJ2aXNpYmxlXCI6IHRydWUsXG4gICAgXCJkaXNwbGF5TmFtZVwiOiBcIkVtcGxveWVlIE5hbWVcIixcbiAgICBcImNvbXBhcmVcIjogZnVuY3Rpb24obmFtZSkge1xuICAgICAgICB2YXIgYSA9IG5hbWUuc3BsaXQoXCIgXCIpO1xuICAgICAgICByZXR1cm4gYVsxXSArIFwiIFwiICsgYVswXTtcbiAgICB9XG4gIH0sXG4gIHtcbiAgICBcImNvbHVtbk5hbWVcIjogXCJjaXR5XCIsXG4gICAgXCJvcmRlclwiOiA4LFxuICAgIFwibG9ja2VkXCI6IGZhbHNlLFxuICB9LFxuICB7XG4gICAgXCJjb2x1bW5OYW1lXCI6IFwic3RhdGVcIixcbiAgICBcIm9yZGVyXCI6IDcsXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gICAgXCJ2aXNpYmxlXCI6IHRydWVcbiAgfSxcbiAge1xuICAgIFwiY29sdW1uTmFtZVwiOiBcImNvdW50cnlcIixcbiAgICBcIm9yZGVyXCI6IDYsXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gICAgXCJ2aXNpYmxlXCI6IHRydWVcbiAgfSxcbiAge1xuICAgIFwiY29sdW1uTmFtZVwiOiBcImNvbXBhbnlcIixcbiAgICBcIm9yZGVyXCI6IDUsXG4gICAgXCJsb2NrZWRcIjogZmFsc2UsXG4gICAgXCJ2aXNpYmxlXCI6IHRydWVcbiAgfSxcbiAge1xuICAgIFwiY29sdW1uTmFtZVwiOiBcImZhdm9yaXRlTnVtYmVyXCIsXG4gICAgXCJvcmRlclwiOiAgNCxcbiAgICBcImxvY2tlZFwiOiBmYWxzZSxcbiAgICBcInZpc2libGVcIjogdHJ1ZSxcbiAgICBcImRpc3BsYXlOYW1lXCI6IFwiRmF2b3JpdGUgTnVtYmVyXCJcbiAgfVxuXTtcblxuICAgIFJlYWN0RE9NLnJlbmRlcihcbiAgICAgICAgPEdyaWRkbGUgcmVzdWx0cz17ZmFrZURhdGF9IGNvbHVtbk1ldGFkYXRhPXtleGFtcGxlTWV0YWRhdGF9IHRhYmxlQ2xhc3NOYW1lPVwidGFibGVcIiBzaG93RmlsdGVyPXt0cnVlfSBzaG93U2V0dGluZ3M9e3RydWV9IGNvbHVtbnM9e1tcIm5hbWVcIiwgXCJjaXR5XCIsIFwic3RhdGVcIiwgXCJjb3VudHJ5XCJdfSBpbml0aWFsU29ydD1cIm5hbWVcIi8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZ3JpZGRsZS1zb3J0aW5nJylcbiAgICApO1xuIl19</script><script>
+/** @jsx React.DOM */
+
+var OtherComponent = React.createClass({displayName: "OtherComponent",
+  getDefaultProps: function(){
+    return { "data": {} };
+  },
+  render: function(){
+    return (React.createElement("div", {className: "custom-row-card"}, 
+        React.createElement("div", {className: "name"}, React.createElement("strong", {className: "text-primary"}, this.props.data.name), React.createElement("small", {className: "text-primary-light"}, this.props.data.company)), 
+        React.createElement("div", null, this.props.data.city), 
+        React.createElement("div", null, this.props.data.state, ", ", this.props.data.country)
+    ));
+  }
+});
+
+ReactDOM.render(
+  React.createElement(Griddle, {results: fakeData, useCustomRowComponent: true, customRowComponent: OtherComponent, customRowComponentClassName: "custom-row", enableToggleCustom: true, showSettings: true, showFilter: true}),
+   document.getElementById('custom-row')
+);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICg0KSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLHFCQUFxQjs7QUFFckIsSUFBSSxvQ0FBb0MsOEJBQUE7RUFDdEMsZUFBZSxFQUFFLFVBQVU7SUFDekIsT0FBTyxFQUFFLE1BQU0sRUFBRSxFQUFFLEVBQUUsQ0FBQztHQUN2QjtFQUNELE1BQU0sRUFBRSxVQUFVO0lBQ2hCLFFBQVEsb0JBQUEsS0FBSSxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxpQkFBa0IsQ0FBQSxFQUFBO1FBQ3JDLG9CQUFBLEtBQUksRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUMsTUFBTyxDQUFBLEVBQUEsb0JBQUEsUUFBTyxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxjQUFlLENBQUEsRUFBQyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxJQUFjLENBQUEsRUFBQSxvQkFBQSxPQUFNLEVBQUEsQ0FBQSxDQUFDLFNBQUEsRUFBUyxDQUFDLG9CQUFxQixDQUFBLEVBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBZ0IsQ0FBTSxDQUFBLEVBQUE7UUFDbkssb0JBQUEsS0FBSSxFQUFBLElBQUMsRUFBQyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxJQUFXLENBQUEsRUFBQTtRQUNqQyxvQkFBQSxLQUFJLEVBQUEsSUFBQyxFQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLEtBQUssRUFBQyxJQUFBLEVBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBYyxDQUFBO0lBQzNELENBQUEsRUFBRTtHQUNUO0FBQ0gsQ0FBQyxDQUFDLENBQUM7O0FBRUgsUUFBUSxDQUFDLE1BQU07RUFDYixvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLFFBQVEsRUFBQyxDQUFDLHFCQUFBLEVBQXFCLENBQUUsSUFBSSxFQUFDLENBQUMsa0JBQUEsRUFBa0IsQ0FBRSxjQUFjLEVBQUMsQ0FBQywyQkFBQSxFQUEyQixDQUFFLFlBQVksRUFBQyxDQUFDLGtCQUFBLEVBQWtCLENBQUUsSUFBSSxFQUFDLENBQUMsWUFBQSxFQUFZLENBQUUsSUFBSSxFQUFDLENBQUMsVUFBQSxFQUFVLENBQUUsSUFBSyxDQUFFLENBQUE7R0FDeE0sUUFBUSxDQUFDLGNBQWMsQ0FBQyxZQUFZLENBQUM7Q0FDdkMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIlxuLyoqIEBqc3ggUmVhY3QuRE9NICovXG5cbnZhciBPdGhlckNvbXBvbmVudCA9IFJlYWN0LmNyZWF0ZUNsYXNzKHtcbiAgZ2V0RGVmYXVsdFByb3BzOiBmdW5jdGlvbigpe1xuICAgIHJldHVybiB7IFwiZGF0YVwiOiB7fSB9O1xuICB9LFxuICByZW5kZXI6IGZ1bmN0aW9uKCl7XG4gICAgcmV0dXJuICg8ZGl2IGNsYXNzTmFtZT1cImN1c3RvbS1yb3ctY2FyZFwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm5hbWVcIj48c3Ryb25nIGNsYXNzTmFtZT1cInRleHQtcHJpbWFyeVwiPnt0aGlzLnByb3BzLmRhdGEubmFtZX08L3N0cm9uZz48c21hbGwgY2xhc3NOYW1lPVwidGV4dC1wcmltYXJ5LWxpZ2h0XCI+e3RoaXMucHJvcHMuZGF0YS5jb21wYW55fTwvc21hbGw+PC9kaXY+XG4gICAgICAgIDxkaXY+e3RoaXMucHJvcHMuZGF0YS5jaXR5fTwvZGl2PlxuICAgICAgICA8ZGl2Pnt0aGlzLnByb3BzLmRhdGEuc3RhdGV9LCB7dGhpcy5wcm9wcy5kYXRhLmNvdW50cnl9PC9kaXY+XG4gICAgPC9kaXY+KTtcbiAgfVxufSk7XG5cblJlYWN0RE9NLnJlbmRlcihcbiAgPEdyaWRkbGUgcmVzdWx0cz17ZmFrZURhdGF9IHVzZUN1c3RvbVJvd0NvbXBvbmVudD17dHJ1ZX0gY3VzdG9tUm93Q29tcG9uZW50PXtPdGhlckNvbXBvbmVudH0gY3VzdG9tUm93Q29tcG9uZW50Q2xhc3NOYW1lPXtcImN1c3RvbS1yb3dcIn0gZW5hYmxlVG9nZ2xlQ3VzdG9tPXt0cnVlfSBzaG93U2V0dGluZ3M9e3RydWV9IHNob3dGaWx0ZXI9e3RydWV9Lz4sXG4gICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY3VzdG9tLXJvdycpXG4pO1xuIl19</script><script>
+var data = [
+{
+  "January": 35,
+  "February": 40,
+  "March": 47,
+  "April": 52,
+  "May": 73,
+  "June": 75
+},
+{
+  "January": 21,
+  "February": 30,
+  "March": 46,
+  "April": 53,
+  "May": 66,
+  "June": 81
+},
+{
+  "January": 28,
+  "February": 28,
+  "March": 49,
+  "April": 49,
+  "May": 67,
+  "June": 80
+}
+];
+
+var TestLineChart = React.createClass({displayName: "TestLineChart",
+  render: function(){
+    var type = this.props.type || 'Line'
+    var simpleLineChartData = {
+      labels: _.keys(this.props.data[0]),
+      series: []
+    };
+
+    _.each(this.props.data, function(item){
+      simpleLineChartData.series.push(_.values(item));
+    });
+
+    return React.createElement(ChartistGraph, {data: simpleLineChartData, type: type})
+  }
+});
+
+ReactDOM.render(React.createElement(Griddle, {enableToggleCustom: true, showSettings: true, results: data, useCustomGridComponent: true, customGridComponent: TestLineChart, tableClassName: "table", gridMetadata: {type: 'Bar'}}), document.getElementById('grid-chart'));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICg1KSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLElBQUksSUFBSSxHQUFHO0FBQ1g7RUFDRSxTQUFTLEVBQUUsRUFBRTtFQUNiLFVBQVUsRUFBRSxFQUFFO0VBQ2QsT0FBTyxFQUFFLEVBQUU7RUFDWCxPQUFPLEVBQUUsRUFBRTtFQUNYLEtBQUssRUFBRSxFQUFFO0VBQ1QsTUFBTSxFQUFFLEVBQUU7Q0FDWDtBQUNEO0VBQ0UsU0FBUyxFQUFFLEVBQUU7RUFDYixVQUFVLEVBQUUsRUFBRTtFQUNkLE9BQU8sRUFBRSxFQUFFO0VBQ1gsT0FBTyxFQUFFLEVBQUU7RUFDWCxLQUFLLEVBQUUsRUFBRTtFQUNULE1BQU0sRUFBRSxFQUFFO0NBQ1g7QUFDRDtFQUNFLFNBQVMsRUFBRSxFQUFFO0VBQ2IsVUFBVSxFQUFFLEVBQUU7RUFDZCxPQUFPLEVBQUUsRUFBRTtFQUNYLE9BQU8sRUFBRSxFQUFFO0VBQ1gsS0FBSyxFQUFFLEVBQUU7RUFDVCxNQUFNLEVBQUUsRUFBRTtDQUNYO0FBQ0QsQ0FBQyxDQUFDOztBQUVGLElBQUksbUNBQW1DLDZCQUFBO0VBQ3JDLE1BQU0sRUFBRSxVQUFVO0lBQ2hCLElBQUksSUFBSSxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxJQUFJLE1BQU07SUFDcEMsSUFBSSxtQkFBbUIsR0FBRztNQUN4QixNQUFNLEVBQUUsQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQztNQUNsQyxNQUFNLEVBQUUsRUFBRTtBQUNoQixLQUFLLENBQUM7O0lBRUYsQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQUksRUFBRSxTQUFTLElBQUksQ0FBQztNQUNwQyxtQkFBbUIsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQztBQUN0RCxLQUFLLENBQUMsQ0FBQzs7SUFFSCxPQUFPLG9CQUFDLGFBQWEsRUFBQSxDQUFBLENBQUMsSUFBQSxFQUFJLENBQUUsbUJBQW1CLEVBQUMsQ0FBQyxJQUFBLEVBQUksQ0FBRSxJQUFLLENBQUEsQ0FBRyxDQUFBO0dBQ2hFO0FBQ0gsQ0FBQyxDQUFDLENBQUM7O0FBRUgsUUFBUSxDQUFDLE1BQU0sQ0FBQyxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLGtCQUFBLEVBQWtCLENBQUUsSUFBSSxFQUFDLENBQUMsWUFBQSxFQUFZLENBQUUsSUFBSSxFQUFDLENBQUMsT0FBQSxFQUFPLENBQUUsSUFBSSxFQUFDLENBQUMsc0JBQUEsRUFBc0IsQ0FBRSxJQUFJLEVBQUMsQ0FBQyxtQkFBQSxFQUFtQixDQUFFLGFBQWEsRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLFlBQUEsRUFBWSxDQUFFLENBQUMsSUFBSSxFQUFFLEtBQUssQ0FBRSxDQUFFLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLFlBQVksQ0FBQyxDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJcbnZhciBkYXRhID0gW1xue1xuICBcIkphbnVhcnlcIjogMzUsXG4gIFwiRmVicnVhcnlcIjogNDAsXG4gIFwiTWFyY2hcIjogNDcsXG4gIFwiQXByaWxcIjogNTIsXG4gIFwiTWF5XCI6IDczLFxuICBcIkp1bmVcIjogNzVcbn0sXG57XG4gIFwiSmFudWFyeVwiOiAyMSxcbiAgXCJGZWJydWFyeVwiOiAzMCxcbiAgXCJNYXJjaFwiOiA0NixcbiAgXCJBcHJpbFwiOiA1MyxcbiAgXCJNYXlcIjogNjYsXG4gIFwiSnVuZVwiOiA4MVxufSxcbntcbiAgXCJKYW51YXJ5XCI6IDI4LFxuICBcIkZlYnJ1YXJ5XCI6IDI4LFxuICBcIk1hcmNoXCI6IDQ5LFxuICBcIkFwcmlsXCI6IDQ5LFxuICBcIk1heVwiOiA2NyxcbiAgXCJKdW5lXCI6IDgwXG59XG5dO1xuXG52YXIgVGVzdExpbmVDaGFydCA9IFJlYWN0LmNyZWF0ZUNsYXNzKHtcbiAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgIHZhciB0eXBlID0gdGhpcy5wcm9wcy50eXBlIHx8ICdMaW5lJ1xuICAgIHZhciBzaW1wbGVMaW5lQ2hhcnREYXRhID0ge1xuICAgICAgbGFiZWxzOiBfLmtleXModGhpcy5wcm9wcy5kYXRhWzBdKSxcbiAgICAgIHNlcmllczogW11cbiAgICB9O1xuXG4gICAgXy5lYWNoKHRoaXMucHJvcHMuZGF0YSwgZnVuY3Rpb24oaXRlbSl7XG4gICAgICBzaW1wbGVMaW5lQ2hhcnREYXRhLnNlcmllcy5wdXNoKF8udmFsdWVzKGl0ZW0pKTtcbiAgICB9KTtcblxuICAgIHJldHVybiA8Q2hhcnRpc3RHcmFwaCBkYXRhPXtzaW1wbGVMaW5lQ2hhcnREYXRhfSB0eXBlPXt0eXBlfSAvPlxuICB9XG59KTtcblxuUmVhY3RET00ucmVuZGVyKDxHcmlkZGxlIGVuYWJsZVRvZ2dsZUN1c3RvbT17dHJ1ZX0gc2hvd1NldHRpbmdzPXt0cnVlfSByZXN1bHRzPXtkYXRhfSB1c2VDdXN0b21HcmlkQ29tcG9uZW50PXt0cnVlfSBjdXN0b21HcmlkQ29tcG9uZW50PXtUZXN0TGluZUNoYXJ0fSB0YWJsZUNsYXNzTmFtZT1cInRhYmxlXCIgZ3JpZE1ldGFkYXRhPXt7dHlwZTogJ0Jhcid9fS8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZ3JpZC1jaGFydCcpKTtcbiJdfQ==</script><script>
+var OtherPager = React.createClass({displayName: "OtherPager",
+    getDefaultProps: function(){
+        return{
+            "maxPage": 0,
+            "nextText": "",
+            "previousText": "",
+            "currentPage": 0,
+        }
+    },
+    pageChange: function(event){
+        this.props.setPage(parseInt(event.target.getAttribute("data-value")));
+    },
+    render: function(){
+        var previous = "";
+        var next = "";
+
+        if(this.props.currentPage > 0){
+            previous = React.createElement("span", {onClick: this.props.previous, className: "previous"}, React.createElement("i", {className: "glyphicon glyphicon-arrow-left"}), this.props.previousText)
+        }
+
+        if(this.props.currentPage != (this.props.maxPage -1)){
+            next = React.createElement("span", {onClick: this.props.next, className: "next"}, this.props.nextText, React.createElement("i", {className: "glyphicon glyphicon-arrow-right"}))
+        }
+
+        var options = [];
+
+      var startIndex = Math.max(this.props.currentPage - 5, 0);
+      var endIndex = Math.min(startIndex + 11, this.props.maxPage);
+
+      if (this.props.maxPage >= 11 && (endIndex - startIndex) <= 10) {
+        startIndex = endIndex - 11;
+      }
+
+        for(var i = startIndex; i < endIndex ; i++){
+          var selected = this.props.currentPage == i ? "current-page-selected" : "";
+            options.push(React.createElement("button", {className: selected, "data-value": i, onClick: this.pageChange}, i + 1));
+        }
+
+        return (
+            React.createElement("div", {className: "row custom-pager"}, 
+                React.createElement("div", {className: "one column"}, previous), 
+                React.createElement("div", {className: "ten columns"}, 
+                    options
+                ), 
+                React.createElement("div", {className: "one column"}, next)
+            )
+        )
+    }
+});
+
+ReactDOM.render(React.createElement(Griddle, {results: fakeData, tableClassName: "table", useCustomRowComponent: true, 
+  customRowComponent: OtherComponent, useCustomPagerComponent: true, customPagerComponent: OtherPager}), document.getElementById("custom-paging"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICg2KSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLElBQUksZ0NBQWdDLDBCQUFBO0lBQ2hDLGVBQWUsRUFBRSxVQUFVO1FBQ3ZCLE1BQU07WUFDRixTQUFTLEVBQUUsQ0FBQztZQUNaLFVBQVUsRUFBRSxFQUFFO1lBQ2QsY0FBYyxFQUFFLEVBQUU7WUFDbEIsYUFBYSxFQUFFLENBQUM7U0FDbkI7S0FDSjtJQUNELFVBQVUsRUFBRSxTQUFTLEtBQUssQ0FBQztRQUN2QixJQUFJLENBQUMsS0FBSyxDQUFDLE9BQU8sQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxZQUFZLENBQUMsWUFBWSxDQUFDLENBQUMsQ0FBQyxDQUFDO0tBQ3pFO0lBQ0QsTUFBTSxFQUFFLFVBQVU7UUFDZCxJQUFJLFFBQVEsR0FBRyxFQUFFLENBQUM7QUFDMUIsUUFBUSxJQUFJLElBQUksR0FBRyxFQUFFLENBQUM7O1FBRWQsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQVcsR0FBRyxDQUFDLENBQUM7WUFDMUIsUUFBUSxHQUFHLG9CQUFBLE1BQUssRUFBQSxDQUFBLENBQUMsT0FBQSxFQUFPLENBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxRQUFRLEVBQUMsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxVQUFXLENBQUEsRUFBQSxvQkFBQSxHQUFFLEVBQUEsQ0FBQSxDQUFDLFNBQUEsRUFBUyxDQUFDLGdDQUFpQyxDQUFJLENBQUEsRUFBQyxJQUFJLENBQUMsS0FBSyxDQUFDLFlBQW9CLENBQUE7QUFDbEssU0FBUzs7UUFFRCxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsV0FBVyxLQUFLLElBQUksQ0FBQyxLQUFLLENBQUMsT0FBTyxFQUFFLENBQUMsQ0FBQyxDQUFDO1lBQ2pELElBQUksR0FBRyxvQkFBQSxNQUFLLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxFQUFDLENBQUMsU0FBQSxFQUFTLENBQUMsTUFBTyxDQUFBLEVBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxRQUFRLEVBQUMsb0JBQUEsR0FBRSxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxpQ0FBa0MsQ0FBSSxDQUFPLENBQUE7QUFDbkosU0FBUzs7QUFFVCxRQUFRLElBQUksT0FBTyxHQUFHLEVBQUUsQ0FBQzs7TUFFbkIsSUFBSSxVQUFVLEdBQUcsSUFBSSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQVcsR0FBRyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUM7QUFDL0QsTUFBTSxJQUFJLFFBQVEsR0FBRyxJQUFJLENBQUMsR0FBRyxDQUFDLFVBQVUsR0FBRyxFQUFFLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQzs7TUFFN0QsSUFBSSxJQUFJLENBQUMsS0FBSyxDQUFDLE9BQU8sSUFBSSxFQUFFLElBQUksQ0FBQyxRQUFRLEdBQUcsVUFBVSxLQUFLLEVBQUUsRUFBRTtRQUM3RCxVQUFVLEdBQUcsUUFBUSxHQUFHLEVBQUUsQ0FBQztBQUNuQyxPQUFPOztRQUVDLElBQUksSUFBSSxDQUFDLEdBQUcsVUFBVSxFQUFFLENBQUMsR0FBRyxRQUFRLEdBQUcsQ0FBQyxFQUFFLENBQUM7VUFDekMsSUFBSSxRQUFRLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxXQUFXLElBQUksQ0FBQyxHQUFHLHVCQUF1QixHQUFHLEVBQUUsQ0FBQztZQUN4RSxPQUFPLENBQUMsSUFBSSxDQUFDLG9CQUFBLFFBQU8sRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUUsUUFBUSxFQUFDLENBQUMsWUFBQSxFQUFVLENBQUUsQ0FBQyxFQUFDLENBQUMsT0FBQSxFQUFPLENBQUUsSUFBSSxDQUFDLFVBQVksQ0FBQSxFQUFDLENBQUMsR0FBRyxDQUFXLENBQUEsQ0FBQyxDQUFDO0FBQ2pILFNBQVM7O1FBRUQ7WUFDSSxvQkFBQSxLQUFJLEVBQUEsQ0FBQSxDQUFDLFNBQUEsRUFBUyxDQUFDLGtCQUFtQixDQUFBLEVBQUE7Z0JBQzlCLG9CQUFBLEtBQUksRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUMsWUFBYSxDQUFBLEVBQUMsUUFBZSxDQUFBLEVBQUE7Z0JBQzVDLG9CQUFBLEtBQUksRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUMsYUFBYyxDQUFBLEVBQUE7b0JBQ3hCLE9BQVE7Z0JBQ1AsQ0FBQSxFQUFBO2dCQUNOLG9CQUFBLEtBQUksRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUMsWUFBYSxDQUFBLEVBQUMsSUFBVyxDQUFBO1lBQ3RDLENBQUE7U0FDVDtLQUNKO0FBQ0wsQ0FBQyxDQUFDLENBQUM7O0FBRUgsUUFBUSxDQUFDLE1BQU0sQ0FBQyxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLFFBQVEsRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLHFCQUFBLEVBQXFCLENBQUUsSUFBSSxFQUFDO0VBQzdGLGtCQUFBLEVBQWtCLENBQUUsY0FBYyxFQUFDLENBQUMsdUJBQUEsRUFBdUIsQ0FBRSxJQUFJLEVBQUMsQ0FBQyxvQkFBQSxFQUFvQixDQUFFLFVBQVcsQ0FBQSxDQUFHLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLGVBQWUsQ0FBQyxDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJcbnZhciBPdGhlclBhZ2VyID0gUmVhY3QuY3JlYXRlQ2xhc3Moe1xuICAgIGdldERlZmF1bHRQcm9wczogZnVuY3Rpb24oKXtcbiAgICAgICAgcmV0dXJue1xuICAgICAgICAgICAgXCJtYXhQYWdlXCI6IDAsXG4gICAgICAgICAgICBcIm5leHRUZXh0XCI6IFwiXCIsXG4gICAgICAgICAgICBcInByZXZpb3VzVGV4dFwiOiBcIlwiLFxuICAgICAgICAgICAgXCJjdXJyZW50UGFnZVwiOiAwLFxuICAgICAgICB9XG4gICAgfSxcbiAgICBwYWdlQ2hhbmdlOiBmdW5jdGlvbihldmVudCl7XG4gICAgICAgIHRoaXMucHJvcHMuc2V0UGFnZShwYXJzZUludChldmVudC50YXJnZXQuZ2V0QXR0cmlidXRlKFwiZGF0YS12YWx1ZVwiKSkpO1xuICAgIH0sXG4gICAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgICAgICB2YXIgcHJldmlvdXMgPSBcIlwiO1xuICAgICAgICB2YXIgbmV4dCA9IFwiXCI7XG5cbiAgICAgICAgaWYodGhpcy5wcm9wcy5jdXJyZW50UGFnZSA+IDApe1xuICAgICAgICAgICAgcHJldmlvdXMgPSA8c3BhbiBvbkNsaWNrPXt0aGlzLnByb3BzLnByZXZpb3VzfSBjbGFzc05hbWU9XCJwcmV2aW91c1wiPjxpIGNsYXNzTmFtZT1cImdseXBoaWNvbiBnbHlwaGljb24tYXJyb3ctbGVmdFwiPjwvaT57dGhpcy5wcm9wcy5wcmV2aW91c1RleHR9PC9zcGFuPlxuICAgICAgICB9XG5cbiAgICAgICAgaWYodGhpcy5wcm9wcy5jdXJyZW50UGFnZSAhPSAodGhpcy5wcm9wcy5tYXhQYWdlIC0xKSl7XG4gICAgICAgICAgICBuZXh0ID0gPHNwYW4gb25DbGljaz17dGhpcy5wcm9wcy5uZXh0fSBjbGFzc05hbWU9XCJuZXh0XCI+e3RoaXMucHJvcHMubmV4dFRleHR9PGkgY2xhc3NOYW1lPVwiZ2x5cGhpY29uIGdseXBoaWNvbi1hcnJvdy1yaWdodFwiPjwvaT48L3NwYW4+XG4gICAgICAgIH1cblxuICAgICAgICB2YXIgb3B0aW9ucyA9IFtdO1xuXG4gICAgICB2YXIgc3RhcnRJbmRleCA9IE1hdGgubWF4KHRoaXMucHJvcHMuY3VycmVudFBhZ2UgLSA1LCAwKTtcbiAgICAgIHZhciBlbmRJbmRleCA9IE1hdGgubWluKHN0YXJ0SW5kZXggKyAxMSwgdGhpcy5wcm9wcy5tYXhQYWdlKTtcblxuICAgICAgaWYgKHRoaXMucHJvcHMubWF4UGFnZSA+PSAxMSAmJiAoZW5kSW5kZXggLSBzdGFydEluZGV4KSA8PSAxMCkge1xuICAgICAgICBzdGFydEluZGV4ID0gZW5kSW5kZXggLSAxMTtcbiAgICAgIH1cblxuICAgICAgICBmb3IodmFyIGkgPSBzdGFydEluZGV4OyBpIDwgZW5kSW5kZXggOyBpKyspe1xuICAgICAgICAgIHZhciBzZWxlY3RlZCA9IHRoaXMucHJvcHMuY3VycmVudFBhZ2UgPT0gaSA/IFwiY3VycmVudC1wYWdlLXNlbGVjdGVkXCIgOiBcIlwiO1xuICAgICAgICAgICAgb3B0aW9ucy5wdXNoKDxidXR0b24gY2xhc3NOYW1lPXtzZWxlY3RlZH0gZGF0YS12YWx1ZT17aX0gb25DbGljaz17dGhpcy5wYWdlQ2hhbmdlfT57aSArIDF9PC9idXR0b24+KTtcbiAgICAgICAgfVxuXG4gICAgICAgIHJldHVybiAoXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInJvdyBjdXN0b20tcGFnZXJcIj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm9uZSBjb2x1bW5cIj57cHJldmlvdXN9PC9kaXY+XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZW4gY29sdW1uc1wiPlxuICAgICAgICAgICAgICAgICAgICB7b3B0aW9uc31cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm9uZSBjb2x1bW5cIj57bmV4dH08L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICApXG4gICAgfVxufSk7XG5cblJlYWN0RE9NLnJlbmRlcig8R3JpZGRsZSByZXN1bHRzPXtmYWtlRGF0YX0gdGFibGVDbGFzc05hbWU9XCJ0YWJsZVwiIHVzZUN1c3RvbVJvd0NvbXBvbmVudD17dHJ1ZX1cbiAgY3VzdG9tUm93Q29tcG9uZW50PXtPdGhlckNvbXBvbmVudH0gdXNlQ3VzdG9tUGFnZXJDb21wb25lbnQ9e3RydWV9IGN1c3RvbVBhZ2VyQ29tcG9uZW50PXtPdGhlclBhZ2VyfSAvPiwgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJjdXN0b20tcGFnaW5nXCIpKTtcbiJdfQ==</script><script>
+    ReactDOM.render(React.createElement(Griddle, {noDataMessage: "No data could be found."}), document.getElementById("griddle-nodata-basic"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICg3KSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFFBQVEsQ0FBQyxNQUFNLENBQUMsb0JBQUMsT0FBTyxFQUFBLENBQUEsQ0FBQyxhQUFBLEVBQWEsQ0FBRSx5QkFBMEIsQ0FBQSxDQUFHLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLHNCQUFzQixDQUFDLENBQUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIlxuICAgIFJlYWN0RE9NLnJlbmRlcig8R3JpZGRsZSBub0RhdGFNZXNzYWdlPXtcIk5vIGRhdGEgY291bGQgYmUgZm91bmQuXCJ9IC8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImdyaWRkbGUtbm9kYXRhLWJhc2ljXCIpKTtcbiJdfQ==</script><script>
+  var NoDataComponent = React.createClass({displayName: "NoDataComponent",
+    render: function(){
+      return (React.createElement("div", {className: "noDataComponent"}, 
+        React.createElement("h1", null, "No data is available"), 
+        React.createElement("a", {href: "http://www.google.com"}, "You can google for more data")
+      )
+      );
+    }
+  });
+
+  ReactDOM.render(React.createElement(Griddle, {customNoDataComponent: NoDataComponent}), document.getElementById("griddle-nodata-component"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICg4KSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLElBQUkscUNBQXFDLCtCQUFBO0lBQ3ZDLE1BQU0sRUFBRSxVQUFVO01BQ2hCLFFBQVEsb0JBQUEsS0FBSSxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxpQkFBa0IsQ0FBQSxFQUFBO1FBQ3ZDLG9CQUFBLElBQUcsRUFBQSxJQUFDLEVBQUEsc0JBQXlCLENBQUEsRUFBQTtRQUM3QixvQkFBQSxHQUFFLEVBQUEsQ0FBQSxDQUFDLElBQUEsRUFBSSxDQUFDLHVCQUF3QixDQUFBLEVBQUEsOEJBQWdDLENBQUE7TUFDNUQsQ0FBQTtRQUNKO0tBQ0g7QUFDTCxHQUFHLENBQUMsQ0FBQzs7RUFFSCxRQUFRLENBQUMsTUFBTSxDQUFDLG9CQUFDLE9BQU8sRUFBQSxDQUFBLENBQUMscUJBQUEsRUFBcUIsQ0FBRSxlQUFnQixDQUFBLENBQUcsQ0FBQSxFQUFFLFFBQVEsQ0FBQyxjQUFjLENBQUMsMEJBQTBCLENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG4gIHZhciBOb0RhdGFDb21wb25lbnQgPSBSZWFjdC5jcmVhdGVDbGFzcyh7XG4gICAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgICAgcmV0dXJuICg8ZGl2IGNsYXNzTmFtZT1cIm5vRGF0YUNvbXBvbmVudFwiPlxuICAgICAgICA8aDE+Tm8gZGF0YSBpcyBhdmFpbGFibGU8L2gxPlxuICAgICAgICA8YSBocmVmPVwiaHR0cDovL3d3dy5nb29nbGUuY29tXCI+WW91IGNhbiBnb29nbGUgZm9yIG1vcmUgZGF0YTwvYT5cbiAgICAgIDwvZGl2PlxuICAgICAgKTtcbiAgICB9XG4gIH0pO1xuXG4gIFJlYWN0RE9NLnJlbmRlcig8R3JpZGRsZSBjdXN0b21Ob0RhdGFDb21wb25lbnQ9e05vRGF0YUNvbXBvbmVudH0gLz4sIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZ3JpZGRsZS1ub2RhdGEtY29tcG9uZW50XCIpKTtcbiJdfQ==</script></head>
+<body id="docs-page">
+  <header class="background-primary-dark border-bottom border-secondary">
+  	<div class="container">
+  		<div class="row">
+  			<div class="eight columns">
+          <a href="https://griddlegriddle.github.io/v0-docs/index.html"><img src="Customization_files/griddle.png" alt="Griddle"></a>
+  			</div>
+	  		<div class="four columns right">
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=watch&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=fork&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+            <br>
+          <a href="https://griddlegriddle.github.io/v0-docs/quickstart.html" class="button border-light text-light big">Documentation</a>
+	  		</div>
+  		</div>
+  	</div>
+  </header>
+	<div class="container page-content">
+		<div class="row">
+			<div class="two columns">
+				<nav class="side">
+					<ul>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/quickstart.html">Quickstart</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/styling.html">Styling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/subgrids.html">Subgrids</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/customization.html">Customization</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/externalData.html">External Data</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/infiniteScroll.html">Infinite Scrolling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/properties.html">Properties</a></li>
+						<li class="border-top border-lighter-grey"><a href="https://reactjsnews.com/isomorphic-javascript-with-react-node/">Isomorphic Rendering <small>(at ReactJS News)</small></a>
+					</li></ul>
+				</nav>
+			</div>
+			<div class="ten columns docs">
+				<h2 id="customization">Customization</h2>
+<p><strong>Please Note: Styling is similar to customization but is in its <a href="#">own section</a> for clarity.</strong></p>
+<p>Griddle comes with a number of customization options to help it fit with your project goals.</p>
+<p></p><hr><p></p>
+<h3 id="default-columns">Default Columns</h3>
+<p>Use the <code>columns</code> property to set the default columns in a Griddle grid. Please <a href="https://griddlegriddle.github.io/v0-docs/quickstart.html#advanced">see the quickstart guide</a> for an example.</p>
+<dl>
+  <dt>columns</dt>
+  <dd><strong>array (of string)</strong> - The columns that should be 
+displayed by default. The other columns can be chosen via the grid 
+settings. If no columns are set, Griddle will display all columns by 
+default.</dd>
+</dl>
+
+<h3 id="column-metadata">Column Metadata</h3>
+<p>The column meta data property is used to specify column properties 
+that are not part of the result data object. For instance, if you want 
+to specify a displayName that is different than the property name in the
+ result data, the <code>columnMetadata</code> property is where this would be defined.</p>
+<p>Griddle parses and evaluates the following columnMetadata object properties:</p>
+<dl>
+  <dt>columnName</dt>
+  <dd><strong>string (required)</strong> - this is the name of the column as it appears in the results passed into Griddle.</dd>
+</dl>
+
+<dl>
+  <dt>sortable</dt>
+  <dd><strong>bool</strong> - Determines whether or not the user can sort this column (defaults to <code>true</code>, so specify <code>false</code> to disable sort)</dd>
+</dl>
+
+<dl>
+  <dt>customCompareFn</dt>
+  <dd><strong>function</strong></dd>
+  <dd><strong>with 1 argument</strong> specifies a function that defines the sort order of the column data. Passed to <a href="https://lodash.com/docs#sortBy">_.sortBy</a> method, invoked with 1 argument.</dd>
+  <dd><strong>with 2 arguments</strong> specifies a function that defines the sort order of the column data. Passed to standard JS <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">sort</a> method, invoked ith 2 arguments. Useful, for example, wih naturalSort(a, b) from <a href="https://www.npmjs.com/package/javascript-natural-sort">javascript-natural-sort</a></dd>
+</dl>
+
+<dl>
+  <dt>multiSort</dt>
+  <dd><strong>object</strong> - allows to specify multiple sorting when sorting current column. Specified columns will be sorted after current</dd>
+  <code>multiSort: {
+      columns: ['name'],
+      orders: ['asc']
+    }</code>
+</dl>
+
+<dl>
+  <dt>order</dt>
+  <dd><strong>int</strong> - The order that this column should appear in Griddle.</dd>
+</dl>
+
+<dl>
+  <dt>locked</dt>
+  <dd><strong>bool</strong> - Determines whether or not the user can disable this column from the settings.</dd>
+</dl>
+
+<dl>
+  <dt>cssClassName</dt>
+  <dd><strong>string</strong> - The css class name to apply to this column.</dd>
+</dl>
+
+<dl>
+    <dt>titleStyles</dt>
+    <dd><strong>object</strong> - collection of styles applied to column header</dd>
+</dl>
+
+<dl>
+  <dt>displayName</dt>
+  <dd><strong>string</strong> - The display name for the column. This is
+ used when the name in the column heading and settings should be 
+different from the data passed in to the Griddle component.</dd>
+</dl>
+<dl>
+  <dt>customComponent</dt>
+  <dd><strong>React Component</strong> - The component that should be rendered instead of the standard column data. This component will still be rendered inside of a <code>TD</code> element. (more information below in the <a href="#customColumns">Custom Columns section</a>.)</dd>
+</dl>
+<dl>
+  <dt>customHeaderComponent</dt>
+  <dd><strong>React Component</strong> - The component that should be rendered instead of the standard header data. This component will still be rendered inside of a <code>TH</code> element. (more information below in the <a href="#customColumns">Custom Columns section</a>.)</dd>
+</dl>
+<dl>
+  <dt>customHeaderComponentProps</dt>
+  <dd><strong>object</strong> - An object containing additional 
+properties that will be passed into the custom header component. (more 
+information below in the <a href="#customColumns">Custom Columns section</a>.)</dd>
+</dl>
+
+<p>However, you are also able to pass other properties in as columnMetadata.</p>
+<p><a href="#custom-columns">columnMetadata can be accessed on the <code>metadata</code> property of a Custom Column component.</a></p>
+<h5 id="example-">Example:</h5>
+<p>Assume we want to reverse the columns so name would be last, followed
+ by followed by city, state, company, country and favorite number. Also 
+we want the name column heading to read <code>Employee Name</code> instead of name.</p>
+<p>Our metadata object would look something like</p>
+<pre><code>  {
+    <span class="string">"columnName"</span>: <span class="string">"name"</span>,
+    <span class="string">"order"</span>: 9,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>,
+    <span class="string">"displayName"</span>: <span class="string">"Employee Name"</span>
+  },
+  {
+    <span class="string">"columnName"</span>: <span class="string">"city"</span>,
+    <span class="string">"order"</span>: 8,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>
+  },
+  {
+    <span class="string">"columnName"</span>: <span class="string">"state"</span>,
+    <span class="string">"order"</span>: 7,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>
+  },
+  {
+    <span class="string">"columnName"</span>: <span class="string">"country"</span>,
+    <span class="string">"order"</span>: 6,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>
+  },
+  {
+    <span class="string">"columnName"</span>: <span class="string">"company"</span>,
+    <span class="string">"order"</span>: 5,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>
+  },
+  {
+    <span class="string">"columnName"</span>: <span class="string">"favoriteNumber"</span>,
+    <span class="string">"order"</span>:  4,
+    <span class="string">"locked"</span>: <span class="literal">false</span>,
+    <span class="string">"visible"</span>: <span class="literal">true</span>,
+    <span class="string">"displayName"</span>: <span class="string">"Favorite Number"</span>,
+    <span class="string">"sortable"</span>: <span class="literal">false</span>
+  }</code></pre>
+<p>We would then load Griddle as follows:</p>
+<pre><code>React.render(
+  <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{fakeData}</span> <span class="attribute">columnMetadata</span>=<span class="value">{exampleMetadata}</span> <span class="attribute">showFilter</span>=<span class="value">{true}</span>
+    <span class="attribute">showSettings</span>=<span class="value">{true}</span> <span class="attribute">columns</span>=<span class="value">{["name",</span> "<span class="attribute">city</span>", "<span class="attribute">state</span>", "<span class="attribute">country</span>"]}/&gt;</span>,
+    document.getElementById('griddle-metadata')</span></code></pre>
+<div id="griddle-metadata"><div data-reactroot="" class="griddle"><div class="top-section" style="clear: both; display: table; width: 100%;"><div class="griddle-filter" style="float: left; width: 50%; text-align: left; color: rgb(34, 34, 34); min-height: 1px;"><div class="filter-container"><input name="filter" placeholder="Filter Results" class="form-control" type="text"></div></div><div class="griddle-settings-toggle" style="float: left; width: 50%; text-align: right;"><button type="button" class="settings" style="background: transparent none repeat scroll 0% 0%; border: medium none; padding: 0px; margin: 0px; font-size: 14px;"><!-- react-text: 8 -->Settings<!-- /react-text --><!-- react-text: 9 --><!-- /react-text --></button></div></div><!-- react-text: 10 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="table" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="country" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>country</span></th><th data-title="state" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>state</span></th><th data-title="city" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>city</span></th><th data-title="name" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>Employee Name</span></th></tr></thead><tbody><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 28 --><!-- /react-text --><!-- react-text: 29 -->United Kingdom<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 31 --><!-- /react-text --><!-- react-text: 32 -->Hawaii<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 34 --><!-- /react-text --><!-- react-text: 35 -->Kapowsin<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 37 --><!-- /react-text --><!-- react-text: 38 -->Mayer Leonard<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 41 --><!-- /react-text --><!-- react-text: 42 -->Madagascar<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 44 --><!-- /react-text --><!-- react-text: 45 -->New Jersey<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 47 --><!-- /react-text --><!-- react-text: 48 -->Johnsonburg<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 50 --><!-- /react-text --><!-- react-text: 51 -->Koch Becker<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 54 --><!-- /react-text --><!-- react-text: 55 -->Ukraine<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 57 --><!-- /react-text --><!-- react-text: 58 -->Arizona<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 60 --><!-- /react-text --><!-- react-text: 61 -->Blanco<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 63 --><!-- /react-text --><!-- react-text: 64 -->Lowery Hopkins<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 67 --><!-- /react-text --><!-- react-text: 68 -->New Zealand<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 70 --><!-- /react-text --><!-- react-text: 71 -->Illinois<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 73 --><!-- /react-text --><!-- react-text: 74 -->Glendale<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 76 --><!-- /react-text --><!-- react-text: 77 -->Walters Mays<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 80 --><!-- /react-text --><!-- react-text: 81 -->Ecuador<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 83 --><!-- /react-text --><!-- react-text: 84 -->Wyoming<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 86 --><!-- /react-text --><!-- react-text: 87 -->Coultervillle<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 89 --><!-- /react-text --><!-- react-text: 90 -->Shaw Lowe<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 155 --> / <!-- /react-text --><!-- react-text: 156 -->56<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 159 -->Next<!-- /react-text --><!-- react-text: 160 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+  var exampleMetadata = [
+  {
+    "columnName": "id",
+    "order": 1,
+    "locked": false,
+    "visible": false,
+    "displayName": "ID"
+  },
+  {
+    "columnName": "name",
+    "order": 9,
+    "locked": false,
+    "visible": true,
+    "displayName": "Employee Name"
+  },
+  {
+    "columnName": "city",
+    "order": 8,
+    "locked": false,
+  },
+  {
+    "columnName": "state",
+    "order": 7,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "country",
+    "order": 6,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "company",
+    "order": 5,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "favoriteNumber",
+    "order":  4,
+    "locked": false,
+    "visible": true,
+    "displayName": "Favorite Number"
+  }
+];
+
+    ReactDOM.render(
+        <Griddle results={fakeData} columnMetadata={exampleMetadata} tableClassName="table" showFilter={true} showSettings={true} columns={["name", "city", "state", "country"]}/>, document.getElementById('griddle-metadata')
+    );
+</script>
+
+<p><a name="customColumns"></a></p>
+<h3 id="custom-columns">Custom Columns</h3>
+<p>Custom column components are defined in the <a href="#">Column Metadata object</a>. The components are passed <strong>data</strong>, <strong>rowData</strong>, <strong>metadata</strong> properties.</p>
+<dl>
+  <dt>data</dt>
+  <dd><strong>object</strong> - the data that would normally be rendered in the column.</dd>
+</dl>
+
+<dl>
+  <dt>rowData</dt>
+  <dd><strong>object</strong> - the data for all items in the same row</dd>
+</dl>
+
+<dl>
+  <dt>metadata</dt>
+  <dd><strong>object</strong> - The columnMetadata object</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<p>We are going to make the body of one of the columns a link. This link will use data from another column to determine the href.</p>
+<p>Assume we have the following data for our grid:</p>
+<pre><code>var someData =  [
+{
+  <span class="string">"id"</span>: <span class="number">0</span>,
+  <span class="string">"name"</span>: <span class="string">"Mayer Leonard"</span>,
+  <span class="string">"city"</span>: <span class="string">"Kapowsin"</span>,
+  <span class="string">"state"</span>: <span class="string">"Hawaii"</span>,
+  <span class="string">"country"</span>: <span class="string">"United Kingdom"</span>,
+  <span class="string">"company"</span>: <span class="string">"Ovolo"</span>,
+  <span class="string">"favoriteNumber"</span>: <span class="number">7</span>
+  },
+  {
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"Koch Becker"</span>,
+    <span class="string">"city"</span>: <span class="string">"Johnsonburg"</span>,
+    <span class="string">"state"</span>: <span class="string">"New Jersey"</span>,
+    <span class="string">"country"</span>: <span class="string">"Madagascar"</span>,
+    <span class="string">"company"</span>: <span class="string">"Eventage"</span>,
+    <span class="string">"favoriteNumber"</span>: <span class="number">2</span>
+  },
+  <span class="keyword">...</span>
+];</code></pre>
+<p>We want the <strong>name</strong> column to be a link to <code>/speakers/state/name</code> (where state and name are pulled in from the data). We can define a customComponent to be rendered as follows:</p>
+<pre><code><span class="keyword">var</span> LinkComponent = React.createClass({
+  render: <span class="keyword">function</span>(){
+    url =<span class="string">"speakers/"</span> + <span class="keyword">this</span>.props.rowData.state + <span class="string">"/"</span> + <span class="keyword">this</span>.props.data;
+    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">{url}</span>&gt;</span>{this.props.data}<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+  }
+});</span></code></pre>
+<p>Additionally, we want the city and state column headers to be 
+highlighted a specific color and have a filter by column input. We can 
+define a custom header component as:</p>
+<pre><code><span class="keyword">var</span> HeaderComponent = React.createClass({
+  textOnClick: <span class="keyword">function</span>(e) {
+    e.stopPropagation();
+  },
+
+  filterText: <span class="keyword">function</span>(e) {
+    <span class="keyword">this</span>.props.filterByColumn(e.target.value, <span class="keyword">this</span>.props.columnName)
+  },
+
+  render: <span class="keyword">function</span>(){
+    <span class="keyword">return</span> (
+      <span class="xml"><span class="tag">&lt;<span class="title">span</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">div</span>&gt;</span><span class="tag">&lt;<span class="title">strong</span> <span class="attribute">style</span>=<span class="value">{{color:</span> <span class="attribute">this.props.color</span>}}&gt;</span>{this.props.displayName}<span class="tag">&lt;/<span class="title">strong</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">'text'</span> <span class="attribute">onChange</span>=<span class="value">{this.filterText}</span> <span class="attribute">onClick</span>=<span class="value">{this.textOnClick}</span> /&gt;</span>
+      <span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    );
+  }
+});</span></code></pre>
+<p><small>Please note: filterByColumn is a method that is passed as a prop to any customHeaderComponent.</small></p>
+<p>From there, we will set the customComponent value in the <strong>name</strong> columnMetadata object to this LinkComponent. We're also going to update <strong>state</strong> and <strong>city</strong>'s <code>customHeaderComponent</code> and <code>customHeaderComponentProps</code>.</p>
+<pre><code>var columnMeta = [
+  {
+  <span class="keyword">...</span>
+  <span class="string">"columnName"</span>: <span class="string">"name"</span>,
+  <span class="string">"order"</span>: <span class="number">1</span>,
+  <span class="string">"locked"</span>: false,
+  <span class="string">"visible"</span>: true,
+  <span class="string">"customComponent"</span>: LinkComponent
+  },
+  {
+  <span class="keyword">...</span>
+  <span class="string">"columnName"</span>: <span class="string">"city"</span>,
+  <span class="string">"customHeaderComponent"</span>: HeaderComponent,
+  <span class="string">"customHeaderComponentProps"</span>: { color: <span class="string">'red'</span> }
+  },
+  {
+  <span class="keyword">...</span>
+  <span class="string">"columnName"</span>: <span class="string">"state"</span>,
+  <span class="string">"customHeaderComponent"</span>: HeaderComponent,
+  <span class="string">"customHeaderComponentProps"</span>: { color: <span class="string">'blue'</span> }
+  },
+  <span class="keyword">...</span>
+];</code></pre>
+<p>Now, when Griddle is rendered with this columnMetadata, it should write the link as expected.</p>
+<pre><code>React.render(<span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">data</span>=<span class="value">{someData}</span> <span class="attribute">columnMetadata</span>=<span class="value">{columnMeta}</span> /&gt;</span>,
+   document.getElementById('something'));</span></code></pre>
+<div id="customLink"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="name" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>name</span></th><th data-title="city" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span><div><strong style="color: red;">city</strong></div><input type="text"></span></th><th data-title="state" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span><div><strong style="color: blue;">state</strong></div><input type="text"></span></th><th data-title="country" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>country</span></th></tr></thead><tbody><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><a href="#speakers/Hawaii/Mayer%20Leonard">Mayer Leonard</a></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 29 --><!-- /react-text --><!-- react-text: 30 -->Kapowsin<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 32 --><!-- /react-text --><!-- react-text: 33 -->Hawaii<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 35 --><!-- /react-text --><!-- react-text: 36 -->United Kingdom<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><a href="#speakers/New%20Jersey/Koch%20Becker">Koch Becker</a></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 41 --><!-- /react-text --><!-- react-text: 42 -->Johnsonburg<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 44 --><!-- /react-text --><!-- react-text: 45 -->New Jersey<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 47 --><!-- /react-text --><!-- react-text: 48 -->Madagascar<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><a href="#speakers/Arizona/Lowery%20Hopkins">Lowery Hopkins</a></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 53 --><!-- /react-text --><!-- react-text: 54 -->Blanco<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 56 --><!-- /react-text --><!-- react-text: 57 -->Arizona<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 59 --><!-- /react-text --><!-- react-text: 60 -->Ukraine<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><a href="#speakers/Illinois/Walters%20Mays">Walters Mays</a></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 65 --><!-- /react-text --><!-- react-text: 66 -->Glendale<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 68 --><!-- /react-text --><!-- react-text: 69 -->Illinois<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 71 --><!-- /react-text --><!-- react-text: 72 -->New Zealand<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><a href="#speakers/Wyoming/Shaw%20Lowe">Shaw Lowe</a></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 77 --><!-- /react-text --><!-- react-text: 78 -->Coultervillle<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 80 --><!-- /react-text --><!-- react-text: 81 -->Wyoming<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 83 --><!-- /react-text --><!-- react-text: 84 -->Ecuador<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 149 --> / <!-- /react-text --><!-- react-text: 150 -->56<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 153 -->Next<!-- /react-text --><!-- react-text: 154 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+/** @jsx React.DOM */
+
+var LinkComponent = React.createClass({
+  render: function(){
+    url ="#speakers/" + this.props.rowData.state + "/" + this.props.data;
+    return <a href={url}>{this.props.data}</a>
+  }
+});
+
+var HeaderComponent = React.createClass({
+  textOnClick: function(e) {
+    e.stopPropagation();
+  },
+
+  filterText: function(e) {
+    this.props.filterByColumn(e.target.value, this.props.columnName)
+  },
+
+  render: function(){
+    return (
+      <span>
+        <div><strong style={{color: this.props.color}}>{this.props.displayName}</strong></div>
+        <input type='text' onChange={this.filterText} onClick={this.textOnClick} />
+      </span>
+    );
+  }
+});
+
+var customColumnMetadata = [
+{
+  "columnName": "id",
+  "order": 1,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "name",
+  "order": 2,
+  "locked": false,
+  "visible": true,
+  "customComponent": LinkComponent
+},
+{
+  "columnName": "city",
+  "order": 3,
+  "locked": false,
+  "visible": true,
+  "customHeaderComponent": HeaderComponent,
+  "customHeaderComponentProps": { color: 'red' }
+},
+{
+  "columnName": "state",
+  "order": 4,
+  "locked": false,
+  "visible": true,
+  "customHeaderComponent": HeaderComponent,
+  "customHeaderComponentProps": { color: 'blue' }
+},
+{
+  "columnName": "country",
+  "order": 5,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "company",
+  "order": 6,
+  "locked": false,
+  "visible": true
+},
+{
+  "columnName": "favoriteNumber",
+  "order":  7,
+  "locked": false,
+  "visible": true
+}
+];
+
+ReactDOM.render(
+<Griddle results={fakeData} columnMetadata={customColumnMetadata} columns={["name", "city", "state", "country"]}/>, document.getElementById('customLink')
+);
+</script>
+
+
+<hr>
+
+<h3 id="custom-sorting">Custom sorting</h3>
+<h5 id="example-">Example:</h5>
+<p>In this example we are going to sort <code>Employee Name</code> column by last name, followed by first name:</p>
+<pre><code>var exampleMetadata = [
+  {
+  <span class="string">"columnName"</span>: <span class="string">"id"</span>,
+  <span class="string">"order"</span>: <span class="number">1</span>,
+  <span class="string">"locked"</span>: false,
+  <span class="string">"visible"</span>: false,
+  <span class="string">"displayName"</span>: <span class="string">"ID"</span>
+  },
+  {
+  <span class="string">"columnName"</span>: <span class="string">"name"</span>,
+  <span class="string">"order"</span>: <span class="number">9</span>,
+  <span class="string">"locked"</span>: false,
+  <span class="string">"visible"</span>: true,
+  <span class="string">"displayName"</span>: <span class="string">"Employee Name"</span>,
+  <span class="string">"compare"</span>: <span class="keyword">function</span>(name) {
+      var a = name.split(<span class="string">" "</span>);
+      <span class="keyword">return</span> a[<span class="number">1</span>] + <span class="string">" "</span> + a[<span class="number">0</span>];
+    }
+  },
+  <span class="keyword">...</span>
+]</code></pre>
+<p>Then, like in first example, but specify initialSort column:</p>
+<pre><code>React.render(
+  <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{fakeData}</span> <span class="attribute">columnMetadata</span>=<span class="value">{exampleMetadata}</span> <span class="attribute">showFilter</span>=<span class="value">{true}</span>
+    <span class="attribute">showSettings</span>=<span class="value">{true}</span> <span class="attribute">columns</span>=<span class="value">{["name",</span> "<span class="attribute">city</span>", "<span class="attribute">state</span>", "<span class="attribute">country</span>"]} <span class="attribute">initialSort</span>=<span class="value">"name"</span>/&gt;</span>,
+    document.getElementById('griddle-metadata')</span></code></pre>
+<div id="griddle-sorting"><div data-reactroot="" class="griddle"><div class="top-section" style="clear: both; display: table; width: 100%;"><div class="griddle-filter" style="float: left; width: 50%; text-align: left; color: rgb(34, 34, 34); min-height: 1px;"><div class="filter-container"><input name="filter" placeholder="Filter Results" class="form-control" type="text"></div></div><div class="griddle-settings-toggle" style="float: left; width: 50%; text-align: right;"><button type="button" class="settings" style="background: transparent none repeat scroll 0% 0%; border: medium none; padding: 0px; margin: 0px; font-size: 14px;"><!-- react-text: 8 -->Settings<!-- /react-text --><!-- react-text: 9 --><!-- /react-text --></button></div></div><!-- react-text: 10 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="table" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="country" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>country</span></th><th data-title="state" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>state</span></th><th data-title="city" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>city</span></th><th data-title="name" class="sort-ascending " style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>Employee Name</span><!-- react-text: 25 --> ▲<!-- /react-text --></th></tr></thead><tbody><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 29 --><!-- /react-text --><!-- react-text: 30 -->Gambia<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 32 --><!-- /react-text --><!-- react-text: 33 -->Arkansas<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 35 --><!-- /react-text --><!-- react-text: 36 -->Snyderville<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 38 --><!-- /react-text --><!-- react-text: 39 -->Adrienne Horne<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 42 --><!-- /react-text --><!-- react-text: 43 -->Lebanon<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 45 --><!-- /react-text --><!-- react-text: 46 -->Vermont<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 48 --><!-- /react-text --><!-- react-text: 49 -->Brownlee<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 51 --><!-- /react-text --><!-- react-text: 52 -->Aimee Duffy<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 55 --><!-- /react-text --><!-- react-text: 56 -->Bhutan<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 58 --><!-- /react-text --><!-- react-text: 59 -->Maryland<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 61 --><!-- /react-text --><!-- react-text: 62 -->Wilsonia<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 64 --><!-- /react-text --><!-- react-text: 65 -->Alfreda Henry<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 68 --><!-- /react-text --><!-- react-text: 69 -->Australia<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 71 --><!-- /react-text --><!-- react-text: 72 -->New York<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 74 --><!-- /react-text --><!-- react-text: 75 -->Martinez<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 77 --><!-- /react-text --><!-- react-text: 78 -->Aline Sosa<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 81 --><!-- /react-text --><!-- react-text: 82 -->St Kitts &amp;amp; Nevis<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 84 --><!-- /react-text --><!-- react-text: 85 -->South Carolina<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 87 --><!-- /react-text --><!-- react-text: 88 -->Wauhillau<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 90 --><!-- /react-text --><!-- react-text: 91 -->Alison Eaton<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 156 --> / <!-- /react-text --><!-- react-text: 157 -->56<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 160 -->Next<!-- /react-text --><!-- react-text: 161 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+  var exampleMetadata = [
+  {
+    "columnName": "id",
+    "order": 1,
+    "locked": false,
+    "visible": false,
+    "displayName": "ID"
+  },
+  {
+    "columnName": "name",
+    "order": 9,
+    "locked": false,
+    "visible": true,
+    "displayName": "Employee Name",
+    "compare": function(name) {
+        var a = name.split(" ");
+        return a[1] + " " + a[0];
+    }
+  },
+  {
+    "columnName": "city",
+    "order": 8,
+    "locked": false,
+  },
+  {
+    "columnName": "state",
+    "order": 7,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "country",
+    "order": 6,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "company",
+    "order": 5,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "favoriteNumber",
+    "order":  4,
+    "locked": false,
+    "visible": true,
+    "displayName": "Favorite Number"
+  }
+];
+
+    ReactDOM.render(
+        <Griddle results={fakeData} columnMetadata={exampleMetadata} tableClassName="table" showFilter={true} showSettings={true} columns={["name", "city", "state", "country"]} initialSort="name"/>, document.getElementById('griddle-sorting')
+    );
+</script>
+
+<hr>
+
+<h3 id="row-metadata">Row Metadata</h3>
+<dl>
+  <dt>bodyCssClassName</dt>
+  <dd><strong>function or string</strong> - If you supply a string, that
+ class is applied to all rows. If you supply a function, the rows data 
+is supplied to that function as the first argument and you are expected 
+to return the css class name. This is useful if you want to style a row 
+based on the rows data.</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<pre><code class="lang-javascript"><span class="keyword">var</span> rowMetadata = {
+    <span class="string">"bodyCssClassName"</span>: <span class="keyword">function</span>(rowData) {
+        <span class="keyword">if</span> (rowData.action === <span class="string">"added"</span>) {
+            <span class="keyword">return</span> <span class="string">"green-row"</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (rowData.action === <span class="string">"removed"</span>) {
+            <span class="keyword">return</span> <span class="string">"red-row"</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (rowData.action === <span class="string">"transfer"</span>) {
+            <span class="keyword">return</span> <span class="string">"blue-row"</span>;
+        }
+        <span class="keyword">return</span> <span class="string">"default-row"</span>;
+    }
+};
+
+<span class="keyword">return</span> (
+    <span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"griddle-container"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{this.state.rows}</span> <span class="attribute">rowMetadata</span>=<span class="value">{rowMetadata}</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+)</span></code></pre>
+<h3 id="custom-row-format">Custom Row Format</h3>
+<p>Sometimes you may want to display grid data in a format other than a 
+grid but still have pagination, filtering, etc. This type of formatting 
+can be accomplished with the custom row format properties. To use custom
+ row formatting, the <strong>useCustomRowComponent</strong> and the <strong>customRowComponent</strong> properties will need to be set.</p>
+<dl>
+  <dt>useCustomRowComponent</dt>
+  <dd><strong>bool</strong> - determines if custom row formats are applied</dd>
+</dl>
+
+<dl>
+  <dt>customRowComponent</dt>
+  <dd><strong>Component</strong> - the component to render in place of a grid row. This component receives a property named <strong>data</strong></dd>
+</dl>
+
+<dl>
+  <dt>customRowComponentClassName</dt>
+  <dd><strong>string</strong> - the CSS class name to apply to the format component.</dd>
+</dl>
+
+<dl>
+  <dt>enableToggleCustom</dt>
+  <dd><strong>bool</strong> - whether or not the user should be able to toggle between custom format and grid format.</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<p>We are going to render our grid as a series of cards, keeping the 
+pagination and filtering from Griddle in tact. Assume we are using the 
+same data in the custom column example. We will need to create a custom 
+component as follows:</p>
+<pre><code><span class="keyword">var</span> OtherComponent = React.createClass({
+  getDefaultProps: <span class="keyword">function</span>(){
+    <span class="keyword">return</span> { <span class="string">"data"</span>: {} };
+  },
+  render: <span class="keyword">function</span>(){
+    <span class="keyword">return</span> (<span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"custom-row-card"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;<span class="title">strong</span>&gt;</span>{this.props.data.name}<span class="tag">&lt;/<span class="title">strong</span>&gt;</span><span class="tag">&lt;<span class="title">small</span>&gt;</span>{this.props.data.company}<span class="tag">&lt;/<span class="title">small</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span>&gt;</span>{this.props.data.city}<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span>&gt;</span>{this.props.data.state}, {this.props.data.country}<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>);
+  }
+});</span></code></pre>
+<p>From there, Griddle can be rendered with the useCustomRowComponent and customRowComponent properties:</p>
+<div id="custom-row"><div data-reactroot="" class="griddle griddle-custom"><div class="top-section" style="clear: both; display: table; width: 100%;"><div class="griddle-filter" style="float: left; width: 50%; text-align: left; color: rgb(34, 34, 34); min-height: 1px;"><div class="filter-container"><input name="filter" placeholder="Filter Results" class="form-control" type="text"></div></div><div class="griddle-settings-toggle" style="float: left; width: 50%; text-align: right;"><button type="button" class="settings" style="background: transparent none repeat scroll 0% 0%; border: medium none; padding: 0px; margin: 0px; font-size: 14px;"><!-- react-text: 8 -->Settings<!-- /react-text --><!-- react-text: 9 --><!-- /react-text --></button></div></div><!-- react-text: 10 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div><div class="custom-row" style="clear: both; display: table; width: 100%;"><div class="custom-row-card"><div class="name"><strong class="text-primary">Mayer Leonard</strong><small class="text-primary-light">Ovolo</small></div><div>Kapowsin</div><div><!-- react-text: 20 -->Hawaii<!-- /react-text --><!-- react-text: 21 -->, <!-- /react-text --><!-- react-text: 22 -->United Kingdom<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Koch Becker</strong><small class="text-primary-light">Eventage</small></div><div>Johnsonburg</div><div><!-- react-text: 29 -->New Jersey<!-- /react-text --><!-- react-text: 30 -->, <!-- /react-text --><!-- react-text: 31 -->Madagascar<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Lowery Hopkins</strong><small class="text-primary-light">Comtext</small></div><div>Blanco</div><div><!-- react-text: 38 -->Arizona<!-- /react-text --><!-- react-text: 39 -->, <!-- /react-text --><!-- react-text: 40 -->Ukraine<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Walters Mays</strong><small class="text-primary-light">Corporana</small></div><div>Glendale</div><div><!-- react-text: 47 -->Illinois<!-- /react-text --><!-- react-text: 48 -->, <!-- /react-text --><!-- react-text: 49 -->New Zealand<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Shaw Lowe</strong><small class="text-primary-light">Isologica</small></div><div>Coultervillle</div><div><!-- react-text: 56 -->Wyoming<!-- /react-text --><!-- react-text: 57 -->, <!-- /react-text --><!-- react-text: 58 -->Ecuador<!-- /react-text --></div></div></div><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option></select><!-- react-text: 120 --> / <!-- /react-text --><!-- react-text: 121 -->56<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 124 -->Next<!-- /react-text --><!-- react-text: 125 --><!-- /react-text --></button></div></div></div></div></div></div></div>
+
+
+<script type="text/jsx">
+/** @jsx React.DOM */
+
+var OtherComponent = React.createClass({
+  getDefaultProps: function(){
+    return { "data": {} };
+  },
+  render: function(){
+    return (<div className="custom-row-card">
+        <div className="name"><strong className="text-primary">{this.props.data.name}</strong><small className="text-primary-light">{this.props.data.company}</small></div>
+        <div>{this.props.data.city}</div>
+        <div>{this.props.data.state}, {this.props.data.country}</div>
+    </div>);
+  }
+});
+
+ReactDOM.render(
+  <Griddle results={fakeData} useCustomRowComponent={true} customRowComponent={OtherComponent} customRowComponentClassName={"custom-row"} enableToggleCustom={true} showSettings={true} showFilter={true}/>,
+   document.getElementById('custom-row')
+);
+</script>
+
+
+<hr>
+
+<h3 id="custom-grid-format">Custom Grid Format</h3>
+<p>In some cases, it may be ideal to use Griddle but display a global 
+format other than a grid or series of rows. Assume we have an object 
+containing temperature data for years and we want to display this data 
+with a trend line chart. This is possible with a custom grid format 
+component. To use custom grid formatting the <strong>useCustomGridComponent</strong> and <strong>customGridComponent</strong> properties need to be set.</p>
+<dl>
+  <dt>useCustomGridComponent</dt>
+  <dd><strong>bool</strong> - determines if custom row formats are applied</dd>
+</dl>
+
+<dl>
+  <dt>customGridComponent</dt>
+  <dd><strong>Component</strong> - the component to render in place of a grid row. This component receives a property named <strong>data</strong></dd>
+</dl>
+
+<dl>
+  <dt>customGridComponentClassName</dt>
+  <dd><strong>string</strong> - the CSS class name to apply to the format component.</dd>
+</dl>
+
+<dl>
+  <dt>enableToggleCustom</dt>
+  <dd><strong>bool</strong> - whether or not the user should be able to toggle between custom format and grid format.</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<p>As stated above we are going to render a visualization of temperature
+ data rather than a chart. To start off we need to create a 
+visualization component that uses a data property to obtain its values 
+(the following example uses the awesome <a href="http://gionkunz.github.io/chartist-js/">chartist library</a> and <a href="https://fraserxu.me/react-chartist/">accompanying react component</a>):</p>
+<pre><code><span class="title">var</span> <span class="type">TestLineChart</span> = <span class="type">React</span>.createClass({
+  render: function(){
+    var simpleLineChartData = {
+      labels: _.keys(this.props.<span class="typedef"><span class="keyword">data</span>[0]),</span>
+      series: []
+    };
+
+    _.each(this.props.<span class="typedef"><span class="keyword">data</span>, function<span class="container">(<span class="title">item</span>)</span><span class="container">{
+      <span class="title">simpleLineChartData</span>.<span class="title">series</span>.<span class="title">push</span>(<span class="title">_</span>.<span class="title">values</span>(<span class="title">item</span>));
+      }</span>);</span>
+      return &lt;<span class="type">ChartistGraph</span> <span class="typedef"><span class="keyword">data</span>=<span class="container">{<span class="title">simpleLineChartData</span>}</span> <span class="keyword">type</span>=<span class="container">{'<span class="type">Line</span>'}</span> /&gt;</span>
+  }
+});</code></pre>
+<div id="grid-chart"><div data-reactroot="" class="griddle"><div class="top-section" style="clear: both; display: table; width: 100%;"><div class="griddle-filter" style="float: left; width: 50%; text-align: left; color: rgb(34, 34, 34); min-height: 1px;"></div><div class="griddle-settings-toggle" style="float: left; width: 50%; text-align: right;"><button type="button" class="settings" style="background: transparent none repeat scroll 0% 0%; border: medium none; padding: 0px; margin: 0px; font-size: 14px;"><!-- react-text: 6 -->Settings<!-- /react-text --><!-- react-text: 7 --><!-- /react-text --></button></div></div><!-- react-text: 8 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="ct-chart"></div></div></div></div>
+
+<script type="text/jsx">
+var data = [
+{
+  "January": 35,
+  "February": 40,
+  "March": 47,
+  "April": 52,
+  "May": 73,
+  "June": 75
+},
+{
+  "January": 21,
+  "February": 30,
+  "March": 46,
+  "April": 53,
+  "May": 66,
+  "June": 81
+},
+{
+  "January": 28,
+  "February": 28,
+  "March": 49,
+  "April": 49,
+  "May": 67,
+  "June": 80
+}
+];
+
+var TestLineChart = React.createClass({
+  render: function(){
+    var type = this.props.type || 'Line'
+    var simpleLineChartData = {
+      labels: _.keys(this.props.data[0]),
+      series: []
+    };
+
+    _.each(this.props.data, function(item){
+      simpleLineChartData.series.push(_.values(item));
+    });
+
+    return <ChartistGraph data={simpleLineChartData} type={type} />
+  }
+});
+
+ReactDOM.render(<Griddle enableToggleCustom={true} showSettings={true} results={data} useCustomGridComponent={true} customGridComponent={TestLineChart} tableClassName="table" gridMetadata={{type: 'Bar'}}/>, document.getElementById('grid-chart'));
+</script>
+
+
+<hr>
+
+<h3 id="custom-filtering-and-filter-component">Custom Filtering and Filter Component</h3>
+<p>Griddle supports custom filtering and custom filter components. In order to use a custom filter function set the property <code>useCustomFilterer</code> to true and pass in a function to the  <code>customFilterer</code> property. To use a custom filter component set <code>useCustomFilterComponent</code> to true and pass a component to <code>customFilterComponent</code>.</p>
+<h5 id="example-">Example:</h5>
+<p>This example shows how to make a custom filter component with a 
+custom filter function that does a case-insensitive search through the 
+items. The component must call <code>this.props.changeFilter(val)</code>
+ when the filter should be updated. In the example below we pass a 
+string but any variable type can be used as long as the filter function 
+is expecting it, for example an advanced query could be passed in using 
+an object. The filter function signature takes the items to be filtered 
+and the query to filter them by.</p>
+<pre><code class="lang-javascript">      squish = require(<span class="string">'object-squish'</span>);
+
+  <span class="keyword">var</span> customFilterFunction = <span class="keyword">function</span>(items, query) {
+    <span class="keyword">return</span> _.filter(items, (item) =&gt; {
+      <span class="keyword">var</span> flat = squish(item);
+
+      <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> flat) {
+        <span class="keyword">if</span> (String(flat[key]).toLowerCase().indexOf(query.toLowerCase()) &gt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;
+      };
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    });
+  };
+
+  <span class="keyword">var</span> customFilterComponent = React.createClass({
+    getDefaultProps: <span class="keyword">function</span>() {
+      <span class="keyword">return</span> {
+        <span class="string">"query"</span>: <span class="string">""</span>
+      }
+    },
+
+    searchChange: <span class="keyword">function</span>(event) {
+      <span class="keyword">this</span>.props.query = event.target.value;
+      <span class="keyword">this</span>.props.changeFilter(<span class="keyword">this</span>.props.query);
+    },
+
+    render: <span class="keyword">function</span>() {
+      <span class="keyword">return</span> (
+        <span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"filter-container"</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span>
+                 <span class="attribute">name</span>=<span class="value">"search"</span>
+                 <span class="attribute">placeholder</span>=<span class="value">"Search..."</span>
+                 <span class="attribute">onChange</span>=<span class="value">{this.searchChange}</span> /&gt;</span>
+        <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+      )
+    }
+  });</span></code></pre>
+<p>Then initialize Griddle:</p>
+<pre><code>React.render(
+  <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{fakeData}</span> <span class="attribute">showFilter</span>=<span class="value">{true}</span>
+  <span class="attribute">useCustomFilterer</span>=<span class="value">{true}</span> <span class="attribute">customFilterer</span>=<span class="value">{customFilterFunction}</span>
+  <span class="attribute">useCustomFilterComponent</span>=<span class="value">{true}</span> <span class="attribute">customFilterComponent</span>=<span class="value">{customFilterComponent}</span>/&gt;</span>,
+  document.getElementById('griddle-metadata')</span></code></pre>
+<hr>
+
+<h3 id="custom-paging-component">Custom Paging Component</h3>
+<p>If you want to customize the paging component, just set the property 
+'useCustomPagerComponent' to true and pass in another component as 
+property named 'customPagerComponent'. The example component below shows
+ 11 buttons (5 previous, current, 5 next):</p>
+<dl>
+  <dt>useCustomPagerComponent</dt>
+  <dd><strong>bool</strong> - Use custom pagination component rather than default pager. default: false</dd>
+</dl>
+
+<dl>
+  <dt>customPagerComponent</dt>
+  <dd><strong>object</strong> - The custom pagination component. default: {}</dd>
+</dl>
+
+<dl>
+  <dt>customPagerComponentOptions</dt>
+  <dd><strong>object</strong> - Any options to be passed to the custom pagination component. default: {}</dd>
+</dl>
+
+<h5 id="example">Example</h5>
+<pre><code class="lang-javascript"><span class="keyword">var</span> OtherPager = React.createClass({
+    getDefaultProps: <span class="keyword">function</span>(){
+        <span class="keyword">return</span>{
+            <span class="string">"maxPage"</span>: <span class="number">0</span>,
+            <span class="string">"nextText"</span>: <span class="string">""</span>,
+            <span class="string">"previousText"</span>: <span class="string">""</span>,
+            <span class="string">"currentPage"</span>: <span class="number">0</span>,
+        }
+    },
+    pageChange: <span class="keyword">function</span>(event){
+        <span class="keyword">this</span>.props.setPage(parseInt(event.target.getAttribute(<span class="string">"data-value"</span>)));
+    },
+    render: <span class="keyword">function</span>(){
+        <span class="keyword">var</span> previous = <span class="string">""</span>;
+        <span class="keyword">var</span> next = <span class="string">""</span>;
+
+        <span class="keyword">if</span>(<span class="keyword">this</span>.props.currentPage &gt; <span class="number">0</span>){
+            previous = <span class="xml"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">onClick</span>=<span class="value">{this.props.previous}</span> <span class="attribute">className</span>=<span class="value">"previous"</span>&gt;</span><span class="tag">&lt;<span class="title">i</span> <span class="attribute">className</span>=<span class="value">"glyphicon glyphicon-arrow-left"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span>{this.props.previousText}<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+        }
+
+        if(this.props.currentPage != (this.props.maxPage -1)){
+            next = <span class="tag">&lt;<span class="title">span</span> <span class="attribute">onClick</span>=<span class="value">{this.props.next}</span> <span class="attribute">className</span>=<span class="value">"next"</span>&gt;</span>{this.props.nextText}<span class="tag">&lt;<span class="title">i</span> <span class="attribute">className</span>=<span class="value">"glyphicon glyphicon-arrow-right"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+        }
+
+        var options = [];
+
+      var startIndex = Math.max(this.props.currentPage - 5, 0);
+      var endIndex = Math.min(startIndex + 11, this.props.maxPage);
+
+      if (this.props.maxPage &gt;= 11 &amp;&amp; (endIndex - startIndex) <span class="tag">&lt;<span class="title">=</span> <span class="attribute">10</span>) {
+        <span class="attribute">startIndex</span> = <span class="attribute">endIndex</span> <span class="attribute">-</span> <span class="attribute">11</span>;
+      }
+
+        <span class="attribute">for</span>(<span class="attribute">var</span> <span class="attribute">i</span> = <span class="attribute">startIndex</span>; <span class="attribute">i</span> &lt; <span class="attribute">endIndex</span> ; <span class="attribute">i</span>++){
+          <span class="attribute">var</span> <span class="attribute">selected</span> = <span class="attribute">this.props.currentPage</span> =<span class="value">=</span> <span class="attribute">i</span> ? "<span class="attribute">current-page-selected</span>" <span class="attribute">:</span> "";
+            <span class="attribute">options.push</span>(&lt;<span class="attribute">button</span> <span class="attribute">className</span>=<span class="value">{selected}</span> <span class="attribute">data-value</span>=<span class="value">{i}</span> <span class="attribute">onClick</span>=<span class="value">{this.pageChange}</span>&gt;</span>{i + 1}<span class="tag">&lt;/<span class="title">button</span>&gt;</span>);
+        }
+
+        return (
+            <span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"row custom-pager"</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"col-xs-4"</span>&gt;</span>{previous}<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"col-xs-4 center pages"</span>&gt;</span>
+                    {options}
+                <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">div</span> <span class="attribute">className</span>=<span class="value">"col-xs-4 right"</span>&gt;</span>{next}<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+        )
+    }
+});</span></code></pre>
+<p>Then initialize your component as follows:</p>
+<pre><code><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">results</span>=<span class="value">{fakeData}</span> <span class="attribute">tableClassName</span>=<span class="value">"table"</span> <span class="attribute">useCustomRowComponent</span>=<span class="value">"true"</span>
+  <span class="attribute">customRowComponent</span>=<span class="value">{OtherComponent}</span> <span class="attribute">useCustomPagerComponent</span>=<span class="value">"true"</span> <span class="attribute">customPagerComponent</span>=<span class="value">{OtherPager}</span> /&gt;</span></code></pre>
+<div id="custom-paging"><div data-reactroot="" class="griddle griddle-custom"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div><div class="" style="clear: both; display: table; width: 100%;"><div class="custom-row-card"><div class="name"><strong class="text-primary">Mayer Leonard</strong><small class="text-primary-light">Ovolo</small></div><div>Kapowsin</div><div><!-- react-text: 13 -->Hawaii<!-- /react-text --><!-- react-text: 14 -->, <!-- /react-text --><!-- react-text: 15 -->United Kingdom<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Koch Becker</strong><small class="text-primary-light">Eventage</small></div><div>Johnsonburg</div><div><!-- react-text: 22 -->New Jersey<!-- /react-text --><!-- react-text: 23 -->, <!-- /react-text --><!-- react-text: 24 -->Madagascar<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Lowery Hopkins</strong><small class="text-primary-light">Comtext</small></div><div>Blanco</div><div><!-- react-text: 31 -->Arizona<!-- /react-text --><!-- react-text: 32 -->, <!-- /react-text --><!-- react-text: 33 -->Ukraine<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Walters Mays</strong><small class="text-primary-light">Corporana</small></div><div>Glendale</div><div><!-- react-text: 40 -->Illinois<!-- /react-text --><!-- react-text: 41 -->, <!-- /react-text --><!-- react-text: 42 -->New Zealand<!-- /react-text --></div></div><div class="custom-row-card"><div class="name"><strong class="text-primary">Shaw Lowe</strong><small class="text-primary-light">Isologica</small></div><div>Coultervillle</div><div><!-- react-text: 49 -->Wyoming<!-- /react-text --><!-- react-text: 50 -->, <!-- /react-text --><!-- react-text: 51 -->Ecuador<!-- /react-text --></div></div></div><div class="griddle-footer"><div class="row custom-pager"><div class="one column"></div><div class="ten columns"><button class="current-page-selected" data-value="0">1</button><button class="" data-value="1">2</button><button class="" data-value="2">3</button><button class="" data-value="3">4</button><button class="" data-value="4">5</button><button class="" data-value="5">6</button><button class="" data-value="6">7</button><button class="" data-value="7">8</button><button class="" data-value="8">9</button><button class="" data-value="9">10</button><button class="" data-value="10">11</button></div><div class="one column"><span class="next"><!-- react-text: 69 -->Next<!-- /react-text --><i class="glyphicon glyphicon-arrow-right"></i></span></div></div></div></div></div></div></div>
+
+
+<script type="text/jsx">
+var OtherPager = React.createClass({
+    getDefaultProps: function(){
+        return{
+            "maxPage": 0,
+            "nextText": "",
+            "previousText": "",
+            "currentPage": 0,
+        }
+    },
+    pageChange: function(event){
+        this.props.setPage(parseInt(event.target.getAttribute("data-value")));
+    },
+    render: function(){
+        var previous = "";
+        var next = "";
+
+        if(this.props.currentPage > 0){
+            previous = <span onClick={this.props.previous} className="previous"><i className="glyphicon glyphicon-arrow-left"></i>{this.props.previousText}</span>
+        }
+
+        if(this.props.currentPage != (this.props.maxPage -1)){
+            next = <span onClick={this.props.next} className="next">{this.props.nextText}<i className="glyphicon glyphicon-arrow-right"></i></span>
+        }
+
+        var options = [];
+
+      var startIndex = Math.max(this.props.currentPage - 5, 0);
+      var endIndex = Math.min(startIndex + 11, this.props.maxPage);
+
+      if (this.props.maxPage >= 11 && (endIndex - startIndex) <= 10) {
+        startIndex = endIndex - 11;
+      }
+
+        for(var i = startIndex; i < endIndex ; i++){
+          var selected = this.props.currentPage == i ? "current-page-selected" : "";
+            options.push(<button className={selected} data-value={i} onClick={this.pageChange}>{i + 1}</button>);
+        }
+
+        return (
+            <div className="row custom-pager">
+                <div className="one column">{previous}</div>
+                <div className="ten columns">
+                    {options}
+                </div>
+                <div className="one column">{next}</div>
+            </div>
+        )
+    }
+});
+
+ReactDOM.render(<Griddle results={fakeData} tableClassName="table" useCustomRowComponent={true}
+  customRowComponent={OtherComponent} useCustomPagerComponent={true} customPagerComponent={OtherPager} />, document.getElementById("custom-paging"));
+</script>
+
+<hr>
+
+<h3 id="no-data">No Data</h3>
+<p>Griddle will, by default, show a message if there is no data in the 
+result set. There are two ways that it can be customized though.</p>
+<h4 id="basic-nodata-message">Basic NoData message</h4>
+<p>The first way to customize what Griddle does when there is no data is setting the <code>noDataMessage</code> property.</p>
+<dl>
+  <dt>noDataMessage</dt>
+  <dd><strong>string</strong> - The message that will be displayed when there is no data</dd>
+</dl>
+
+<dl>
+  <dt>noDataClassName</dt>
+  <dd><strong>string</strong> - The CSS class name to apply to the grid when no data is available <span class="text-light-grey">Default: griddle-nodata</span></dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<pre><code><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">noDataMessage</span>=<span class="value">{"No</span> <span class="attribute">data</span> <span class="attribute">could</span> <span class="attribute">be</span> <span class="attribute">found.</span>"} /&gt;</span></code></pre>
+<div id="griddle-nodata-basic"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="" style="width: 100%; table-layout: fixed;"><thead><tr></tr></thead><tbody><tr><td colspan="0"><div>No data could be found.</div></td></tr></tbody><tbody><tr><td colspan="0" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34); height: 20px;"></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+    ReactDOM.render(<Griddle noDataMessage={"No data could be found."} />, document.getElementById("griddle-nodata-basic"));
+</script>
+
+
+<hr>
+
+<h4 id="nodata-component">NoData Component</h4>
+<p>Outside of the NoData message, Griddle can take a <code>customNoDataComponent</code> that will be displayed when there are no records.</p>
+<dl>
+  <dt>customNoDataComponent</dt>
+  <dd><strong>object</strong> - The component that will be displayed when there is no data</dd>
+</dl>
+
+<h5 id="example-">Example:</h5>
+<pre><code><span class="keyword">var</span> NoDataComponent = React.createClass({
+    render: <span class="keyword">function</span>(){
+      <span class="keyword">return</span> (<span class="xml"><span class="tag">&lt;<span class="title">div</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">h1</span>&gt;</span>No data is available<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://www.google.com"</span>&gt;</span>You can google for more data<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+      );
+    }
+});
+
+React.render(<span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">customNoDataComponent</span>=<span class="value">{NoDataComponent}</span> /&gt;</span>, document.getElementById("some-id"));</span></code></pre>
+<div id="griddle-nodata-component"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="" style="width: 100%; table-layout: fixed;"><thead><tr></tr></thead><tbody><tr><td colspan="0"><div class="griddle-nodata"><div class="noDataComponent"><h1>No data is available</h1><a href="http://www.google.com/">You can google for more data</a></div></div></td></tr></tbody><tbody><tr><td colspan="0" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34); height: 20px;"></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+  var NoDataComponent = React.createClass({
+    render: function(){
+      return (<div className="noDataComponent">
+        <h1>No data is available</h1>
+        <a href="http://www.google.com">You can google for more data</a>
+      </div>
+      );
+    }
+  });
+
+  ReactDOM.render(<Griddle customNoDataComponent={NoDataComponent} />, document.getElementById("griddle-nodata-component"));
+</script>
+
+
+<hr>
+
+<h3 id="custom-icons">Custom Icons</h3>
+<p>Please see the <a href="https://griddlegriddle.github.io/v0-docs/styling.html">styling section</a> for custom icons.</p>
+
+			</div>
+		</div>
+	</div>
+  <div class="order-primary content-section background-darker-grey text-light-grey" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="ten columns offset-by-two">
+          <p>Griddle is a project maintained by <a href="http://twitter.com/ryanlanciaux">Ryan Lanciaux</a> and <a href="http://www.twitter.com/joellanciaux">Joel Lanciaux</a> in collaboration with all of <a href="https://github.com/GriddleGriddle/Griddle/graphs/contributors">the awesome contributors!</a></p>
+         	<small>
+        		© 2015 <a href="http://www.twitter.com/ryanlanciaux">Ryan Lanciaux</a> | <a href="https://www.github.com/DynamicTyped">DynamicTyped</a>
+        	</small> 
+        	<br>
+          <small>
+						Example data has been generated with <a href="http://json-generator.com/">json-generator.com</a>. Any data that resembles real people, places, companies, etc. is coincidence.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-58716212-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script> 
+
+
+</body></html>

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Griddle - React Grid Component</title>
+	<meta name="description" content="Griddle - React Grid component. ">
+	<meta name="author" content="Ryan Lanciaux">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="Properties_files/css.css" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="Properties_files/normalize.css">
+	<link rel="stylesheet" href="Properties_files/skeleton.css">
+	<link rel="stylesheet" href="Properties_files/site.css">
+	<link rel="stylesheet" href="Properties_files/chartist.css">
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="https://griddlegriddle.github.io/v0-docs/images/favicon.png">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script async="" src="Properties_files/analytics.js"></script><script src="Properties_files/react.js"></script>
+  <script src="Properties_files/react-dom.js"></script>
+	<script src="Properties_files/JSXTransformer.js"></script>
+	<script src="Properties_files/underscore-min.js"></script>
+	<script src="Properties_files/Griddle.js"></script>
+	<script src="Properties_files/GriddleWithCallback.js"></script>
+	<script src="Properties_files/fakeData.js"></script>
+	<script src="Properties_files/ChartistGraph.js"></script>
+<script>
+var propertiesItem = [
+  {
+    "property": "columns",
+    "description": "The columns that should be displayed by default. The other columns can be chosen via the grid settings. If no columns are set, Griddle will display all columns by default",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "columnMetadata",
+    "description": "Behavior and properties for the columns within the grid",
+    "type": "array",
+    "default": "[]",
+    "children":[
+      {
+        "property": "columnName",
+        "description": "The name of the column that this metadata applies to.",
+        "type": "string",
+        "default": null
+      },
+      {
+        "property": "order",
+        "description": "The order that this column should appear regardless of how the columns object is defined.",
+        "type": "int",
+        "default": null
+      },
+      {
+        "property": "locked",
+        "description": "Determines whether or not the user can disable this column from the settings.",
+        "type": "bool",
+        "default": "false"
+      },
+      {
+        "property": "cssClassName",
+        "description" : "The css className that should be applied to this column.",
+        "type": "string",
+        "default": null
+      }
+    ]
+  },
+  {
+    "property": "results",
+    "description": "The data that should be displayed within the grid. This data needs to be an array of JSON objects.",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "resultsPerPage",
+    "description": "The number of results that should be displayed on each page. If 'getExternalResults' is defined, this value will be what's used as the 'pageSize' argument.",
+    "type": "int",
+    "default": "5"
+  },
+  {
+    "property": "initialSort",
+    "description": "The column that the grid should be sorted on initially. By default, this is an empty string so the data will be sorted as it's received",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "initialSortAscending",
+    "description": "The direction that the grid should be sorted on initially. By default, this is true.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "gridClassName",
+    "description": "The CSS class name to apply to the griddle elements.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "tableClassName",
+    "description" : "The CSS class name to apply to the table elements.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "customFormatClassName",
+    "description": "The CSS class name to apply to the custom format wrapper.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "settingsText",
+    "description": "The text value to use for toggling the settings area.",
+    "type": "string",
+    "default": "Settings"
+  },
+  {
+    "property": "filterPlaceholderText",
+    "description": "The text to be displayed as a placeholder in the filter text box.",
+    "type": "string",
+    "default": "Filter Results"
+  },
+  {
+    "property": "nextText",
+    "description": "The text on the button that moves to the next page of results.",
+    "type": "string",
+    "default": "Next"
+  },
+  {
+    "property": "previousText",
+    "description": "The text on the button that moves to the previous page of results.",
+    "type": "string",
+    "default": "Previous"
+  },
+  {
+    "property": "maxRowsText",
+    "description": "The text that appears in the Settings / Column chooser next to the select box for page size",
+    "type": "string",
+    "default": "Rows per page"
+  },
+  {
+    "property": "enableCustomFormatText",
+    "description": "The text that appears in the Settings / Column chooser next to the check box to enable custom formatting",
+    "type": "string",
+    "default": "Enable Custom Formatting"
+  },
+  {
+    "property": "childrenColumnName",
+    "description": "The name of the column that contains a list of child items for a given object.",
+    "type": "string",
+    "default": "children"
+  },
+  {
+    "property": "metadataColumns",
+    "description": "List of columns that should not be rendered.",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "showFilter",
+    "description": "Whether or not to display the \"Filter\" section of Griddle.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomFilterer",
+    "description": "Determines if a custom filter function is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "customFilterer",
+    "description": "The function called when the filter is changed. Expects items and the query, returns filtered items",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "useCustomFilterComponent",
+    "description": "Determines if a custom filter component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "customFilterComponent",
+    "description": "The component that is rendered above the table for filtering",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "showSettings",
+    "description": "Whether or not to display the \"Settings\" section of Griddle.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomRowComponent",
+    "description": "Determines if a custom row format component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomGridComponent",
+    "description": "Determines if a custom grid format component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomPagerComponent",
+    "description": "Determines if a custom pager component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useGriddleStyles",
+    "description": "Determines if the inline, default styles for Griddle are used. When disabled Griddle will render as a simple table (unless infinite turned on)",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "customRowComponent",
+    "description": "The component that should be rendered for each data row.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "customGridComponent",
+    "description": "The component that should be rendered instead of the overall grid.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "customPagerComponent",
+    "description": "The component that should be rendered instead of the default pagination component",
+    "type": "React Component",
+    "default": "{}"
+  },
+  {
+    "property": "enableToggleCustom",
+    "description": "Determines whether or not the option to toggle between custom component and default grid is available in the settings",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "noDataMessage",
+    "description": "The message to display when no data is available.",
+    "type": "string",
+    "default": "There is no data to display."
+  },
+  {
+    "property": "customNoDataComponent",
+    "description": "The component to display when there is no data available.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "showTableHeading",
+    "description": "Determines if the table heading should be displayed.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "showPager",
+    "description": "Determines if the pagination controls should be displayed.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "useFixedHeader",
+    "description": "Determines if the table header should stay in the same place while table data is scrolled.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useExternal",
+    "description": "States that the data should be loaded externally rather than all at once.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "externalSetPage",
+    "description": "The method that will be called when the grid changes pages.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalChangeSort",
+    "description": "The method that will be called when the column sort is changed.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalSetFilter",
+    "description": "The method that will be called when the filter is changed.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalSetPageSize",
+    "description": "The method that will be called when the page size is requested to change.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalMaxPage",
+    "description": "The max page for the current data set.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "externalCurrentPage",
+    "description": "The page of data that is currently being displayed.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "externalSortColumn",
+    "description": "The column that is currently sorted.",
+    "type": "string",
+    "default": "null"
+  },
+  {
+    "property": "externalSortAscending",
+    "description": "Whether the data is sorted in ascending or descending order",
+    "type": "bool",
+    "default": "null"
+  },
+  {
+    "property": "externalLoadingComponent",
+    "description": "The component that should be displayed when the data is loading.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "externalIsLoading",
+    "description": "Whether or not the loading component should be displayed instead of grid data.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "enableInfiniteScroll",
+    "description": "Should infinite scrolling be enabled.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "bodyHeight",
+    "description": "The height, in pixels, of the grid body.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "paddingHeight",
+    "description": "The height, in pixels, of the the top/bottom padding used inside of a row. Only used when 'useGriddleStyles' is true.",
+    "type": "int",
+    "default": "5"
+  },
+  {
+    "property": "rowHeight",
+    "description": "The minimum height, in pixels, of a row. Only used when 'useGriddleStyles' is true.",
+    "type": "int",
+    "default": "25"
+  },
+  {
+    "property": "infiniteScrollLoadTreshold",
+    "description": "The height, in pixels, used to trigger paging. Changing this property should be a pretty rare occurrence.",
+    "type": "int",
+    "default": "50"
+  },
+  {
+    "property": "useFixedLayout",
+    "description": "Whether or not a fixed table layout should be used.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "isSubGriddle",
+    "description": "Is the current grid a child of another Griddle component. (This should mainly be used for SubGrids by Griddle).",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "enableSort",
+    "description": "Determines if sorting is enabled.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "sortAscendingClassName",
+    "description": "When sorted in ascending order, the CSS class name to apply to the th of the currently sorted column.",
+    "type": "string",
+    "default": "sort-ascending"
+  },
+  {
+    "property": "sortDescendingClassName",
+    "description": "When sorted in descending order, the CSS class name to apply to the th of the currently sorted column",
+    "type": "string",
+    "default": "sort-descending"
+  },
+  {
+    "property": "parentRowCollapsedClassName",
+    "description": "The CSS class that is applied to a row that contains child records when the records are not being displayed.",
+    "type": "string",
+    "default": "parent-row"
+  },
+  {
+    "property": "parentRowExpandedClassName",
+    "description": "The CSS class that is applied to a row that contains child records when the records are currently displayed.",
+    "type": "string",
+    "default": "parent-row expanded"
+  },
+  {
+    "property": "settingsToggleClassName",
+    "description": "The CSS class that is applied to the settings toggle button that is (by default) at the top right of Griddle.",
+    "type": "string",
+    "default": "settings"
+  },
+  {
+    "property": "nextClassName",
+    "description": "The CSS class name to apply to the pagination \"next\" control.",
+    "type": "string",
+    "default": "griddle-next"
+  },
+  {
+    "property": "previousClassName",
+    "description": "The CSS class name to apply to the pagination \"previous\" control.",
+    "type": "string",
+    "default": "griddle-previous"
+  },
+  {
+    "property": "sortAscendingComponent",
+    "description": "The component to display in a th element when the column is sorted in ascending order. This component will be to the right of the column heading text.",
+    "type": "string",
+    "default": " ▲"
+  },
+  {
+    "property": "sortDescendingComponent",
+    "description": "The component to display in a th element when the column is sorted in descending order. This component will be to the right of the column heading text.",
+    "type": "string",
+    "default": " ▼"
+  },
+  {
+    "property": "parentRowCollapsedComponent",
+    "description": "The component to the left of the first column of a grid row that contains child records when those records are not currently displayed.",
+    "type": "string",
+    "default": " ▶"
+  },
+  {
+    "property": "parentRowExpandedComponent",
+    "description": "The component to the left of the first column of a grid row that contains child records when those records are currently displayed.",
+    "type": "string",
+    "default": " ▼"
+  },
+  {
+    "property": "settingsIconComponent",
+    "description": "The component to display to the right of the \"Settings\" text.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "nextIconComponent",
+    "description": "The component that should be displayed to the right of the \"Next\" text in the pagination component.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "previousIconComponent",
+    "description": "The component that should be displayed to the left of the \"Previous\" text in the pagination component.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "onRowClick",
+    "description": "A function that should be called when a row has been clicked. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowMouseEnter",
+    "description": "A function that should be called when a mouse entered a row. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowMouseLeave",
+    "description": "A function that should be called when a mouse left a row. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowWillMount",
+    "description": "A function that should be called before a row was mounted. The 'gridRow' will be passed in as argument.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowWillUnmount",
+    "description": "A function that should be called before a row was unmounted. The 'gridRow' will be passed in as argument.",
+    "type": "function",
+    "default": "null"
+  }
+];
+var DefinitionItem = React.createClass({displayName: "DefinitionItem",
+  getDefaultProps: function() {
+    return { "data": {
+      "property": "",
+      "description":"",
+      "type": "",
+      "default": ""
+    }}
+  },
+  render: function(){
+    return (
+      React.createElement("dl", null, 
+        React.createElement("dt", null, this.props.data.property), 
+        React.createElement("dd", null, React.createElement("strong", null, this.props.data.type), " - ", this.props.data.description, " ", React.createElement("span", {className: "text-light-grey"}, "Default: ", this.props.data.default)
+        )
+      )
+    )
+  }
+})
+ReactDOM.render(React.createElement(Griddle, {results: propertiesItem, useCustomRowComponent: true, customRowComponent: DefinitionItem, useGriddleStyles: false, showFilter: true, tableClassName: "table", resultsPerPage: 100, columnMetadata: propertyGridMeta, showPager: false, enableToggleCustom: true}), document.getElementById('griddle-properties'));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0EsSUFBSSxjQUFjLEdBQUc7RUFDbkI7SUFDRSxVQUFVLEVBQUUsU0FBUztJQUNyQixhQUFhLEVBQUUsNEtBQTRLO0lBQzNMLE1BQU0sRUFBRSxPQUFPO0lBQ2YsU0FBUyxFQUFFLElBQUk7R0FDaEI7RUFDRDtJQUNFLFVBQVUsRUFBRSxnQkFBZ0I7SUFDNUIsYUFBYSxFQUFFLHlEQUF5RDtJQUN4RSxNQUFNLEVBQUUsT0FBTztJQUNmLFNBQVMsRUFBRSxJQUFJO0lBQ2YsVUFBVSxDQUFDO01BQ1Q7UUFDRSxVQUFVLEVBQUUsWUFBWTtRQUN4QixhQUFhLEVBQUUsdURBQXVEO1FBQ3RFLE1BQU0sRUFBRSxRQUFRO1FBQ2hCLFNBQVMsRUFBRSxJQUFJO09BQ2hCO01BQ0Q7UUFDRSxVQUFVLEVBQUUsT0FBTztRQUNuQixhQUFhLEVBQUUsMkZBQTJGO1FBQzFHLE1BQU0sRUFBRSxLQUFLO1FBQ2IsU0FBUyxFQUFFLElBQUk7T0FDaEI7TUFDRDtRQUNFLFVBQVUsRUFBRSxRQUFRO1FBQ3BCLGFBQWEsRUFBRSwrRUFBK0U7UUFDOUYsTUFBTSxFQUFFLE1BQU07UUFDZCxTQUFTLEVBQUUsT0FBTztPQUNuQjtNQUNEO1FBQ0UsVUFBVSxFQUFFLGNBQWM7UUFDMUIsYUFBYSxHQUFHLDBEQUEwRDtRQUMxRSxNQUFNLEVBQUUsUUFBUTtRQUNoQixTQUFTLEVBQUUsSUFBSTtPQUNoQjtLQUNGO0dBQ0Y7RUFDRDtJQUNFLFVBQVUsRUFBRSxTQUFTO0lBQ3JCLGFBQWEsRUFBRSxvR0FBb0c7SUFDbkgsTUFBTSxFQUFFLE9BQU87SUFDZixTQUFTLEVBQUUsSUFBSTtHQUNoQjtFQUNEO0lBQ0UsVUFBVSxFQUFFLGdCQUFnQjtJQUM1QixhQUFhLEVBQUUsNkpBQTZKO0lBQzVLLE1BQU0sRUFBRSxLQUFLO0lBQ2IsU0FBUyxFQUFFLEdBQUc7R0FD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QUFDLElBQUksQ0FBQyxJQUFjLENBQUEsRUFBQSxLQUFBLEVBQUksSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsV0FBVyxFQUFDLEdBQUEsRUFBQyxvQkFBQSxNQUFLLEVBQUEsQ0FBQSxDQUFDLFNBQUEsRUFBUyxDQUFDLGlCQUFrQixDQUFBLEVBQUEsV0FBQSxFQUFVLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLE9BQWUsQ0FBQTtRQUNsSixDQUFBO01BQ0YsQ0FBQTtLQUNOO0dBQ0Y7Q0FDRixDQUFDO0FBQ0YsUUFBUSxDQUFDLE1BQU0sQ0FBQyxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLE9BQUEsRUFBTyxDQUFFLGNBQWMsRUFBQyxDQUFDLHFCQUFBLEVBQXFCLENBQUUsSUFBSSxFQUFDLENBQUMsa0JBQUEsRUFBa0IsQ0FBRSxjQUFjLEVBQUMsQ0FBQyxnQkFBQSxFQUFnQixDQUFFLEtBQUssRUFBQyxDQUFDLFVBQUEsRUFBVSxDQUFFLElBQUksRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLGNBQUEsRUFBYyxDQUFFLEdBQUcsRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFFLGdCQUFnQixFQUFDLENBQUMsU0FBQSxFQUFTLENBQUUsS0FBSyxFQUFDLENBQUMsa0JBQUEsRUFBa0IsQ0FBRSxJQUFLLENBQUUsQ0FBQSxFQUFFLFFBQVEsQ0FBQyxjQUFjLENBQUMsb0JBQW9CLENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG52YXIgcHJvcGVydGllc0l0ZW0gPSBbXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiY29sdW1uc1wiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgY29sdW1ucyB0aGF0IHNob3VsZCBiZSBkaXNwbGF5ZWQgYnkgZGVmYXVsdC4gVGhlIG90aGVyIGNvbHVtbnMgY2FuIGJlIGNob3NlbiB2aWEgdGhlIGdyaWQgc2V0dGluZ3MuIElmIG5vIGNvbHVtbnMgYXJlIHNldCwgR3JpZGRsZSB3aWxsIGRpc3BsYXkgYWxsIGNvbHVtbnMgYnkgZGVmYXVsdFwiLFxuICAgIFwidHlwZVwiOiBcImFycmF5XCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiW11cIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImNvbHVtbk1ldGFkYXRhXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkJlaGF2aW9yIGFuZCBwcm9wZXJ0aWVzIGZvciB0aGUgY29sdW1ucyB3aXRoaW4gdGhlIGdyaWRcIixcbiAgICBcInR5cGVcIjogXCJhcnJheVwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIltdXCIsXG4gICAgXCJjaGlsZHJlblwiOltcbiAgICAgIHtcbiAgICAgICAgXCJwcm9wZXJ0eVwiOiBcImNvbHVtbk5hbWVcIixcbiAgICAgICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBuYW1lIG9mIHRoZSBjb2x1bW4gdGhhdCB0aGlzIG1ldGFkYXRhIGFwcGxpZXMgdG8uXCIsXG4gICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgICAgICBcImRlZmF1bHRcIjogbnVsbFxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgXCJwcm9wZXJ0eVwiOiBcIm9yZGVyXCIsXG4gICAgICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgb3JkZXIgdGhhdCB0aGlzIGNvbHVtbiBzaG91bGQgYXBwZWFyIHJlZ2FyZGxlc3Mgb2YgaG93IHRoZSBjb2x1bW5zIG9iamVjdCBpcyBkZWZpbmVkLlwiLFxuICAgICAgICBcInR5cGVcIjogXCJpbnRcIixcbiAgICAgICAgXCJkZWZhdWx0XCI6IG51bGxcbiAgICAgIH0sXG4gICAgICB7XG4gICAgICAgIFwicHJvcGVydHlcIjogXCJsb2NrZWRcIixcbiAgICAgICAgXCJkZXNjcmlwdGlvblwiOiBcIkRldGVybWluZXMgd2hldGhlciBvciBub3QgdGhlIHVzZXIgY2FuIGRpc2FibGUgdGhpcyBjb2x1bW4gZnJvbSB0aGUgc2V0dGluZ3MuXCIsXG4gICAgICAgIFwidHlwZVwiOiBcImJvb2xcIixcbiAgICAgICAgXCJkZWZhdWx0XCI6IFwiZmFsc2VcIlxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgXCJwcm9wZXJ0eVwiOiBcImNzc0NsYXNzTmFtZVwiLFxuICAgICAgICBcImRlc2NyaXB0aW9uXCIgOiBcIlRoZSBjc3MgY2xhc3NOYW1lIHRoYXQgc2hvdWxkIGJlIGFwcGxpZWQgdG8gdGhpcyBjb2x1bW4uXCIsXG4gICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgICAgICBcImRlZmF1bHRcIjogbnVsbFxuICAgICAgfVxuICAgIF1cbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJyZXN1bHRzXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBkYXRhIHRoYXQgc2hvdWxkIGJlIGRpc3BsYXllZCB3aXRoaW4gdGhlIGdyaWQuIFRoaXMgZGF0YSBuZWVkcyB0byBiZSBhbiBhcnJheSBvZiBKU09OIG9iamVjdHMuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYXJyYXlcIixcbiAgICBcImRlZmF1bHRcIjogXCJbXVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwicmVzdWx0c1BlclBhZ2VcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIG51bWJlciBvZiByZXN1bHRzIHRoYXQgc2hvdWxkIGJlIGRpc3BsYXllZCBvbiBlYWNoIHBhZ2UuIElmICdnZXRFeHRlcm5hbFJlc3VsdHMnIGlzIGRlZmluZWQsIHRoaXMgdmFsdWUgd2lsbCBiZSB3aGF0J3MgdXNlZCBhcyB0aGUgJ3BhZ2VTaXplJyBhcmd1bWVudC5cIixcbiAgICBcInR5cGVcIjogXCJpbnRcIixcbiAgICBcImRlZmF1bHRcIjogXCI1XCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJpbml0aWFsU29ydFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgY29sdW1uIHRoYXQgdGhlIGdyaWQgc2hvdWxkIGJlIHNvcnRlZCBvbiBpbml0aWFsbHkuIEJ5IGRlZmF1bHQsIHRoaXMgaXMgYW4gZW1wdHkgc3RyaW5nIHNvIHRoZSBkYXRhIHdpbGwgYmUgc29ydGVkIGFzIGl0J3MgcmVjZWl2ZWRcIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImluaXRpYWxTb3J0QXNjZW5kaW5nXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBkaXJlY3Rpb24gdGhhdCB0aGUgZ3JpZCBzaG91bGQgYmUgc29ydGVkIG9uIGluaXRpYWxseS4gQnkgZGVmYXVsdCwgdGhpcyBpcyB0cnVlLlwiLFxuICAgIFwidHlwZVwiOiBcImJvb2xcIixcbiAgICBcImRlZmF1bHRcIjogXCJ0cnVlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJncmlkQ2xhc3NOYW1lXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBDU1MgY2xhc3MgbmFtZSB0byBhcHBseSB0byB0aGUgZ3JpZGRsZSBlbGVtZW50cy5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInRhYmxlQ2xhc3NOYW1lXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiIDogXCJUaGUgQ1NTIGNsYXNzIG5hbWUgdG8gYXBwbHkgdG8gdGhlIHRhYmxlIGVsZW1lbnRzLlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIlwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiY3VzdG9tRm9ybWF0Q2xhc3NOYW1lXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBDU1MgY2xhc3MgbmFtZSB0byBhcHBseSB0byB0aGUgY3VzdG9tIGZvcm1hdCB3cmFwcGVyLlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIlwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwic2V0dGluZ3NUZXh0XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSB0ZXh0IHZhbHVlIHRvIHVzZSBmb3IgdG9nZ2xpbmcgdGhlIHNldHRpbmdzIGFyZWEuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiU2V0dGluZ3NcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImZpbHRlclBsYWNlaG9sZGVyVGV4dFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgdGV4dCB0byBiZSBkaXNwbGF5ZWQgYXMgYSBwbGFjZWhvbGRlciBpbiB0aGUgZmlsdGVyIHRleHQgYm94LlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIkZpbHRlciBSZXN1bHRzXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJuZXh0VGV4dFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgdGV4dCBvbiB0aGUgYnV0dG9uIHRoYXQgbW92ZXMgdG8gdGhlIG5leHQgcGFnZSBvZiByZXN1bHRzLlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIk5leHRcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInByZXZpb3VzVGV4dFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgdGV4dCBvbiB0aGUgYnV0dG9uIHRoYXQgbW92ZXMgdG8gdGhlIHByZXZpb3VzIHBhZ2Ugb2YgcmVzdWx0cy5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJQcmV2aW91c1wiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwibWF4Um93c1RleHRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIHRleHQgdGhhdCBhcHBlYXJzIGluIHRoZSBTZXR0aW5ncyAvIENvbHVtbiBjaG9vc2VyIG5leHQgdG8gdGhlIHNlbGVjdCBib3ggZm9yIHBhZ2Ugc2l6ZVwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIlJvd3MgcGVyIHBhZ2VcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImVuYWJsZUN1c3RvbUZvcm1hdFRleHRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIHRleHQgdGhhdCBhcHBlYXJzIGluIHRoZSBTZXR0aW5ncyAvIENvbHVtbiBjaG9vc2VyIG5leHQgdG8gdGhlIGNoZWNrIGJveCB0byBlbmFibGUgY3VzdG9tIGZvcm1hdHRpbmdcIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJFbmFibGUgQ3VzdG9tIEZvcm1hdHRpbmdcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImNoaWxkcmVuQ29sdW1uTmFtZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgbmFtZSBvZiB0aGUgY29sdW1uIHRoYXQgY29udGFpbnMgYSBsaXN0IG9mIGNoaWxkIGl0ZW1zIGZvciBhIGdpdmVuIG9iamVjdC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJjaGlsZHJlblwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwibWV0YWRhdGFDb2x1bW5zXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkxpc3Qgb2YgY29sdW1ucyB0aGF0IHNob3VsZCBub3QgYmUgcmVuZGVyZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYXJyYXlcIixcbiAgICBcImRlZmF1bHRcIjogXCJbXVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwic2hvd0ZpbHRlclwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJXaGV0aGVyIG9yIG5vdCB0byBkaXNwbGF5IHRoZSBcXFwiRmlsdGVyXFxcIiBzZWN0aW9uIG9mIEdyaWRkbGUuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJ1c2VDdXN0b21GaWx0ZXJlclwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJEZXRlcm1pbmVzIGlmIGEgY3VzdG9tIGZpbHRlciBmdW5jdGlvbiBpcyB1c2VkXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJjdXN0b21GaWx0ZXJlclwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgZnVuY3Rpb24gY2FsbGVkIHdoZW4gdGhlIGZpbHRlciBpcyBjaGFuZ2VkLiBFeHBlY3RzIGl0ZW1zIGFuZCB0aGUgcXVlcnksIHJldHVybnMgZmlsdGVyZWQgaXRlbXNcIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInVzZUN1c3RvbUZpbHRlckNvbXBvbmVudFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJEZXRlcm1pbmVzIGlmIGEgY3VzdG9tIGZpbHRlciBjb21wb25lbnQgaXMgdXNlZFwiLFxuICAgIFwidHlwZVwiOiBcImJvb2xcIixcbiAgICBcImRlZmF1bHRcIjogXCJmYWxzZVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiY3VzdG9tRmlsdGVyQ29tcG9uZW50XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBjb21wb25lbnQgdGhhdCBpcyByZW5kZXJlZCBhYm92ZSB0aGUgdGFibGUgZm9yIGZpbHRlcmluZ1wiLFxuICAgIFwidHlwZVwiOiBcIlJlYWN0IENvbXBvbmVudFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInNob3dTZXR0aW5nc1wiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJXaGV0aGVyIG9yIG5vdCB0byBkaXNwbGF5IHRoZSBcXFwiU2V0dGluZ3NcXFwiIHNlY3Rpb24gb2YgR3JpZGRsZS5cIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiZmFsc2VcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInVzZUN1c3RvbVJvd0NvbXBvbmVudFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJEZXRlcm1pbmVzIGlmIGEgY3VzdG9tIHJvdyBmb3JtYXQgY29tcG9uZW50IGlzIHVzZWRcIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiZmFsc2VcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInVzZUN1c3RvbUdyaWRDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiRGV0ZXJtaW5lcyBpZiBhIGN1c3RvbSBncmlkIGZvcm1hdCBjb21wb25lbnQgaXMgdXNlZFwiLFxuICAgIFwidHlwZVwiOiBcImJvb2xcIixcbiAgICBcImRlZmF1bHRcIjogXCJmYWxzZVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwidXNlQ3VzdG9tUGFnZXJDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiRGV0ZXJtaW5lcyBpZiBhIGN1c3RvbSBwYWdlciBjb21wb25lbnQgaXMgdXNlZFwiLFxuICAgIFwidHlwZVwiOiBcImJvb2xcIixcbiAgICBcImRlZmF1bHRcIjogXCJmYWxzZVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwidXNlR3JpZGRsZVN0eWxlc1wiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJEZXRlcm1pbmVzIGlmIHRoZSBpbmxpbmUsIGRlZmF1bHQgc3R5bGVzIGZvciBHcmlkZGxlIGFyZSB1c2VkLiBXaGVuIGRpc2FibGVkIEdyaWRkbGUgd2lsbCByZW5kZXIgYXMgYSBzaW1wbGUgdGFibGUgKHVubGVzcyBpbmZpbml0ZSB0dXJuZWQgb24pXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcInRydWVcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImN1c3RvbVJvd0NvbXBvbmVudFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgY29tcG9uZW50IHRoYXQgc2hvdWxkIGJlIHJlbmRlcmVkIGZvciBlYWNoIGRhdGEgcm93LlwiLFxuICAgIFwidHlwZVwiOiBcIlJlYWN0IENvbXBvbmVudFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImN1c3RvbUdyaWRDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0aGF0IHNob3VsZCBiZSByZW5kZXJlZCBpbnN0ZWFkIG9mIHRoZSBvdmVyYWxsIGdyaWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiUmVhY3QgQ29tcG9uZW50XCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiY3VzdG9tUGFnZXJDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0aGF0IHNob3VsZCBiZSByZW5kZXJlZCBpbnN0ZWFkIG9mIHRoZSBkZWZhdWx0IHBhZ2luYXRpb24gY29tcG9uZW50XCIsXG4gICAgXCJ0eXBlXCI6IFwiUmVhY3QgQ29tcG9uZW50XCIsXG4gICAgXCJkZWZhdWx0XCI6IFwie31cIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImVuYWJsZVRvZ2dsZUN1c3RvbVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJEZXRlcm1pbmVzIHdoZXRoZXIgb3Igbm90IHRoZSBvcHRpb24gdG8gdG9nZ2xlIGJldHdlZW4gY3VzdG9tIGNvbXBvbmVudCBhbmQgZGVmYXVsdCBncmlkIGlzIGF2YWlsYWJsZSBpbiB0aGUgc2V0dGluZ3NcIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiZmFsc2VcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcIm5vRGF0YU1lc3NhZ2VcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIG1lc3NhZ2UgdG8gZGlzcGxheSB3aGVuIG5vIGRhdGEgaXMgYXZhaWxhYmxlLlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIlRoZXJlIGlzIG5vIGRhdGEgdG8gZGlzcGxheS5cIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImN1c3RvbU5vRGF0YUNvbXBvbmVudFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgY29tcG9uZW50IHRvIGRpc3BsYXkgd2hlbiB0aGVyZSBpcyBubyBkYXRhIGF2YWlsYWJsZS5cIixcbiAgICBcInR5cGVcIjogXCJSZWFjdCBDb21wb25lbnRcIixcbiAgICBcImRlZmF1bHRcIjogXCJudWxsXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJzaG93VGFibGVIZWFkaW5nXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkRldGVybWluZXMgaWYgdGhlIHRhYmxlIGhlYWRpbmcgc2hvdWxkIGJlIGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwidHJ1ZVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwic2hvd1BhZ2VyXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkRldGVybWluZXMgaWYgdGhlIHBhZ2luYXRpb24gY29udHJvbHMgc2hvdWxkIGJlIGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwidHJ1ZVwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwidXNlRml4ZWRIZWFkZXJcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiRGV0ZXJtaW5lcyBpZiB0aGUgdGFibGUgaGVhZGVyIHNob3VsZCBzdGF5IGluIHRoZSBzYW1lIHBsYWNlIHdoaWxlIHRhYmxlIGRhdGEgaXMgc2Nyb2xsZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJ1c2VFeHRlcm5hbFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJTdGF0ZXMgdGhhdCB0aGUgZGF0YSBzaG91bGQgYmUgbG9hZGVkIGV4dGVybmFsbHkgcmF0aGVyIHRoYW4gYWxsIGF0IG9uY2UuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJleHRlcm5hbFNldFBhZ2VcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIG1ldGhvZCB0aGF0IHdpbGwgYmUgY2FsbGVkIHdoZW4gdGhlIGdyaWQgY2hhbmdlcyBwYWdlcy5cIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImV4dGVybmFsQ2hhbmdlU29ydFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgbWV0aG9kIHRoYXQgd2lsbCBiZSBjYWxsZWQgd2hlbiB0aGUgY29sdW1uIHNvcnQgaXMgY2hhbmdlZC5cIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImV4dGVybmFsU2V0RmlsdGVyXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBtZXRob2QgdGhhdCB3aWxsIGJlIGNhbGxlZCB3aGVuIHRoZSBmaWx0ZXIgaXMgY2hhbmdlZC5cIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImV4dGVybmFsU2V0UGFnZVNpemVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIG1ldGhvZCB0aGF0IHdpbGwgYmUgY2FsbGVkIHdoZW4gdGhlIHBhZ2Ugc2l6ZSBpcyByZXF1ZXN0ZWQgdG8gY2hhbmdlLlwiLFxuICAgIFwidHlwZVwiOiBcImZ1bmN0aW9uXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiZXh0ZXJuYWxNYXhQYWdlXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBtYXggcGFnZSBmb3IgdGhlIGN1cnJlbnQgZGF0YSBzZXQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiaW50XCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiZXh0ZXJuYWxDdXJyZW50UGFnZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgcGFnZSBvZiBkYXRhIHRoYXQgaXMgY3VycmVudGx5IGJlaW5nIGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJpbnRcIixcbiAgICBcImRlZmF1bHRcIjogXCJudWxsXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJleHRlcm5hbFNvcnRDb2x1bW5cIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbHVtbiB0aGF0IGlzIGN1cnJlbnRseSBzb3J0ZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiZXh0ZXJuYWxTb3J0QXNjZW5kaW5nXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIldoZXRoZXIgdGhlIGRhdGEgaXMgc29ydGVkIGluIGFzY2VuZGluZyBvciBkZXNjZW5kaW5nIG9yZGVyXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImV4dGVybmFsTG9hZGluZ0NvbXBvbmVudFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgY29tcG9uZW50IHRoYXQgc2hvdWxkIGJlIGRpc3BsYXllZCB3aGVuIHRoZSBkYXRhIGlzIGxvYWRpbmcuXCIsXG4gICAgXCJ0eXBlXCI6IFwiUmVhY3QgQ29tcG9uZW50XCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwiZXh0ZXJuYWxJc0xvYWRpbmdcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiV2hldGhlciBvciBub3QgdGhlIGxvYWRpbmcgY29tcG9uZW50IHNob3VsZCBiZSBkaXNwbGF5ZWQgaW5zdGVhZCBvZiBncmlkIGRhdGEuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJlbmFibGVJbmZpbml0ZVNjcm9sbFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJTaG91bGQgaW5maW5pdGUgc2Nyb2xsaW5nIGJlIGVuYWJsZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcImZhbHNlXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJib2R5SGVpZ2h0XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBoZWlnaHQsIGluIHBpeGVscywgb2YgdGhlIGdyaWQgYm9keS5cIixcbiAgICBcInR5cGVcIjogXCJpbnRcIixcbiAgICBcImRlZmF1bHRcIjogXCJudWxsXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJwYWRkaW5nSGVpZ2h0XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBoZWlnaHQsIGluIHBpeGVscywgb2YgdGhlIHRoZSB0b3AvYm90dG9tIHBhZGRpbmcgdXNlZCBpbnNpZGUgb2YgYSByb3cuIE9ubHkgdXNlZCB3aGVuICd1c2VHcmlkZGxlU3R5bGVzJyBpcyB0cnVlLlwiLFxuICAgIFwidHlwZVwiOiBcImludFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIjVcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInJvd0hlaWdodFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgbWluaW11bSBoZWlnaHQsIGluIHBpeGVscywgb2YgYSByb3cuIE9ubHkgdXNlZCB3aGVuICd1c2VHcmlkZGxlU3R5bGVzJyBpcyB0cnVlLlwiLFxuICAgIFwidHlwZVwiOiBcImludFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIjI1XCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJpbmZpbml0ZVNjcm9sbExvYWRUcmVzaG9sZFwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgaGVpZ2h0LCBpbiBwaXhlbHMsIHVzZWQgdG8gdHJpZ2dlciBwYWdpbmcuIENoYW5naW5nIHRoaXMgcHJvcGVydHkgc2hvdWxkIGJlIGEgcHJldHR5IHJhcmUgb2NjdXJyZW5jZS5cIixcbiAgICBcInR5cGVcIjogXCJpbnRcIixcbiAgICBcImRlZmF1bHRcIjogXCI1MFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwidXNlRml4ZWRMYXlvdXRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiV2hldGhlciBvciBub3QgYSBmaXhlZCB0YWJsZSBsYXlvdXQgc2hvdWxkIGJlIHVzZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcInRydWVcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImlzU3ViR3JpZGRsZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJJcyB0aGUgY3VycmVudCBncmlkIGEgY2hpbGQgb2YgYW5vdGhlciBHcmlkZGxlIGNvbXBvbmVudC4gKFRoaXMgc2hvdWxkIG1haW5seSBiZSB1c2VkIGZvciBTdWJHcmlkcyBieSBHcmlkZGxlKS5cIixcbiAgICBcInR5cGVcIjogXCJib29sXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiZmFsc2VcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcImVuYWJsZVNvcnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiRGV0ZXJtaW5lcyBpZiBzb3J0aW5nIGlzIGVuYWJsZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiYm9vbFwiLFxuICAgIFwiZGVmYXVsdFwiOiBcInRydWVcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInNvcnRBc2NlbmRpbmdDbGFzc05hbWVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiV2hlbiBzb3J0ZWQgaW4gYXNjZW5kaW5nIG9yZGVyLCB0aGUgQ1NTIGNsYXNzIG5hbWUgdG8gYXBwbHkgdG8gdGhlIHRoIG9mIHRoZSBjdXJyZW50bHkgc29ydGVkIGNvbHVtbi5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJzb3J0LWFzY2VuZGluZ1wiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwic29ydERlc2NlbmRpbmdDbGFzc05hbWVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiV2hlbiBzb3J0ZWQgaW4gZGVzY2VuZGluZyBvcmRlciwgdGhlIENTUyBjbGFzcyBuYW1lIHRvIGFwcGx5IHRvIHRoZSB0aCBvZiB0aGUgY3VycmVudGx5IHNvcnRlZCBjb2x1bW5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJzb3J0LWRlc2NlbmRpbmdcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInBhcmVudFJvd0NvbGxhcHNlZENsYXNzTmFtZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgQ1NTIGNsYXNzIHRoYXQgaXMgYXBwbGllZCB0byBhIHJvdyB0aGF0IGNvbnRhaW5zIGNoaWxkIHJlY29yZHMgd2hlbiB0aGUgcmVjb3JkcyBhcmUgbm90IGJlaW5nIGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJwYXJlbnQtcm93XCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJwYXJlbnRSb3dFeHBhbmRlZENsYXNzTmFtZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgQ1NTIGNsYXNzIHRoYXQgaXMgYXBwbGllZCB0byBhIHJvdyB0aGF0IGNvbnRhaW5zIGNoaWxkIHJlY29yZHMgd2hlbiB0aGUgcmVjb3JkcyBhcmUgY3VycmVudGx5IGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJwYXJlbnQtcm93IGV4cGFuZGVkXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJzZXR0aW5nc1RvZ2dsZUNsYXNzTmFtZVwiLFxuICAgIFwiZGVzY3JpcHRpb25cIjogXCJUaGUgQ1NTIGNsYXNzIHRoYXQgaXMgYXBwbGllZCB0byB0aGUgc2V0dGluZ3MgdG9nZ2xlIGJ1dHRvbiB0aGF0IGlzIChieSBkZWZhdWx0KSBhdCB0aGUgdG9wIHJpZ2h0IG9mIEdyaWRkbGUuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwic2V0dGluZ3NcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcIm5leHRDbGFzc05hbWVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIENTUyBjbGFzcyBuYW1lIHRvIGFwcGx5IHRvIHRoZSBwYWdpbmF0aW9uIFxcXCJuZXh0XFxcIiBjb250cm9sLlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcImdyaWRkbGUtbmV4dFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwicHJldmlvdXNDbGFzc05hbWVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIENTUyBjbGFzcyBuYW1lIHRvIGFwcGx5IHRvIHRoZSBwYWdpbmF0aW9uIFxcXCJwcmV2aW91c1xcXCIgY29udHJvbC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCJncmlkZGxlLXByZXZpb3VzXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJzb3J0QXNjZW5kaW5nQ29tcG9uZW50XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBjb21wb25lbnQgdG8gZGlzcGxheSBpbiBhIHRoIGVsZW1lbnQgd2hlbiB0aGUgY29sdW1uIGlzIHNvcnRlZCBpbiBhc2NlbmRpbmcgb3JkZXIuIFRoaXMgY29tcG9uZW50IHdpbGwgYmUgdG8gdGhlIHJpZ2h0IG9mIHRoZSBjb2x1bW4gaGVhZGluZyB0ZXh0LlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIiDilrJcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcInNvcnREZXNjZW5kaW5nQ29tcG9uZW50XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIlRoZSBjb21wb25lbnQgdG8gZGlzcGxheSBpbiBhIHRoIGVsZW1lbnQgd2hlbiB0aGUgY29sdW1uIGlzIHNvcnRlZCBpbiBkZXNjZW5kaW5nIG9yZGVyLiBUaGlzIGNvbXBvbmVudCB3aWxsIGJlIHRvIHRoZSByaWdodCBvZiB0aGUgY29sdW1uIGhlYWRpbmcgdGV4dC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCIg4pa8XCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJwYXJlbnRSb3dDb2xsYXBzZWRDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0byB0aGUgbGVmdCBvZiB0aGUgZmlyc3QgY29sdW1uIG9mIGEgZ3JpZCByb3cgdGhhdCBjb250YWlucyBjaGlsZCByZWNvcmRzIHdoZW4gdGhvc2UgcmVjb3JkcyBhcmUgbm90IGN1cnJlbnRseSBkaXNwbGF5ZWQuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiIOKWtlwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwicGFyZW50Um93RXhwYW5kZWRDb21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0byB0aGUgbGVmdCBvZiB0aGUgZmlyc3QgY29sdW1uIG9mIGEgZ3JpZCByb3cgdGhhdCBjb250YWlucyBjaGlsZCByZWNvcmRzIHdoZW4gdGhvc2UgcmVjb3JkcyBhcmUgY3VycmVudGx5IGRpc3BsYXllZC5cIixcbiAgICBcInR5cGVcIjogXCJzdHJpbmdcIixcbiAgICBcImRlZmF1bHRcIjogXCIg4pa8XCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJzZXR0aW5nc0ljb25Db21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0byBkaXNwbGF5IHRvIHRoZSByaWdodCBvZiB0aGUgXFxcIlNldHRpbmdzXFxcIiB0ZXh0LlwiLFxuICAgIFwidHlwZVwiOiBcInN0cmluZ1wiLFxuICAgIFwiZGVmYXVsdFwiOiBcIlwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwibmV4dEljb25Db21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0aGF0IHNob3VsZCBiZSBkaXNwbGF5ZWQgdG8gdGhlIHJpZ2h0IG9mIHRoZSBcXFwiTmV4dFxcXCIgdGV4dCBpbiB0aGUgcGFnaW5hdGlvbiBjb21wb25lbnQuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJwcmV2aW91c0ljb25Db21wb25lbnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiVGhlIGNvbXBvbmVudCB0aGF0IHNob3VsZCBiZSBkaXNwbGF5ZWQgdG8gdGhlIGxlZnQgb2YgdGhlIFxcXCJQcmV2aW91c1xcXCIgdGV4dCBpbiB0aGUgcGFnaW5hdGlvbiBjb21wb25lbnQuXCIsXG4gICAgXCJ0eXBlXCI6IFwic3RyaW5nXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwiXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJvblJvd0NsaWNrXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkEgZnVuY3Rpb24gdGhhdCBzaG91bGQgYmUgY2FsbGVkIHdoZW4gYSByb3cgaGFzIGJlZW4gY2xpY2tlZC4gVGhlICdncmlkUm93JyBhbmQgZXZlbnQgd2lsbCBiZSBwYXNzZWQgaW4gYXMgYXJndW1lbnRzLlwiLFxuICAgIFwidHlwZVwiOiBcImZ1bmN0aW9uXCIsXG4gICAgXCJkZWZhdWx0XCI6IFwibnVsbFwiXG4gIH0sXG4gIHtcbiAgICBcInByb3BlcnR5XCI6IFwib25Sb3dNb3VzZUVudGVyXCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkEgZnVuY3Rpb24gdGhhdCBzaG91bGQgYmUgY2FsbGVkIHdoZW4gYSBtb3VzZSBlbnRlcmVkIGEgcm93LiBUaGUgJ2dyaWRSb3cnIGFuZCBldmVudCB3aWxsIGJlIHBhc3NlZCBpbiBhcyBhcmd1bWVudHMuXCIsXG4gICAgXCJ0eXBlXCI6IFwiZnVuY3Rpb25cIixcbiAgICBcImRlZmF1bHRcIjogXCJudWxsXCJcbiAgfSxcbiAge1xuICAgIFwicHJvcGVydHlcIjogXCJvblJvd01vdXNlTGVhdmVcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiQSBmdW5jdGlvbiB0aGF0IHNob3VsZCBiZSBjYWxsZWQgd2hlbiBhIG1vdXNlIGxlZnQgYSByb3cuIFRoZSAnZ3JpZFJvdycgYW5kIGV2ZW50IHdpbGwgYmUgcGFzc2VkIGluIGFzIGFyZ3VtZW50cy5cIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcIm9uUm93V2lsbE1vdW50XCIsXG4gICAgXCJkZXNjcmlwdGlvblwiOiBcIkEgZnVuY3Rpb24gdGhhdCBzaG91bGQgYmUgY2FsbGVkIGJlZm9yZSBhIHJvdyB3YXMgbW91bnRlZC4gVGhlICdncmlkUm93JyB3aWxsIGJlIHBhc3NlZCBpbiBhcyBhcmd1bWVudC5cIixcbiAgICBcInR5cGVcIjogXCJmdW5jdGlvblwiLFxuICAgIFwiZGVmYXVsdFwiOiBcIm51bGxcIlxuICB9LFxuICB7XG4gICAgXCJwcm9wZXJ0eVwiOiBcIm9uUm93V2lsbFVubW91bnRcIixcbiAgICBcImRlc2NyaXB0aW9uXCI6IFwiQSBmdW5jdGlvbiB0aGF0IHNob3VsZCBiZSBjYWxsZWQgYmVmb3JlIGEgcm93IHdhcyB1bm1vdW50ZWQuIFRoZSAnZ3JpZFJvdycgd2lsbCBiZSBwYXNzZWQgaW4gYXMgYXJndW1lbnQuXCIsXG4gICAgXCJ0eXBlXCI6IFwiZnVuY3Rpb25cIixcbiAgICBcImRlZmF1bHRcIjogXCJudWxsXCJcbiAgfVxuXTtcbnZhciBEZWZpbml0aW9uSXRlbSA9IFJlYWN0LmNyZWF0ZUNsYXNzKHtcbiAgZ2V0RGVmYXVsdFByb3BzOiBmdW5jdGlvbigpIHtcbiAgICByZXR1cm4geyBcImRhdGFcIjoge1xuICAgICAgXCJwcm9wZXJ0eVwiOiBcIlwiLFxuICAgICAgXCJkZXNjcmlwdGlvblwiOlwiXCIsXG4gICAgICBcInR5cGVcIjogXCJcIixcbiAgICAgIFwiZGVmYXVsdFwiOiBcIlwiXG4gICAgfX1cbiAgfSxcbiAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgIHJldHVybiAoXG4gICAgICA8ZGw+XG4gICAgICAgIDxkdD57dGhpcy5wcm9wcy5kYXRhLnByb3BlcnR5fTwvZHQ+XG4gICAgICAgIDxkZD48c3Ryb25nPnt0aGlzLnByb3BzLmRhdGEudHlwZX08L3N0cm9uZz4gLSB7dGhpcy5wcm9wcy5kYXRhLmRlc2NyaXB0aW9ufSA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LWxpZ2h0LWdyZXlcIj5EZWZhdWx0OiB7dGhpcy5wcm9wcy5kYXRhLmRlZmF1bHR9PC9zcGFuPlxuICAgICAgICA8L2RkPlxuICAgICAgPC9kbD5cbiAgICApXG4gIH1cbn0pXG5SZWFjdERPTS5yZW5kZXIoPEdyaWRkbGUgcmVzdWx0cz17cHJvcGVydGllc0l0ZW19IHVzZUN1c3RvbVJvd0NvbXBvbmVudD17dHJ1ZX0gY3VzdG9tUm93Q29tcG9uZW50PXtEZWZpbml0aW9uSXRlbX0gdXNlR3JpZGRsZVN0eWxlcz17ZmFsc2V9IHNob3dGaWx0ZXI9e3RydWV9IHRhYmxlQ2xhc3NOYW1lPVwidGFibGVcIiByZXN1bHRzUGVyUGFnZT17MTAwfSBjb2x1bW5NZXRhZGF0YT17cHJvcGVydHlHcmlkTWV0YX0gc2hvd1BhZ2VyPXtmYWxzZX0gZW5hYmxlVG9nZ2xlQ3VzdG9tPXt0cnVlfS8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZ3JpZGRsZS1wcm9wZXJ0aWVzJykpO1xuIl19</script></head>
+<body id="docs-page">
+  <header class="background-primary-dark border-bottom border-secondary">
+  	<div class="container">
+  		<div class="row">
+  			<div class="eight columns">
+          <a href="https://griddlegriddle.github.io/v0-docs/index.html"><img src="Properties_files/griddle.png" alt="Griddle"></a>
+  			</div>
+	  		<div class="four columns right">
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=watch&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=fork&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+            <br>
+          <a href="https://griddlegriddle.github.io/v0-docs/quickstart.html" class="button border-light text-light big">Documentation</a>
+	  		</div>
+  		</div>
+  	</div>
+  </header>
+	<div class="container page-content">
+		<div class="row">
+			<div class="two columns">
+				<nav class="side">
+					<ul>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/quickstart.html">Quickstart</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/styling.html">Styling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/subgrids.html">Subgrids</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/customization.html">Customization</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/externalData.html">External Data</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/infiniteScroll.html">Infinite Scrolling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/properties.html">Properties</a></li>
+						<li class="border-top border-lighter-grey"><a href="https://reactjsnews.com/isomorphic-javascript-with-react-node/">Isomorphic Rendering <small>(at ReactJS News)</small></a>
+					</li></ul>
+				</nav>
+			</div>
+			<div class="ten columns docs">
+				<h2 id="properties">Properties</h2>
+<p><style type="text/css">
+  dl{ margin-left: 0px;}
+</style></p>
+<div id="griddle-properties"><div data-reactroot="" class="griddle griddle-custom"><div class="top-section"><div class="griddle-filter"><div class="filter-container"><input name="filter" placeholder="Filter Results" class="form-control" type="text"></div></div><div class="griddle-settings-toggle"></div></div><!-- react-text: 7 --><!-- /react-text --><div class="griddle-container"><div><div class=""><dl><dt>columns</dt><dd><strong>array</strong><!-- react-text: 15 --> - <!-- /react-text --><!-- react-text: 16 -->The
+ columns that should be displayed by default. The other columns can be 
+chosen via the grid settings. If no columns are set, Griddle will 
+display all columns by default<!-- /react-text --><!-- react-text: 17 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 19 -->Default: <!-- /react-text --><!-- react-text: 20 -->[]<!-- /react-text --></span></dd></dl><dl><dt>columnMetadata</dt><dd><strong>array</strong><!-- react-text: 25 --> - <!-- /react-text --><!-- react-text: 26 -->Behavior and properties for the columns within the grid<!-- /react-text --><!-- react-text: 27 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 29 -->Default: <!-- /react-text --><!-- react-text: 30 -->[]<!-- /react-text --></span></dd></dl><dl><dt>results</dt><dd><strong>array</strong><!-- react-text: 35 --> - <!-- /react-text --><!-- react-text: 36 -->The data that should be displayed within the grid. This data needs to be an array of JSON objects.<!-- /react-text --><!-- react-text: 37 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 39 -->Default: <!-- /react-text --><!-- react-text: 40 -->[]<!-- /react-text --></span></dd></dl><dl><dt>resultsPerPage</dt><dd><strong>int</strong><!-- react-text: 45 --> - <!-- /react-text --><!-- react-text: 46 -->The
+ number of results that should be displayed on each page. If 
+'getExternalResults' is defined, this value will be what's used as the 
+'pageSize' argument.<!-- /react-text --><!-- react-text: 47 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 49 -->Default: <!-- /react-text --><!-- react-text: 50 -->5<!-- /react-text --></span></dd></dl><dl><dt>initialSort</dt><dd><strong>string</strong><!-- react-text: 55 --> - <!-- /react-text --><!-- react-text: 56 -->The
+ column that the grid should be sorted on initially. By default, this is
+ an empty string so the data will be sorted as it's received<!-- /react-text --><!-- react-text: 57 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 59 -->Default: <!-- /react-text --><!-- react-text: 60 --><!-- /react-text --></span></dd></dl><dl><dt>initialSortAscending</dt><dd><strong>bool</strong><!-- react-text: 65 --> - <!-- /react-text --><!-- react-text: 66 -->The direction that the grid should be sorted on initially. By default, this is true.<!-- /react-text --><!-- react-text: 67 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 69 -->Default: <!-- /react-text --><!-- react-text: 70 -->true<!-- /react-text --></span></dd></dl><dl><dt>gridClassName</dt><dd><strong>string</strong><!-- react-text: 75 --> - <!-- /react-text --><!-- react-text: 76 -->The CSS class name to apply to the griddle elements.<!-- /react-text --><!-- react-text: 77 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 79 -->Default: <!-- /react-text --><!-- react-text: 80 --><!-- /react-text --></span></dd></dl><dl><dt>tableClassName</dt><dd><strong>string</strong><!-- react-text: 85 --> - <!-- /react-text --><!-- react-text: 86 -->The CSS class name to apply to the table elements.<!-- /react-text --><!-- react-text: 87 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 89 -->Default: <!-- /react-text --><!-- react-text: 90 --><!-- /react-text --></span></dd></dl><dl><dt>customFormatClassName</dt><dd><strong>string</strong><!-- react-text: 95 --> - <!-- /react-text --><!-- react-text: 96 -->The CSS class name to apply to the custom format wrapper.<!-- /react-text --><!-- react-text: 97 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 99 -->Default: <!-- /react-text --><!-- react-text: 100 --><!-- /react-text --></span></dd></dl><dl><dt>settingsText</dt><dd><strong>string</strong><!-- react-text: 105 --> - <!-- /react-text --><!-- react-text: 106 -->The text value to use for toggling the settings area.<!-- /react-text --><!-- react-text: 107 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 109 -->Default: <!-- /react-text --><!-- react-text: 110 -->Settings<!-- /react-text --></span></dd></dl><dl><dt>filterPlaceholderText</dt><dd><strong>string</strong><!-- react-text: 115 --> - <!-- /react-text --><!-- react-text: 116 -->The text to be displayed as a placeholder in the filter text box.<!-- /react-text --><!-- react-text: 117 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 119 -->Default: <!-- /react-text --><!-- react-text: 120 -->Filter Results<!-- /react-text --></span></dd></dl><dl><dt>nextText</dt><dd><strong>string</strong><!-- react-text: 125 --> - <!-- /react-text --><!-- react-text: 126 -->The text on the button that moves to the next page of results.<!-- /react-text --><!-- react-text: 127 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 129 -->Default: <!-- /react-text --><!-- react-text: 130 -->Next<!-- /react-text --></span></dd></dl><dl><dt>previousText</dt><dd><strong>string</strong><!-- react-text: 135 --> - <!-- /react-text --><!-- react-text: 136 -->The text on the button that moves to the previous page of results.<!-- /react-text --><!-- react-text: 137 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 139 -->Default: <!-- /react-text --><!-- react-text: 140 -->Previous<!-- /react-text --></span></dd></dl><dl><dt>maxRowsText</dt><dd><strong>string</strong><!-- react-text: 145 --> - <!-- /react-text --><!-- react-text: 146 -->The text that appears in the Settings / Column chooser next to the select box for page size<!-- /react-text --><!-- react-text: 147 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 149 -->Default: <!-- /react-text --><!-- react-text: 150 -->Rows per page<!-- /react-text --></span></dd></dl><dl><dt>enableCustomFormatText</dt><dd><strong>string</strong><!-- react-text: 155 --> - <!-- /react-text --><!-- react-text: 156 -->The text that appears in the Settings / Column chooser next to the check box to enable custom formatting<!-- /react-text --><!-- react-text: 157 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 159 -->Default: <!-- /react-text --><!-- react-text: 160 -->Enable Custom Formatting<!-- /react-text --></span></dd></dl><dl><dt>childrenColumnName</dt><dd><strong>string</strong><!-- react-text: 165 --> - <!-- /react-text --><!-- react-text: 166 -->The name of the column that contains a list of child items for a given object.<!-- /react-text --><!-- react-text: 167 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 169 -->Default: <!-- /react-text --><!-- react-text: 170 -->children<!-- /react-text --></span></dd></dl><dl><dt>metadataColumns</dt><dd><strong>array</strong><!-- react-text: 175 --> - <!-- /react-text --><!-- react-text: 176 -->List of columns that should not be rendered.<!-- /react-text --><!-- react-text: 177 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 179 -->Default: <!-- /react-text --><!-- react-text: 180 -->[]<!-- /react-text --></span></dd></dl><dl><dt>showFilter</dt><dd><strong>bool</strong><!-- react-text: 185 --> - <!-- /react-text --><!-- react-text: 186 -->Whether or not to display the "Filter" section of Griddle.<!-- /react-text --><!-- react-text: 187 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 189 -->Default: <!-- /react-text --><!-- react-text: 190 -->false<!-- /react-text --></span></dd></dl><dl><dt>useCustomFilterer</dt><dd><strong>bool</strong><!-- react-text: 195 --> - <!-- /react-text --><!-- react-text: 196 -->Determines if a custom filter function is used<!-- /react-text --><!-- react-text: 197 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 199 -->Default: <!-- /react-text --><!-- react-text: 200 -->false<!-- /react-text --></span></dd></dl><dl><dt>customFilterer</dt><dd><strong>function</strong><!-- react-text: 205 --> - <!-- /react-text --><!-- react-text: 206 -->The function called when the filter is changed. Expects items and the query, returns filtered items<!-- /react-text --><!-- react-text: 207 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 209 -->Default: <!-- /react-text --><!-- react-text: 210 -->null<!-- /react-text --></span></dd></dl><dl><dt>useCustomFilterComponent</dt><dd><strong>bool</strong><!-- react-text: 215 --> - <!-- /react-text --><!-- react-text: 216 -->Determines if a custom filter component is used<!-- /react-text --><!-- react-text: 217 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 219 -->Default: <!-- /react-text --><!-- react-text: 220 -->false<!-- /react-text --></span></dd></dl><dl><dt>customFilterComponent</dt><dd><strong>React Component</strong><!-- react-text: 225 --> - <!-- /react-text --><!-- react-text: 226 -->The component that is rendered above the table for filtering<!-- /react-text --><!-- react-text: 227 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 229 -->Default: <!-- /react-text --><!-- react-text: 230 -->null<!-- /react-text --></span></dd></dl><dl><dt>showSettings</dt><dd><strong>bool</strong><!-- react-text: 235 --> - <!-- /react-text --><!-- react-text: 236 -->Whether or not to display the "Settings" section of Griddle.<!-- /react-text --><!-- react-text: 237 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 239 -->Default: <!-- /react-text --><!-- react-text: 240 -->false<!-- /react-text --></span></dd></dl><dl><dt>useCustomRowComponent</dt><dd><strong>bool</strong><!-- react-text: 245 --> - <!-- /react-text --><!-- react-text: 246 -->Determines if a custom row format component is used<!-- /react-text --><!-- react-text: 247 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 249 -->Default: <!-- /react-text --><!-- react-text: 250 -->false<!-- /react-text --></span></dd></dl><dl><dt>useCustomGridComponent</dt><dd><strong>bool</strong><!-- react-text: 255 --> - <!-- /react-text --><!-- react-text: 256 -->Determines if a custom grid format component is used<!-- /react-text --><!-- react-text: 257 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 259 -->Default: <!-- /react-text --><!-- react-text: 260 -->false<!-- /react-text --></span></dd></dl><dl><dt>useCustomPagerComponent</dt><dd><strong>bool</strong><!-- react-text: 265 --> - <!-- /react-text --><!-- react-text: 266 -->Determines if a custom pager component is used<!-- /react-text --><!-- react-text: 267 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 269 -->Default: <!-- /react-text --><!-- react-text: 270 -->false<!-- /react-text --></span></dd></dl><dl><dt>useGriddleStyles</dt><dd><strong>bool</strong><!-- react-text: 275 --> - <!-- /react-text --><!-- react-text: 276 -->Determines
+ if the inline, default styles for Griddle are used. When disabled 
+Griddle will render as a simple table (unless infinite turned on)<!-- /react-text --><!-- react-text: 277 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 279 -->Default: <!-- /react-text --><!-- react-text: 280 -->true<!-- /react-text --></span></dd></dl><dl><dt>customRowComponent</dt><dd><strong>React Component</strong><!-- react-text: 285 --> - <!-- /react-text --><!-- react-text: 286 -->The component that should be rendered for each data row.<!-- /react-text --><!-- react-text: 287 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 289 -->Default: <!-- /react-text --><!-- react-text: 290 -->null<!-- /react-text --></span></dd></dl><dl><dt>customGridComponent</dt><dd><strong>React Component</strong><!-- react-text: 295 --> - <!-- /react-text --><!-- react-text: 296 -->The component that should be rendered instead of the overall grid.<!-- /react-text --><!-- react-text: 297 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 299 -->Default: <!-- /react-text --><!-- react-text: 300 -->null<!-- /react-text --></span></dd></dl><dl><dt>customPagerComponent</dt><dd><strong>React Component</strong><!-- react-text: 305 --> - <!-- /react-text --><!-- react-text: 306 -->The component that should be rendered instead of the default pagination component<!-- /react-text --><!-- react-text: 307 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 309 -->Default: <!-- /react-text --><!-- react-text: 310 -->{}<!-- /react-text --></span></dd></dl><dl><dt>enableToggleCustom</dt><dd><strong>bool</strong><!-- react-text: 315 --> - <!-- /react-text --><!-- react-text: 316 -->Determines whether or not the option to toggle between custom component and default grid is available in the settings<!-- /react-text --><!-- react-text: 317 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 319 -->Default: <!-- /react-text --><!-- react-text: 320 -->false<!-- /react-text --></span></dd></dl><dl><dt>noDataMessage</dt><dd><strong>string</strong><!-- react-text: 325 --> - <!-- /react-text --><!-- react-text: 326 -->The message to display when no data is available.<!-- /react-text --><!-- react-text: 327 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 329 -->Default: <!-- /react-text --><!-- react-text: 330 -->There is no data to display.<!-- /react-text --></span></dd></dl><dl><dt>customNoDataComponent</dt><dd><strong>React Component</strong><!-- react-text: 335 --> - <!-- /react-text --><!-- react-text: 336 -->The component to display when there is no data available.<!-- /react-text --><!-- react-text: 337 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 339 -->Default: <!-- /react-text --><!-- react-text: 340 -->null<!-- /react-text --></span></dd></dl><dl><dt>showTableHeading</dt><dd><strong>bool</strong><!-- react-text: 345 --> - <!-- /react-text --><!-- react-text: 346 -->Determines if the table heading should be displayed.<!-- /react-text --><!-- react-text: 347 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 349 -->Default: <!-- /react-text --><!-- react-text: 350 -->true<!-- /react-text --></span></dd></dl><dl><dt>showPager</dt><dd><strong>bool</strong><!-- react-text: 355 --> - <!-- /react-text --><!-- react-text: 356 -->Determines if the pagination controls should be displayed.<!-- /react-text --><!-- react-text: 357 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 359 -->Default: <!-- /react-text --><!-- react-text: 360 -->true<!-- /react-text --></span></dd></dl><dl><dt>useFixedHeader</dt><dd><strong>bool</strong><!-- react-text: 365 --> - <!-- /react-text --><!-- react-text: 366 -->Determines if the table header should stay in the same place while table data is scrolled.<!-- /react-text --><!-- react-text: 367 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 369 -->Default: <!-- /react-text --><!-- react-text: 370 -->false<!-- /react-text --></span></dd></dl><dl><dt>useExternal</dt><dd><strong>bool</strong><!-- react-text: 375 --> - <!-- /react-text --><!-- react-text: 376 -->States that the data should be loaded externally rather than all at once.<!-- /react-text --><!-- react-text: 377 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 379 -->Default: <!-- /react-text --><!-- react-text: 380 -->false<!-- /react-text --></span></dd></dl><dl><dt>externalSetPage</dt><dd><strong>function</strong><!-- react-text: 385 --> - <!-- /react-text --><!-- react-text: 386 -->The method that will be called when the grid changes pages.<!-- /react-text --><!-- react-text: 387 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 389 -->Default: <!-- /react-text --><!-- react-text: 390 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalChangeSort</dt><dd><strong>function</strong><!-- react-text: 395 --> - <!-- /react-text --><!-- react-text: 396 -->The method that will be called when the column sort is changed.<!-- /react-text --><!-- react-text: 397 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 399 -->Default: <!-- /react-text --><!-- react-text: 400 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalSetFilter</dt><dd><strong>function</strong><!-- react-text: 405 --> - <!-- /react-text --><!-- react-text: 406 -->The method that will be called when the filter is changed.<!-- /react-text --><!-- react-text: 407 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 409 -->Default: <!-- /react-text --><!-- react-text: 410 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalSetPageSize</dt><dd><strong>function</strong><!-- react-text: 415 --> - <!-- /react-text --><!-- react-text: 416 -->The method that will be called when the page size is requested to change.<!-- /react-text --><!-- react-text: 417 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 419 -->Default: <!-- /react-text --><!-- react-text: 420 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalMaxPage</dt><dd><strong>int</strong><!-- react-text: 425 --> - <!-- /react-text --><!-- react-text: 426 -->The max page for the current data set.<!-- /react-text --><!-- react-text: 427 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 429 -->Default: <!-- /react-text --><!-- react-text: 430 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalCurrentPage</dt><dd><strong>int</strong><!-- react-text: 435 --> - <!-- /react-text --><!-- react-text: 436 -->The page of data that is currently being displayed.<!-- /react-text --><!-- react-text: 437 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 439 -->Default: <!-- /react-text --><!-- react-text: 440 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalSortColumn</dt><dd><strong>string</strong><!-- react-text: 445 --> - <!-- /react-text --><!-- react-text: 446 -->The column that is currently sorted.<!-- /react-text --><!-- react-text: 447 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 449 -->Default: <!-- /react-text --><!-- react-text: 450 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalSortAscending</dt><dd><strong>bool</strong><!-- react-text: 455 --> - <!-- /react-text --><!-- react-text: 456 -->Whether the data is sorted in ascending or descending order<!-- /react-text --><!-- react-text: 457 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 459 -->Default: <!-- /react-text --><!-- react-text: 460 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalLoadingComponent</dt><dd><strong>React Component</strong><!-- react-text: 465 --> - <!-- /react-text --><!-- react-text: 466 -->The component that should be displayed when the data is loading.<!-- /react-text --><!-- react-text: 467 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 469 -->Default: <!-- /react-text --><!-- react-text: 470 -->null<!-- /react-text --></span></dd></dl><dl><dt>externalIsLoading</dt><dd><strong>bool</strong><!-- react-text: 475 --> - <!-- /react-text --><!-- react-text: 476 -->Whether or not the loading component should be displayed instead of grid data.<!-- /react-text --><!-- react-text: 477 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 479 -->Default: <!-- /react-text --><!-- react-text: 480 -->false<!-- /react-text --></span></dd></dl><dl><dt>enableInfiniteScroll</dt><dd><strong>bool</strong><!-- react-text: 485 --> - <!-- /react-text --><!-- react-text: 486 -->Should infinite scrolling be enabled.<!-- /react-text --><!-- react-text: 487 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 489 -->Default: <!-- /react-text --><!-- react-text: 490 -->false<!-- /react-text --></span></dd></dl><dl><dt>bodyHeight</dt><dd><strong>int</strong><!-- react-text: 495 --> - <!-- /react-text --><!-- react-text: 496 -->The height, in pixels, of the grid body.<!-- /react-text --><!-- react-text: 497 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 499 -->Default: <!-- /react-text --><!-- react-text: 500 -->null<!-- /react-text --></span></dd></dl><dl><dt>paddingHeight</dt><dd><strong>int</strong><!-- react-text: 505 --> - <!-- /react-text --><!-- react-text: 506 -->The height, in pixels, of the the top/bottom padding used inside of a row. Only used when 'useGriddleStyles' is true.<!-- /react-text --><!-- react-text: 507 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 509 -->Default: <!-- /react-text --><!-- react-text: 510 -->5<!-- /react-text --></span></dd></dl><dl><dt>rowHeight</dt><dd><strong>int</strong><!-- react-text: 515 --> - <!-- /react-text --><!-- react-text: 516 -->The minimum height, in pixels, of a row. Only used when 'useGriddleStyles' is true.<!-- /react-text --><!-- react-text: 517 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 519 -->Default: <!-- /react-text --><!-- react-text: 520 -->25<!-- /react-text --></span></dd></dl><dl><dt>infiniteScrollLoadTreshold</dt><dd><strong>int</strong><!-- react-text: 525 --> - <!-- /react-text --><!-- react-text: 526 -->The height, in pixels, used to trigger paging. Changing this property should be a pretty rare occurrence.<!-- /react-text --><!-- react-text: 527 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 529 -->Default: <!-- /react-text --><!-- react-text: 530 -->50<!-- /react-text --></span></dd></dl><dl><dt>useFixedLayout</dt><dd><strong>bool</strong><!-- react-text: 535 --> - <!-- /react-text --><!-- react-text: 536 -->Whether or not a fixed table layout should be used.<!-- /react-text --><!-- react-text: 537 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 539 -->Default: <!-- /react-text --><!-- react-text: 540 -->true<!-- /react-text --></span></dd></dl><dl><dt>isSubGriddle</dt><dd><strong>bool</strong><!-- react-text: 545 --> - <!-- /react-text --><!-- react-text: 546 -->Is the current grid a child of another Griddle component. (This should mainly be used for SubGrids by Griddle).<!-- /react-text --><!-- react-text: 547 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 549 -->Default: <!-- /react-text --><!-- react-text: 550 -->false<!-- /react-text --></span></dd></dl><dl><dt>enableSort</dt><dd><strong>bool</strong><!-- react-text: 555 --> - <!-- /react-text --><!-- react-text: 556 -->Determines if sorting is enabled.<!-- /react-text --><!-- react-text: 557 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 559 -->Default: <!-- /react-text --><!-- react-text: 560 -->true<!-- /react-text --></span></dd></dl><dl><dt>sortAscendingClassName</dt><dd><strong>string</strong><!-- react-text: 565 --> - <!-- /react-text --><!-- react-text: 566 -->When sorted in ascending order, the CSS class name to apply to the th of the currently sorted column.<!-- /react-text --><!-- react-text: 567 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 569 -->Default: <!-- /react-text --><!-- react-text: 570 -->sort-ascending<!-- /react-text --></span></dd></dl><dl><dt>sortDescendingClassName</dt><dd><strong>string</strong><!-- react-text: 575 --> - <!-- /react-text --><!-- react-text: 576 -->When sorted in descending order, the CSS class name to apply to the th of the currently sorted column<!-- /react-text --><!-- react-text: 577 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 579 -->Default: <!-- /react-text --><!-- react-text: 580 -->sort-descending<!-- /react-text --></span></dd></dl><dl><dt>parentRowCollapsedClassName</dt><dd><strong>string</strong><!-- react-text: 585 --> - <!-- /react-text --><!-- react-text: 586 -->The CSS class that is applied to a row that contains child records when the records are not being displayed.<!-- /react-text --><!-- react-text: 587 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 589 -->Default: <!-- /react-text --><!-- react-text: 590 -->parent-row<!-- /react-text --></span></dd></dl><dl><dt>parentRowExpandedClassName</dt><dd><strong>string</strong><!-- react-text: 595 --> - <!-- /react-text --><!-- react-text: 596 -->The CSS class that is applied to a row that contains child records when the records are currently displayed.<!-- /react-text --><!-- react-text: 597 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 599 -->Default: <!-- /react-text --><!-- react-text: 600 -->parent-row expanded<!-- /react-text --></span></dd></dl><dl><dt>settingsToggleClassName</dt><dd><strong>string</strong><!-- react-text: 605 --> - <!-- /react-text --><!-- react-text: 606 -->The CSS class that is applied to the settings toggle button that is (by default) at the top right of Griddle.<!-- /react-text --><!-- react-text: 607 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 609 -->Default: <!-- /react-text --><!-- react-text: 610 -->settings<!-- /react-text --></span></dd></dl><dl><dt>nextClassName</dt><dd><strong>string</strong><!-- react-text: 615 --> - <!-- /react-text --><!-- react-text: 616 -->The CSS class name to apply to the pagination "next" control.<!-- /react-text --><!-- react-text: 617 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 619 -->Default: <!-- /react-text --><!-- react-text: 620 -->griddle-next<!-- /react-text --></span></dd></dl><dl><dt>previousClassName</dt><dd><strong>string</strong><!-- react-text: 625 --> - <!-- /react-text --><!-- react-text: 626 -->The CSS class name to apply to the pagination "previous" control.<!-- /react-text --><!-- react-text: 627 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 629 -->Default: <!-- /react-text --><!-- react-text: 630 -->griddle-previous<!-- /react-text --></span></dd></dl><dl><dt>sortAscendingComponent</dt><dd><strong>string</strong><!-- react-text: 635 --> - <!-- /react-text --><!-- react-text: 636 -->The
+ component to display in a th element when the column is sorted in 
+ascending order. This component will be to the right of the column 
+heading text.<!-- /react-text --><!-- react-text: 637 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 639 -->Default: <!-- /react-text --><!-- react-text: 640 --> ▲<!-- /react-text --></span></dd></dl><dl><dt>sortDescendingComponent</dt><dd><strong>string</strong><!-- react-text: 645 --> - <!-- /react-text --><!-- react-text: 646 -->The
+ component to display in a th element when the column is sorted in 
+descending order. This component will be to the right of the column 
+heading text.<!-- /react-text --><!-- react-text: 647 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 649 -->Default: <!-- /react-text --><!-- react-text: 650 --> ▼<!-- /react-text --></span></dd></dl><dl><dt>parentRowCollapsedComponent</dt><dd><strong>string</strong><!-- react-text: 655 --> - <!-- /react-text --><!-- react-text: 656 -->The
+ component to the left of the first column of a grid row that contains 
+child records when those records are not currently displayed.<!-- /react-text --><!-- react-text: 657 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 659 -->Default: <!-- /react-text --><!-- react-text: 660 --> ▶<!-- /react-text --></span></dd></dl><dl><dt>parentRowExpandedComponent</dt><dd><strong>string</strong><!-- react-text: 665 --> - <!-- /react-text --><!-- react-text: 666 -->The
+ component to the left of the first column of a grid row that contains 
+child records when those records are currently displayed.<!-- /react-text --><!-- react-text: 667 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 669 -->Default: <!-- /react-text --><!-- react-text: 670 --> ▼<!-- /react-text --></span></dd></dl><dl><dt>settingsIconComponent</dt><dd><strong>string</strong><!-- react-text: 675 --> - <!-- /react-text --><!-- react-text: 676 -->The component to display to the right of the "Settings" text.<!-- /react-text --><!-- react-text: 677 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 679 -->Default: <!-- /react-text --><!-- react-text: 680 --><!-- /react-text --></span></dd></dl><dl><dt>nextIconComponent</dt><dd><strong>string</strong><!-- react-text: 685 --> - <!-- /react-text --><!-- react-text: 686 -->The component that should be displayed to the right of the "Next" text in the pagination component.<!-- /react-text --><!-- react-text: 687 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 689 -->Default: <!-- /react-text --><!-- react-text: 690 --><!-- /react-text --></span></dd></dl><dl><dt>previousIconComponent</dt><dd><strong>string</strong><!-- react-text: 695 --> - <!-- /react-text --><!-- react-text: 696 -->The component that should be displayed to the left of the "Previous" text in the pagination component.<!-- /react-text --><!-- react-text: 697 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 699 -->Default: <!-- /react-text --><!-- react-text: 700 --><!-- /react-text --></span></dd></dl><dl><dt>onRowClick</dt><dd><strong>function</strong><!-- react-text: 705 --> - <!-- /react-text --><!-- react-text: 706 -->A function that should be called when a row has been clicked. The 'gridRow' and event will be passed in as arguments.<!-- /react-text --><!-- react-text: 707 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 709 -->Default: <!-- /react-text --><!-- react-text: 710 -->null<!-- /react-text --></span></dd></dl><dl><dt>onRowMouseEnter</dt><dd><strong>function</strong><!-- react-text: 715 --> - <!-- /react-text --><!-- react-text: 716 -->A function that should be called when a mouse entered a row. The 'gridRow' and event will be passed in as arguments.<!-- /react-text --><!-- react-text: 717 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 719 -->Default: <!-- /react-text --><!-- react-text: 720 -->null<!-- /react-text --></span></dd></dl><dl><dt>onRowMouseLeave</dt><dd><strong>function</strong><!-- react-text: 725 --> - <!-- /react-text --><!-- react-text: 726 -->A function that should be called when a mouse left a row. The 'gridRow' and event will be passed in as arguments.<!-- /react-text --><!-- react-text: 727 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 729 -->Default: <!-- /react-text --><!-- react-text: 730 -->null<!-- /react-text --></span></dd></dl><dl><dt>onRowWillMount</dt><dd><strong>function</strong><!-- react-text: 735 --> - <!-- /react-text --><!-- react-text: 736 -->A function that should be called before a row was mounted. The 'gridRow' will be passed in as argument.<!-- /react-text --><!-- react-text: 737 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 739 -->Default: <!-- /react-text --><!-- react-text: 740 -->null<!-- /react-text --></span></dd></dl><dl><dt>onRowWillUnmount</dt><dd><strong>function</strong><!-- react-text: 745 --> - <!-- /react-text --><!-- react-text: 746 -->A function that should be called before a row was unmounted. The 'gridRow' will be passed in as argument.<!-- /react-text --><!-- react-text: 747 --> <!-- /react-text --><span class="text-light-grey"><!-- react-text: 749 -->Default: <!-- /react-text --><!-- react-text: 750 -->null<!-- /react-text --></span></dd></dl></div></div></div></div></div>
+
+<script type="text/jsx">
+var propertiesItem = [
+  {
+    "property": "columns",
+    "description": "The columns that should be displayed by default. The other columns can be chosen via the grid settings. If no columns are set, Griddle will display all columns by default",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "columnMetadata",
+    "description": "Behavior and properties for the columns within the grid",
+    "type": "array",
+    "default": "[]",
+    "children":[
+      {
+        "property": "columnName",
+        "description": "The name of the column that this metadata applies to.",
+        "type": "string",
+        "default": null
+      },
+      {
+        "property": "order",
+        "description": "The order that this column should appear regardless of how the columns object is defined.",
+        "type": "int",
+        "default": null
+      },
+      {
+        "property": "locked",
+        "description": "Determines whether or not the user can disable this column from the settings.",
+        "type": "bool",
+        "default": "false"
+      },
+      {
+        "property": "cssClassName",
+        "description" : "The css className that should be applied to this column.",
+        "type": "string",
+        "default": null
+      }
+    ]
+  },
+  {
+    "property": "results",
+    "description": "The data that should be displayed within the grid. This data needs to be an array of JSON objects.",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "resultsPerPage",
+    "description": "The number of results that should be displayed on each page. If 'getExternalResults' is defined, this value will be what's used as the 'pageSize' argument.",
+    "type": "int",
+    "default": "5"
+  },
+  {
+    "property": "initialSort",
+    "description": "The column that the grid should be sorted on initially. By default, this is an empty string so the data will be sorted as it's received",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "initialSortAscending",
+    "description": "The direction that the grid should be sorted on initially. By default, this is true.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "gridClassName",
+    "description": "The CSS class name to apply to the griddle elements.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "tableClassName",
+    "description" : "The CSS class name to apply to the table elements.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "customFormatClassName",
+    "description": "The CSS class name to apply to the custom format wrapper.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "settingsText",
+    "description": "The text value to use for toggling the settings area.",
+    "type": "string",
+    "default": "Settings"
+  },
+  {
+    "property": "filterPlaceholderText",
+    "description": "The text to be displayed as a placeholder in the filter text box.",
+    "type": "string",
+    "default": "Filter Results"
+  },
+  {
+    "property": "nextText",
+    "description": "The text on the button that moves to the next page of results.",
+    "type": "string",
+    "default": "Next"
+  },
+  {
+    "property": "previousText",
+    "description": "The text on the button that moves to the previous page of results.",
+    "type": "string",
+    "default": "Previous"
+  },
+  {
+    "property": "maxRowsText",
+    "description": "The text that appears in the Settings / Column chooser next to the select box for page size",
+    "type": "string",
+    "default": "Rows per page"
+  },
+  {
+    "property": "enableCustomFormatText",
+    "description": "The text that appears in the Settings / Column chooser next to the check box to enable custom formatting",
+    "type": "string",
+    "default": "Enable Custom Formatting"
+  },
+  {
+    "property": "childrenColumnName",
+    "description": "The name of the column that contains a list of child items for a given object.",
+    "type": "string",
+    "default": "children"
+  },
+  {
+    "property": "metadataColumns",
+    "description": "List of columns that should not be rendered.",
+    "type": "array",
+    "default": "[]"
+  },
+  {
+    "property": "showFilter",
+    "description": "Whether or not to display the \"Filter\" section of Griddle.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomFilterer",
+    "description": "Determines if a custom filter function is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "customFilterer",
+    "description": "The function called when the filter is changed. Expects items and the query, returns filtered items",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "useCustomFilterComponent",
+    "description": "Determines if a custom filter component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "customFilterComponent",
+    "description": "The component that is rendered above the table for filtering",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "showSettings",
+    "description": "Whether or not to display the \"Settings\" section of Griddle.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomRowComponent",
+    "description": "Determines if a custom row format component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomGridComponent",
+    "description": "Determines if a custom grid format component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useCustomPagerComponent",
+    "description": "Determines if a custom pager component is used",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useGriddleStyles",
+    "description": "Determines if the inline, default styles for Griddle are used. When disabled Griddle will render as a simple table (unless infinite turned on)",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "customRowComponent",
+    "description": "The component that should be rendered for each data row.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "customGridComponent",
+    "description": "The component that should be rendered instead of the overall grid.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "customPagerComponent",
+    "description": "The component that should be rendered instead of the default pagination component",
+    "type": "React Component",
+    "default": "{}"
+  },
+  {
+    "property": "enableToggleCustom",
+    "description": "Determines whether or not the option to toggle between custom component and default grid is available in the settings",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "noDataMessage",
+    "description": "The message to display when no data is available.",
+    "type": "string",
+    "default": "There is no data to display."
+  },
+  {
+    "property": "customNoDataComponent",
+    "description": "The component to display when there is no data available.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "showTableHeading",
+    "description": "Determines if the table heading should be displayed.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "showPager",
+    "description": "Determines if the pagination controls should be displayed.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "useFixedHeader",
+    "description": "Determines if the table header should stay in the same place while table data is scrolled.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "useExternal",
+    "description": "States that the data should be loaded externally rather than all at once.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "externalSetPage",
+    "description": "The method that will be called when the grid changes pages.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalChangeSort",
+    "description": "The method that will be called when the column sort is changed.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalSetFilter",
+    "description": "The method that will be called when the filter is changed.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalSetPageSize",
+    "description": "The method that will be called when the page size is requested to change.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "externalMaxPage",
+    "description": "The max page for the current data set.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "externalCurrentPage",
+    "description": "The page of data that is currently being displayed.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "externalSortColumn",
+    "description": "The column that is currently sorted.",
+    "type": "string",
+    "default": "null"
+  },
+  {
+    "property": "externalSortAscending",
+    "description": "Whether the data is sorted in ascending or descending order",
+    "type": "bool",
+    "default": "null"
+  },
+  {
+    "property": "externalLoadingComponent",
+    "description": "The component that should be displayed when the data is loading.",
+    "type": "React Component",
+    "default": "null"
+  },
+  {
+    "property": "externalIsLoading",
+    "description": "Whether or not the loading component should be displayed instead of grid data.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "enableInfiniteScroll",
+    "description": "Should infinite scrolling be enabled.",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "bodyHeight",
+    "description": "The height, in pixels, of the grid body.",
+    "type": "int",
+    "default": "null"
+  },
+  {
+    "property": "paddingHeight",
+    "description": "The height, in pixels, of the the top/bottom padding used inside of a row. Only used when 'useGriddleStyles' is true.",
+    "type": "int",
+    "default": "5"
+  },
+  {
+    "property": "rowHeight",
+    "description": "The minimum height, in pixels, of a row. Only used when 'useGriddleStyles' is true.",
+    "type": "int",
+    "default": "25"
+  },
+  {
+    "property": "infiniteScrollLoadTreshold",
+    "description": "The height, in pixels, used to trigger paging. Changing this property should be a pretty rare occurrence.",
+    "type": "int",
+    "default": "50"
+  },
+  {
+    "property": "useFixedLayout",
+    "description": "Whether or not a fixed table layout should be used.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "isSubGriddle",
+    "description": "Is the current grid a child of another Griddle component. (This should mainly be used for SubGrids by Griddle).",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "property": "enableSort",
+    "description": "Determines if sorting is enabled.",
+    "type": "bool",
+    "default": "true"
+  },
+  {
+    "property": "sortAscendingClassName",
+    "description": "When sorted in ascending order, the CSS class name to apply to the th of the currently sorted column.",
+    "type": "string",
+    "default": "sort-ascending"
+  },
+  {
+    "property": "sortDescendingClassName",
+    "description": "When sorted in descending order, the CSS class name to apply to the th of the currently sorted column",
+    "type": "string",
+    "default": "sort-descending"
+  },
+  {
+    "property": "parentRowCollapsedClassName",
+    "description": "The CSS class that is applied to a row that contains child records when the records are not being displayed.",
+    "type": "string",
+    "default": "parent-row"
+  },
+  {
+    "property": "parentRowExpandedClassName",
+    "description": "The CSS class that is applied to a row that contains child records when the records are currently displayed.",
+    "type": "string",
+    "default": "parent-row expanded"
+  },
+  {
+    "property": "settingsToggleClassName",
+    "description": "The CSS class that is applied to the settings toggle button that is (by default) at the top right of Griddle.",
+    "type": "string",
+    "default": "settings"
+  },
+  {
+    "property": "nextClassName",
+    "description": "The CSS class name to apply to the pagination \"next\" control.",
+    "type": "string",
+    "default": "griddle-next"
+  },
+  {
+    "property": "previousClassName",
+    "description": "The CSS class name to apply to the pagination \"previous\" control.",
+    "type": "string",
+    "default": "griddle-previous"
+  },
+  {
+    "property": "sortAscendingComponent",
+    "description": "The component to display in a th element when the column is sorted in ascending order. This component will be to the right of the column heading text.",
+    "type": "string",
+    "default": " ▲"
+  },
+  {
+    "property": "sortDescendingComponent",
+    "description": "The component to display in a th element when the column is sorted in descending order. This component will be to the right of the column heading text.",
+    "type": "string",
+    "default": " ▼"
+  },
+  {
+    "property": "parentRowCollapsedComponent",
+    "description": "The component to the left of the first column of a grid row that contains child records when those records are not currently displayed.",
+    "type": "string",
+    "default": " ▶"
+  },
+  {
+    "property": "parentRowExpandedComponent",
+    "description": "The component to the left of the first column of a grid row that contains child records when those records are currently displayed.",
+    "type": "string",
+    "default": " ▼"
+  },
+  {
+    "property": "settingsIconComponent",
+    "description": "The component to display to the right of the \"Settings\" text.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "nextIconComponent",
+    "description": "The component that should be displayed to the right of the \"Next\" text in the pagination component.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "previousIconComponent",
+    "description": "The component that should be displayed to the left of the \"Previous\" text in the pagination component.",
+    "type": "string",
+    "default": ""
+  },
+  {
+    "property": "onRowClick",
+    "description": "A function that should be called when a row has been clicked. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowMouseEnter",
+    "description": "A function that should be called when a mouse entered a row. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowMouseLeave",
+    "description": "A function that should be called when a mouse left a row. The 'gridRow' and event will be passed in as arguments.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowWillMount",
+    "description": "A function that should be called before a row was mounted. The 'gridRow' will be passed in as argument.",
+    "type": "function",
+    "default": "null"
+  },
+  {
+    "property": "onRowWillUnmount",
+    "description": "A function that should be called before a row was unmounted. The 'gridRow' will be passed in as argument.",
+    "type": "function",
+    "default": "null"
+  }
+];
+var DefinitionItem = React.createClass({
+  getDefaultProps: function() {
+    return { "data": {
+      "property": "",
+      "description":"",
+      "type": "",
+      "default": ""
+    }}
+  },
+  render: function(){
+    return (
+      <dl>
+        <dt>{this.props.data.property}</dt>
+        <dd><strong>{this.props.data.type}</strong> - {this.props.data.description} <span className="text-light-grey">Default: {this.props.data.default}</span>
+        </dd>
+      </dl>
+    )
+  }
+})
+ReactDOM.render(<Griddle results={propertiesItem} useCustomRowComponent={true} customRowComponent={DefinitionItem} useGriddleStyles={false} showFilter={true} tableClassName="table" resultsPerPage={100} columnMetadata={propertyGridMeta} showPager={false} enableToggleCustom={true}/>, document.getElementById('griddle-properties'));
+</script>
+
+
+			</div>
+		</div>
+	</div>
+  <div class="order-primary content-section background-darker-grey text-light-grey" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="ten columns offset-by-two">
+          <p>Griddle is a project maintained by <a href="http://twitter.com/ryanlanciaux">Ryan Lanciaux</a> and <a href="http://www.twitter.com/joellanciaux">Joel Lanciaux</a> in collaboration with all of <a href="https://github.com/GriddleGriddle/Griddle/graphs/contributors">the awesome contributors!</a></p>
+         	<small>
+        		© 2015 <a href="http://www.twitter.com/ryanlanciaux">Ryan Lanciaux</a> | <a href="https://www.github.com/DynamicTyped">DynamicTyped</a>
+        	</small> 
+        	<br>
+          <small>
+						Example data has been generated with <a href="http://json-generator.com/">json-generator.com</a>. Any data that resembles real people, places, companies, etc. is coincidence.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-58716212-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script> 
+
+
+</body></html>

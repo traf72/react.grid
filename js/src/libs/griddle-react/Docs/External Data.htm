@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Griddle - React Grid Component</title>
+	<meta name="description" content="Griddle - React Grid component. ">
+	<meta name="author" content="Ryan Lanciaux">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="External%20Data_files/css.css" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="External%20Data_files/normalize.css">
+	<link rel="stylesheet" href="External%20Data_files/skeleton.css">
+	<link rel="stylesheet" href="External%20Data_files/site.css">
+	<link rel="stylesheet" href="External%20Data_files/chartist.css">
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="https://griddlegriddle.github.io/v0-docs/images/favicon.png">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script async="" src="External%20Data_files/analytics.js"></script><script src="External%20Data_files/react.js"></script>
+  <script src="External%20Data_files/react-dom.js"></script>
+	<script src="External%20Data_files/JSXTransformer.js"></script>
+	<script src="External%20Data_files/underscore-min.js"></script>
+	<script src="External%20Data_files/Griddle.js"></script>
+	<script src="External%20Data_files/GriddleWithCallback.js"></script>
+	<script src="External%20Data_files/fakeData.js"></script>
+	<script src="External%20Data_files/ChartistGraph.js"></script>
+<script>
+var Loading = React.createClass({displayName: "Loading",
+  getDefaultProps: function(){
+    return {
+      loadingText: "Loading"
+    }
+  },
+  render: function(){
+    return React.createElement("div", {className: "loading"}, this.props.loadingText);
+  }
+});
+
+var ExternalSwapiComponent = React.createClass({displayName: "ExternalSwapiComponent",
+    getInitialState: function(){
+      var initial = { "results": [],
+          "currentPage": 0,
+          "isLoading": false,
+          "maxPages": 0,
+          "externalResultsPerPage": 10,
+          "externalSortColumn":null,
+          "externalSortAscending":true,
+          "results": []
+      };
+
+      return initial;
+    },
+    componentWillMount: function(){
+    },
+    componentDidMount: function(){
+      this.getExternalData();
+    },
+    getExternalData: function(page){
+      var that = this;
+      page = page||1
+
+      this.setState({
+        isLoading: true
+      });
+
+      swapiModule.getStarships(page, function(data) {
+       that.setState({
+          results: data.results,
+          currentPage: page-1,
+          maxPages: Math.round(data.count/10),
+          isLoading: false
+        })
+      });
+    },
+    setPage: function(index){
+      //This should interact with the data source to get the page at the given index
+      index = index > this.state.maxPages ? this.state.maxPages : index < 1 ? 1 : index + 1;
+      this.getExternalData(index);
+    },
+    setPageSize: function(size){
+    },
+    render: function(){
+      //columns={["name", "city", "state", "country"]}
+      return React.createElement(Griddle, {useExternal: true, externalSetPage: this.setPage, enableSort: false, columns: ["name", "model", "manufacturer", "passengers"], 
+        externalSetPageSize: this.setPageSize, externalMaxPage: this.state.maxPages, 
+        externalChangeSort: function(){}, externalSetFilter: function(){}, 
+        externalCurrentPage: this.state.currentPage, results: this.state.results, tableClassName: "table", resultsPerPage: this.state.externalResultsPerPage, 
+        externalSortColumn: this.state.externalSortColumn, externalSortAscending: this.state.externalSortAscending, externalLoadingComponent: Loading, externalIsLoading: this.state.isLoading})
+    }
+});
+
+
+  ReactDOM.render(React.createElement(ExternalSwapiComponent, null), document.getElementById("griddle-external-swapi"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0EsSUFBSSw2QkFBNkIsdUJBQUE7RUFDL0IsZUFBZSxFQUFFLFVBQVU7SUFDekIsT0FBTztNQUNMLFdBQVcsRUFBRSxTQUFTO0tBQ3ZCO0dBQ0Y7RUFDRCxNQUFNLEVBQUUsVUFBVTtJQUNoQixPQUFPLG9CQUFBLEtBQUksRUFBQSxDQUFBLENBQUMsU0FBQSxFQUFTLENBQUMsU0FBVSxDQUFBLEVBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxXQUFrQixDQUFBLENBQUM7R0FDaEU7QUFDSCxDQUFDLENBQUMsQ0FBQzs7QUFFSCxJQUFJLDRDQUE0QyxzQ0FBQTtJQUM1QyxlQUFlLEVBQUUsVUFBVTtNQUN6QixJQUFJLE9BQU8sR0FBRyxFQUFFLFNBQVMsRUFBRSxFQUFFO1VBQ3pCLGFBQWEsRUFBRSxDQUFDO1VBQ2hCLFdBQVcsRUFBRSxLQUFLO1VBQ2xCLFVBQVUsRUFBRSxDQUFDO1VBQ2Isd0JBQXdCLEVBQUUsRUFBRTtVQUM1QixvQkFBb0IsQ0FBQyxJQUFJO1VBQ3pCLHVCQUF1QixDQUFDLElBQUk7VUFDNUIsU0FBUyxFQUFFLEVBQUU7QUFDdkIsT0FBTyxDQUFDOztNQUVGLE9BQU8sT0FBTyxDQUFDO0tBQ2hCO0lBQ0Qsa0JBQWtCLEVBQUUsVUFBVTtLQUM3QjtJQUNELGlCQUFpQixFQUFFLFVBQVU7TUFDM0IsSUFBSSxDQUFDLGVBQWUsRUFBRSxDQUFDO0tBQ3hCO0lBQ0QsZUFBZSxFQUFFLFNBQVMsSUFBSSxDQUFDO01BQzdCLElBQUksSUFBSSxHQUFHLElBQUksQ0FBQztBQUN0QixNQUFNLElBQUksR0FBRyxJQUFJLEVBQUUsQ0FBQzs7TUFFZCxJQUFJLENBQUMsUUFBUSxDQUFDO1FBQ1osU0FBUyxFQUFFLElBQUk7QUFDdkIsT0FBTyxDQUFDLENBQUM7O01BRUgsV0FBVyxDQUFDLFlBQVksQ0FBQyxJQUFJLEVBQUUsU0FBUyxJQUFJLEVBQUU7T0FDN0MsSUFBSSxDQUFDLFFBQVEsQ0FBQztVQUNYLE9BQU8sRUFBRSxJQUFJLENBQUMsT0FBTztVQUNyQixXQUFXLEVBQUUsSUFBSSxDQUFDLENBQUM7VUFDbkIsUUFBUSxFQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxFQUFFLENBQUM7VUFDbkMsU0FBUyxFQUFFLEtBQUs7U0FDakIsQ0FBQztPQUNILENBQUMsQ0FBQztLQUNKO0FBQ0wsSUFBSSxPQUFPLEVBQUUsU0FBUyxLQUFLLENBQUM7O01BRXRCLEtBQUssR0FBRyxLQUFLLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxRQUFRLEdBQUcsS0FBSyxHQUFHLENBQUMsR0FBRyxDQUFDLEdBQUcsS0FBSyxHQUFHLENBQUMsQ0FBQztNQUN0RixJQUFJLENBQUMsZUFBZSxDQUFDLEtBQUssQ0FBQyxDQUFDO0tBQzdCO0lBQ0QsV0FBVyxFQUFFLFNBQVMsSUFBSSxDQUFDO0tBQzFCO0FBQ0wsSUFBSSxNQUFNLEVBQUUsVUFBVTs7TUFFaEIsT0FBTyxvQkFBQyxPQUFPLEVBQUEsQ0FBQSxDQUFDLFdBQUEsRUFBVyxDQUFFLElBQUksRUFBQyxDQUFDLGVBQUEsRUFBZSxDQUFFLElBQUksQ0FBQyxPQUFPLEVBQUMsQ0FBQyxVQUFBLEVBQVUsQ0FBRSxLQUFLLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxDQUFDLE1BQU0sRUFBRSxPQUFPLEVBQUUsY0FBYyxFQUFFLFlBQVksQ0FBQyxFQUFDO1FBQzVJLG1CQUFBLEVBQW1CLENBQUUsSUFBSSxDQUFDLFdBQVcsRUFBQyxDQUFDLGVBQUEsRUFBZSxDQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsUUFBUSxFQUFDO1FBQzVFLGtCQUFBLEVBQWtCLENBQUUsVUFBVSxFQUFFLEVBQUMsQ0FBQyxpQkFBQSxFQUFpQixDQUFFLFVBQVUsRUFBRSxFQUFDO1FBQ2xFLG1CQUFBLEVBQW1CLENBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxXQUFXLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLE9BQU8sRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLGNBQUEsRUFBYyxDQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsc0JBQXNCLEVBQUM7UUFDbkosa0JBQUEsRUFBa0IsQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLGtCQUFrQixFQUFDLENBQUMscUJBQUEsRUFBcUIsQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLHFCQUFxQixFQUFDLENBQUMsd0JBQUEsRUFBd0IsQ0FBRSxPQUFPLEVBQUMsQ0FBQyxpQkFBQSxFQUFpQixDQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsU0FBVSxDQUFFLENBQUE7S0FDNUw7QUFDTCxDQUFDLENBQUMsQ0FBQztBQUNIOztFQUVFLFFBQVEsQ0FBQyxNQUFNLENBQUMsb0JBQUMsc0JBQXNCLEVBQUEsSUFBQSxDQUFHLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLHdCQUF3QixDQUFDLENBQUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIlxudmFyIExvYWRpbmcgPSBSZWFjdC5jcmVhdGVDbGFzcyh7XG4gIGdldERlZmF1bHRQcm9wczogZnVuY3Rpb24oKXtcbiAgICByZXR1cm4ge1xuICAgICAgbG9hZGluZ1RleHQ6IFwiTG9hZGluZ1wiXG4gICAgfVxuICB9LFxuICByZW5kZXI6IGZ1bmN0aW9uKCl7XG4gICAgcmV0dXJuIDxkaXYgY2xhc3NOYW1lPVwibG9hZGluZ1wiPnt0aGlzLnByb3BzLmxvYWRpbmdUZXh0fTwvZGl2PjtcbiAgfVxufSk7XG5cbnZhciBFeHRlcm5hbFN3YXBpQ29tcG9uZW50ID0gUmVhY3QuY3JlYXRlQ2xhc3Moe1xuICAgIGdldEluaXRpYWxTdGF0ZTogZnVuY3Rpb24oKXtcbiAgICAgIHZhciBpbml0aWFsID0geyBcInJlc3VsdHNcIjogW10sXG4gICAgICAgICAgXCJjdXJyZW50UGFnZVwiOiAwLFxuICAgICAgICAgIFwiaXNMb2FkaW5nXCI6IGZhbHNlLFxuICAgICAgICAgIFwibWF4UGFnZXNcIjogMCxcbiAgICAgICAgICBcImV4dGVybmFsUmVzdWx0c1BlclBhZ2VcIjogMTAsXG4gICAgICAgICAgXCJleHRlcm5hbFNvcnRDb2x1bW5cIjpudWxsLFxuICAgICAgICAgIFwiZXh0ZXJuYWxTb3J0QXNjZW5kaW5nXCI6dHJ1ZSxcbiAgICAgICAgICBcInJlc3VsdHNcIjogW11cbiAgICAgIH07XG5cbiAgICAgIHJldHVybiBpbml0aWFsO1xuICAgIH0sXG4gICAgY29tcG9uZW50V2lsbE1vdW50OiBmdW5jdGlvbigpe1xuICAgIH0sXG4gICAgY29tcG9uZW50RGlkTW91bnQ6IGZ1bmN0aW9uKCl7XG4gICAgICB0aGlzLmdldEV4dGVybmFsRGF0YSgpO1xuICAgIH0sXG4gICAgZ2V0RXh0ZXJuYWxEYXRhOiBmdW5jdGlvbihwYWdlKXtcbiAgICAgIHZhciB0aGF0ID0gdGhpcztcbiAgICAgIHBhZ2UgPSBwYWdlfHwxXG5cbiAgICAgIHRoaXMuc2V0U3RhdGUoe1xuICAgICAgICBpc0xvYWRpbmc6IHRydWVcbiAgICAgIH0pO1xuXG4gICAgICBzd2FwaU1vZHVsZS5nZXRTdGFyc2hpcHMocGFnZSwgZnVuY3Rpb24oZGF0YSkge1xuICAgICAgIHRoYXQuc2V0U3RhdGUoe1xuICAgICAgICAgIHJlc3VsdHM6IGRhdGEucmVzdWx0cyxcbiAgICAgICAgICBjdXJyZW50UGFnZTogcGFnZS0xLFxuICAgICAgICAgIG1heFBhZ2VzOiBNYXRoLnJvdW5kKGRhdGEuY291bnQvMTApLFxuICAgICAgICAgIGlzTG9hZGluZzogZmFsc2VcbiAgICAgICAgfSlcbiAgICAgIH0pO1xuICAgIH0sXG4gICAgc2V0UGFnZTogZnVuY3Rpb24oaW5kZXgpe1xuICAgICAgLy9UaGlzIHNob3VsZCBpbnRlcmFjdCB3aXRoIHRoZSBkYXRhIHNvdXJjZSB0byBnZXQgdGhlIHBhZ2UgYXQgdGhlIGdpdmVuIGluZGV4XG4gICAgICBpbmRleCA9IGluZGV4ID4gdGhpcy5zdGF0ZS5tYXhQYWdlcyA/IHRoaXMuc3RhdGUubWF4UGFnZXMgOiBpbmRleCA8IDEgPyAxIDogaW5kZXggKyAxO1xuICAgICAgdGhpcy5nZXRFeHRlcm5hbERhdGEoaW5kZXgpO1xuICAgIH0sXG4gICAgc2V0UGFnZVNpemU6IGZ1bmN0aW9uKHNpemUpe1xuICAgIH0sXG4gICAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgICAgLy9jb2x1bW5zPXtbXCJuYW1lXCIsIFwiY2l0eVwiLCBcInN0YXRlXCIsIFwiY291bnRyeVwiXX1cbiAgICAgIHJldHVybiA8R3JpZGRsZSB1c2VFeHRlcm5hbD17dHJ1ZX0gZXh0ZXJuYWxTZXRQYWdlPXt0aGlzLnNldFBhZ2V9IGVuYWJsZVNvcnQ9e2ZhbHNlfSBjb2x1bW5zPXtbXCJuYW1lXCIsIFwibW9kZWxcIiwgXCJtYW51ZmFjdHVyZXJcIiwgXCJwYXNzZW5nZXJzXCJdfVxuICAgICAgICBleHRlcm5hbFNldFBhZ2VTaXplPXt0aGlzLnNldFBhZ2VTaXplfSBleHRlcm5hbE1heFBhZ2U9e3RoaXMuc3RhdGUubWF4UGFnZXN9XG4gICAgICAgIGV4dGVybmFsQ2hhbmdlU29ydD17ZnVuY3Rpb24oKXt9fSBleHRlcm5hbFNldEZpbHRlcj17ZnVuY3Rpb24oKXt9fVxuICAgICAgICBleHRlcm5hbEN1cnJlbnRQYWdlPXt0aGlzLnN0YXRlLmN1cnJlbnRQYWdlfSByZXN1bHRzPXt0aGlzLnN0YXRlLnJlc3VsdHN9IHRhYmxlQ2xhc3NOYW1lPVwidGFibGVcIiByZXN1bHRzUGVyUGFnZT17dGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlfVxuICAgICAgICBleHRlcm5hbFNvcnRDb2x1bW49e3RoaXMuc3RhdGUuZXh0ZXJuYWxTb3J0Q29sdW1ufSBleHRlcm5hbFNvcnRBc2NlbmRpbmc9e3RoaXMuc3RhdGUuZXh0ZXJuYWxTb3J0QXNjZW5kaW5nfSBleHRlcm5hbExvYWRpbmdDb21wb25lbnQ9e0xvYWRpbmd9IGV4dGVybmFsSXNMb2FkaW5nPXt0aGlzLnN0YXRlLmlzTG9hZGluZ30vPlxuICAgIH1cbn0pO1xuXG5cbiAgUmVhY3RET00ucmVuZGVyKDxFeHRlcm5hbFN3YXBpQ29tcG9uZW50IC8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImdyaWRkbGUtZXh0ZXJuYWwtc3dhcGlcIikpO1xuIl19</script><script>
+var externalData = fakeData.slice(0, 53);
+
+var SimulatedExternalComponent = React.createClass({displayName: "SimulatedExternalComponent",
+    getInitialState: function(){
+      var initial = { "results": [],
+          "currentPage": 0,
+          "maxPages": 0,
+          "externalResultsPerPage": 5,
+          "externalSortColumn":null,
+          "externalSortAscending":true,
+          "pretendServerData": externalData
+      };
+
+      return initial;
+    },
+    componentWillMount: function(){
+        this.setState({
+            maxPages: Math.ceil(this.state.pretendServerData.length/this.state.externalResultsPerPage),
+            "results": this.state.pretendServerData.slice(0,this.state.externalResultsPerPage)
+        })
+    },
+    setPage: function(index){
+      //This should interact with the data source to get the page at the given index
+      var number = index === 0 ? 0 : index * this.state.externalResultsPerPage;
+      this.setState(
+        {
+          "results": this.state.pretendServerData.slice(number, number+5>this.state.pretendServerData.length ? this.state.pretendServerData.length : number+this.state.externalResultsPerPage),
+          "currentPage": index
+        });
+    },
+    sortData: function(sort, sortAscending, data){
+      //sorting should generally happen wherever the data is coming from
+      sortedData = _.sortBy(data, function(item){
+        return item[sort];
+      });
+
+      if(sortAscending === false){
+        sortedData.reverse();
+      }
+      return {
+        "currentPage": 0,
+        "externalSortColumn": sort,
+        "externalSortAscending": sortAscending,
+        "pretendServerData": sortedData,
+        "results": sortedData.slice(0,this.state.externalResultsPerPage)
+      };
+    },
+    changeSort: function(sort, sortAscending){
+      //this should change the sort for the given column
+      this.setState(this.sortData(sort, sortAscending, this.state.pretendServerData));
+    },
+    setFilter: function(filter){
+        //filtering should generally occur on the server (or wherever) 
+        //this is a lot of code for what should normally just be a method that is used to pass data back and forth
+        var sortedData = this.sortData(this.state.externalSortColumn, this.state.externalSortAscending, externalData);
+
+        if(filter === ""){
+            this.setState(_.extend(sortedData, {maxPages: Math.ceil(sortedData.pretendServerData.length > this.state.externalResultsPerPage ? sortedData.pretendServerData.length/this.state.externalResultsPerPage : 1)}));
+
+            return;
+        }
+
+        var filteredData = _.filter(sortedData.pretendServerData,
+            function(item) {
+                var arr = _.values(item);
+                for(var i = 0; i < arr.length; i++){
+                   if ((arr[i]||"").toString().toLowerCase().indexOf(filter.toLowerCase()) >= 0){
+                    return true;
+                   }
+                }
+
+                return false;
+            });
+
+        this.setState({
+            pretendServerData: filteredData,
+            maxPages: Math.ceil(filteredData.length > this.state.externalResultsPerPage ? filteredData.length/this.state.externalResultsPerPage : 1),
+            "results": filteredData.slice(0,this.state.externalResultsPerPage)
+        });
+    },
+    setPageSize: function(size){
+        this.setState({
+            currentPage: 0,
+            externalResultsPerPage: size,
+            maxPages: Math.ceil(this.state.pretendServerData.length > size ? this.state.pretendServerData.length/size : 1),
+            results: this.state.pretendServerData.slice(0,size)
+        });
+    },
+    render: function(){
+      return React.createElement(Griddle, {useExternal: true, externalSetPage: this.setPage, 
+        externalChangeSort: this.changeSort, externalSetFilter: this.setFilter, 
+        externalSetPageSize: this.setPageSize, externalMaxPage: this.state.maxPages, 
+        externalCurrentPage: this.state.currentPage, results: this.state.results, tableClassName: "table", resultsPerPage: this.state.externalResultsPerPage, 
+        externalSortColumn: this.state.externalSortColumn, externalSortAscending: this.state.externalSortAscending, showFilter: true, showSettings: true})
+    }
+});
+
+ReactDOM.render(React.createElement(SimulatedExternalComponent, null), document.getElementById("griddle-external-simulated"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICgyKSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLElBQUksWUFBWSxHQUFHLFFBQVEsQ0FBQyxLQUFLLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDOztBQUV6QyxJQUFJLGdEQUFnRCwwQ0FBQTtJQUNoRCxlQUFlLEVBQUUsVUFBVTtNQUN6QixJQUFJLE9BQU8sR0FBRyxFQUFFLFNBQVMsRUFBRSxFQUFFO1VBQ3pCLGFBQWEsRUFBRSxDQUFDO1VBQ2hCLFVBQVUsRUFBRSxDQUFDO1VBQ2Isd0JBQXdCLEVBQUUsQ0FBQztVQUMzQixvQkFBb0IsQ0FBQyxJQUFJO1VBQ3pCLHVCQUF1QixDQUFDLElBQUk7VUFDNUIsbUJBQW1CLEVBQUUsWUFBWTtBQUMzQyxPQUFPLENBQUM7O01BRUYsT0FBTyxPQUFPLENBQUM7S0FDaEI7SUFDRCxrQkFBa0IsRUFBRSxVQUFVO1FBQzFCLElBQUksQ0FBQyxRQUFRLENBQUM7WUFDVixRQUFRLEVBQUUsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLGlCQUFpQixDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLHNCQUFzQixDQUFDO1lBQzFGLFNBQVMsRUFBRSxJQUFJLENBQUMsS0FBSyxDQUFDLGlCQUFpQixDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxzQkFBc0IsQ0FBQztTQUNyRixDQUFDO0tBQ0w7QUFDTCxJQUFJLE9BQU8sRUFBRSxTQUFTLEtBQUssQ0FBQzs7TUFFdEIsSUFBSSxNQUFNLEdBQUcsS0FBSyxLQUFLLENBQUMsR0FBRyxDQUFDLEdBQUcsS0FBSyxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsc0JBQXNCLENBQUM7TUFDekUsSUFBSSxDQUFDLFFBQVE7UUFDWDtVQUNFLFNBQVMsRUFBRSxJQUFJLENBQUMsS0FBSyxDQUFDLGlCQUFpQixD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QyxXQUFXLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLE9BQU8sRUFBQyxDQUFDLGNBQUEsRUFBYyxDQUFDLE9BQUEsRUFBTyxDQUFDLGNBQUEsRUFBYyxDQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsc0JBQXNCLEVBQUM7UUFDbkosa0JBQUEsRUFBa0IsQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLGtCQUFrQixFQUFDLENBQUMscUJBQUEsRUFBcUIsQ0FBRSxJQUFJLENBQUMsS0FBSyxDQUFDLHFCQUFxQixFQUFDLENBQUMsVUFBQSxFQUFVLENBQUUsSUFBSSxFQUFDLENBQUMsWUFBQSxFQUFZLENBQUUsSUFBSyxDQUFBLENBQUcsQ0FBQTtLQUN2SjtBQUNMLENBQUMsQ0FBQyxDQUFDOztBQUVILFFBQVEsQ0FBQyxNQUFNLENBQUMsb0JBQUMsMEJBQTBCLEVBQUEsSUFBQSxDQUFHLENBQUEsRUFBRSxRQUFRLENBQUMsY0FBYyxDQUFDLDRCQUE0QixDQUFDLENBQUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIlxudmFyIGV4dGVybmFsRGF0YSA9IGZha2VEYXRhLnNsaWNlKDAsIDUzKTtcblxudmFyIFNpbXVsYXRlZEV4dGVybmFsQ29tcG9uZW50ID0gUmVhY3QuY3JlYXRlQ2xhc3Moe1xuICAgIGdldEluaXRpYWxTdGF0ZTogZnVuY3Rpb24oKXtcbiAgICAgIHZhciBpbml0aWFsID0geyBcInJlc3VsdHNcIjogW10sXG4gICAgICAgICAgXCJjdXJyZW50UGFnZVwiOiAwLFxuICAgICAgICAgIFwibWF4UGFnZXNcIjogMCxcbiAgICAgICAgICBcImV4dGVybmFsUmVzdWx0c1BlclBhZ2VcIjogNSxcbiAgICAgICAgICBcImV4dGVybmFsU29ydENvbHVtblwiOm51bGwsXG4gICAgICAgICAgXCJleHRlcm5hbFNvcnRBc2NlbmRpbmdcIjp0cnVlLFxuICAgICAgICAgIFwicHJldGVuZFNlcnZlckRhdGFcIjogZXh0ZXJuYWxEYXRhXG4gICAgICB9O1xuXG4gICAgICByZXR1cm4gaW5pdGlhbDtcbiAgICB9LFxuICAgIGNvbXBvbmVudFdpbGxNb3VudDogZnVuY3Rpb24oKXtcbiAgICAgICAgdGhpcy5zZXRTdGF0ZSh7XG4gICAgICAgICAgICBtYXhQYWdlczogTWF0aC5jZWlsKHRoaXMuc3RhdGUucHJldGVuZFNlcnZlckRhdGEubGVuZ3RoL3RoaXMuc3RhdGUuZXh0ZXJuYWxSZXN1bHRzUGVyUGFnZSksXG4gICAgICAgICAgICBcInJlc3VsdHNcIjogdGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YS5zbGljZSgwLHRoaXMuc3RhdGUuZXh0ZXJuYWxSZXN1bHRzUGVyUGFnZSlcbiAgICAgICAgfSlcbiAgICB9LFxuICAgIHNldFBhZ2U6IGZ1bmN0aW9uKGluZGV4KXtcbiAgICAgIC8vVGhpcyBzaG91bGQgaW50ZXJhY3Qgd2l0aCB0aGUgZGF0YSBzb3VyY2UgdG8gZ2V0IHRoZSBwYWdlIGF0IHRoZSBnaXZlbiBpbmRleFxuICAgICAgdmFyIG51bWJlciA9IGluZGV4ID09PSAwID8gMCA6IGluZGV4ICogdGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlO1xuICAgICAgdGhpcy5zZXRTdGF0ZShcbiAgICAgICAge1xuICAgICAgICAgIFwicmVzdWx0c1wiOiB0aGlzLnN0YXRlLnByZXRlbmRTZXJ2ZXJEYXRhLnNsaWNlKG51bWJlciwgbnVtYmVyKzU+dGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YS5sZW5ndGggPyB0aGlzLnN0YXRlLnByZXRlbmRTZXJ2ZXJEYXRhLmxlbmd0aCA6IG51bWJlcit0aGlzLnN0YXRlLmV4dGVybmFsUmVzdWx0c1BlclBhZ2UpLFxuICAgICAgICAgIFwiY3VycmVudFBhZ2VcIjogaW5kZXhcbiAgICAgICAgfSk7XG4gICAgfSxcbiAgICBzb3J0RGF0YTogZnVuY3Rpb24oc29ydCwgc29ydEFzY2VuZGluZywgZGF0YSl7XG4gICAgICAvL3NvcnRpbmcgc2hvdWxkIGdlbmVyYWxseSBoYXBwZW4gd2hlcmV2ZXIgdGhlIGRhdGEgaXMgY29taW5nIGZyb21cbiAgICAgIHNvcnRlZERhdGEgPSBfLnNvcnRCeShkYXRhLCBmdW5jdGlvbihpdGVtKXtcbiAgICAgICAgcmV0dXJuIGl0ZW1bc29ydF07XG4gICAgICB9KTtcblxuICAgICAgaWYoc29ydEFzY2VuZGluZyA9PT0gZmFsc2Upe1xuICAgICAgICBzb3J0ZWREYXRhLnJldmVyc2UoKTtcbiAgICAgIH1cbiAgICAgIHJldHVybiB7XG4gICAgICAgIFwiY3VycmVudFBhZ2VcIjogMCxcbiAgICAgICAgXCJleHRlcm5hbFNvcnRDb2x1bW5cIjogc29ydCxcbiAgICAgICAgXCJleHRlcm5hbFNvcnRBc2NlbmRpbmdcIjogc29ydEFzY2VuZGluZyxcbiAgICAgICAgXCJwcmV0ZW5kU2VydmVyRGF0YVwiOiBzb3J0ZWREYXRhLFxuICAgICAgICBcInJlc3VsdHNcIjogc29ydGVkRGF0YS5zbGljZSgwLHRoaXMuc3RhdGUuZXh0ZXJuYWxSZXN1bHRzUGVyUGFnZSlcbiAgICAgIH07XG4gICAgfSxcbiAgICBjaGFuZ2VTb3J0OiBmdW5jdGlvbihzb3J0LCBzb3J0QXNjZW5kaW5nKXtcbiAgICAgIC8vdGhpcyBzaG91bGQgY2hhbmdlIHRoZSBzb3J0IGZvciB0aGUgZ2l2ZW4gY29sdW1uXG4gICAgICB0aGlzLnNldFN0YXRlKHRoaXMuc29ydERhdGEoc29ydCwgc29ydEFzY2VuZGluZywgdGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YSkpO1xuICAgIH0sXG4gICAgc2V0RmlsdGVyOiBmdW5jdGlvbihmaWx0ZXIpe1xuICAgICAgICAvL2ZpbHRlcmluZyBzaG91bGQgZ2VuZXJhbGx5IG9jY3VyIG9uIHRoZSBzZXJ2ZXIgKG9yIHdoZXJldmVyKSBcbiAgICAgICAgLy90aGlzIGlzIGEgbG90IG9mIGNvZGUgZm9yIHdoYXQgc2hvdWxkIG5vcm1hbGx5IGp1c3QgYmUgYSBtZXRob2QgdGhhdCBpcyB1c2VkIHRvIHBhc3MgZGF0YSBiYWNrIGFuZCBmb3J0aFxuICAgICAgICB2YXIgc29ydGVkRGF0YSA9IHRoaXMuc29ydERhdGEodGhpcy5zdGF0ZS5leHRlcm5hbFNvcnRDb2x1bW4sIHRoaXMuc3RhdGUuZXh0ZXJuYWxTb3J0QXNjZW5kaW5nLCBleHRlcm5hbERhdGEpO1xuXG4gICAgICAgIGlmKGZpbHRlciA9PT0gXCJcIil7XG4gICAgICAgICAgICB0aGlzLnNldFN0YXRlKF8uZXh0ZW5kKHNvcnRlZERhdGEsIHttYXhQYWdlczogTWF0aC5jZWlsKHNvcnRlZERhdGEucHJldGVuZFNlcnZlckRhdGEubGVuZ3RoID4gdGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlID8gc29ydGVkRGF0YS5wcmV0ZW5kU2VydmVyRGF0YS5sZW5ndGgvdGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlIDogMSl9KSk7XG5cbiAgICAgICAgICAgIHJldHVybjtcbiAgICAgICAgfVxuXG4gICAgICAgIHZhciBmaWx0ZXJlZERhdGEgPSBfLmZpbHRlcihzb3J0ZWREYXRhLnByZXRlbmRTZXJ2ZXJEYXRhLFxuICAgICAgICAgICAgZnVuY3Rpb24oaXRlbSkge1xuICAgICAgICAgICAgICAgIHZhciBhcnIgPSBfLnZhbHVlcyhpdGVtKTtcbiAgICAgICAgICAgICAgICBmb3IodmFyIGkgPSAwOyBpIDwgYXJyLmxlbmd0aDsgaSsrKXtcbiAgICAgICAgICAgICAgICAgICBpZiAoKGFycltpXXx8XCJcIikudG9TdHJpbmcoKS50b0xvd2VyQ2FzZSgpLmluZGV4T2YoZmlsdGVyLnRvTG93ZXJDYXNlKCkpID49IDApe1xuICAgICAgICAgICAgICAgICAgICByZXR1cm4gdHJ1ZTtcbiAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgfVxuXG4gICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlO1xuICAgICAgICAgICAgfSk7XG5cbiAgICAgICAgdGhpcy5zZXRTdGF0ZSh7XG4gICAgICAgICAgICBwcmV0ZW5kU2VydmVyRGF0YTogZmlsdGVyZWREYXRhLFxuICAgICAgICAgICAgbWF4UGFnZXM6IE1hdGguY2VpbChmaWx0ZXJlZERhdGEubGVuZ3RoID4gdGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlID8gZmlsdGVyZWREYXRhLmxlbmd0aC90aGlzLnN0YXRlLmV4dGVybmFsUmVzdWx0c1BlclBhZ2UgOiAxKSxcbiAgICAgICAgICAgIFwicmVzdWx0c1wiOiBmaWx0ZXJlZERhdGEuc2xpY2UoMCx0aGlzLnN0YXRlLmV4dGVybmFsUmVzdWx0c1BlclBhZ2UpXG4gICAgICAgIH0pO1xuICAgIH0sXG4gICAgc2V0UGFnZVNpemU6IGZ1bmN0aW9uKHNpemUpe1xuICAgICAgICB0aGlzLnNldFN0YXRlKHtcbiAgICAgICAgICAgIGN1cnJlbnRQYWdlOiAwLFxuICAgICAgICAgICAgZXh0ZXJuYWxSZXN1bHRzUGVyUGFnZTogc2l6ZSxcbiAgICAgICAgICAgIG1heFBhZ2VzOiBNYXRoLmNlaWwodGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YS5sZW5ndGggPiBzaXplID8gdGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YS5sZW5ndGgvc2l6ZSA6IDEpLFxuICAgICAgICAgICAgcmVzdWx0czogdGhpcy5zdGF0ZS5wcmV0ZW5kU2VydmVyRGF0YS5zbGljZSgwLHNpemUpXG4gICAgICAgIH0pO1xuICAgIH0sXG4gICAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgICAgcmV0dXJuIDxHcmlkZGxlIHVzZUV4dGVybmFsPXt0cnVlfSBleHRlcm5hbFNldFBhZ2U9e3RoaXMuc2V0UGFnZX1cbiAgICAgICAgZXh0ZXJuYWxDaGFuZ2VTb3J0PXt0aGlzLmNoYW5nZVNvcnR9IGV4dGVybmFsU2V0RmlsdGVyPXt0aGlzLnNldEZpbHRlcn1cbiAgICAgICAgZXh0ZXJuYWxTZXRQYWdlU2l6ZT17dGhpcy5zZXRQYWdlU2l6ZX0gZXh0ZXJuYWxNYXhQYWdlPXt0aGlzLnN0YXRlLm1heFBhZ2VzfVxuICAgICAgICBleHRlcm5hbEN1cnJlbnRQYWdlPXt0aGlzLnN0YXRlLmN1cnJlbnRQYWdlfSByZXN1bHRzPXt0aGlzLnN0YXRlLnJlc3VsdHN9IHRhYmxlQ2xhc3NOYW1lPVwidGFibGVcIiByZXN1bHRzUGVyUGFnZT17dGhpcy5zdGF0ZS5leHRlcm5hbFJlc3VsdHNQZXJQYWdlfVxuICAgICAgICBleHRlcm5hbFNvcnRDb2x1bW49e3RoaXMuc3RhdGUuZXh0ZXJuYWxTb3J0Q29sdW1ufSBleHRlcm5hbFNvcnRBc2NlbmRpbmc9e3RoaXMuc3RhdGUuZXh0ZXJuYWxTb3J0QXNjZW5kaW5nfSBzaG93RmlsdGVyPXt0cnVlfSBzaG93U2V0dGluZ3M9e3RydWV9IC8+XG4gICAgfVxufSk7XG5cblJlYWN0RE9NLnJlbmRlcig8U2ltdWxhdGVkRXh0ZXJuYWxDb21wb25lbnQgLz4sIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZ3JpZGRsZS1leHRlcm5hbC1zaW11bGF0ZWRcIikpO1xuIl19</script><script>
+var setDefault = function(original, value){
+    return typeof original === 'undefined' ? value : original;
+}
+
+var loadData = function(filterString, sortColumn, sortAscending, page, pageSize, callback) {
+    page+=1;
+
+    swapiModule.getStarships(page, function(data){
+        callback({
+            results: data.results,
+            totalResults: data.count,
+            pageSize: pageSize
+        });    
+    });
+};
+
+var Loading = React.createClass({displayName: "Loading",
+    getDefaultProps: function(){
+        return {
+            loadingText: "Loading"
+        }
+    },
+    render: function(){
+        return React.createElement("div", {className: "loading"}, this.props.loadingText);
+    }
+});
+
+ReactDOM.render(React.createElement(GriddleWithCallback, {getExternalResults: loadData, loadingComponent: Loading, enableSort: false, columns: ["name", "model", "manufacturer", "passengers"], resultsPerPage: 10, showFilter: false, showSettings: false}), document.getElementById('griddle-callback'));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJhbnNmb3JtZWQuanMiLCJzb3VyY2VzIjpbIklubGluZSBKU1ggc2NyaXB0ICgzKSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBLElBQUksVUFBVSxHQUFHLFNBQVMsUUFBUSxFQUFFLEtBQUssQ0FBQztJQUN0QyxPQUFPLE9BQU8sUUFBUSxLQUFLLFdBQVcsR0FBRyxLQUFLLEdBQUcsUUFBUSxDQUFDO0FBQzlELENBQUM7O0FBRUQsSUFBSSxRQUFRLEdBQUcsU0FBUyxZQUFZLEVBQUUsVUFBVSxFQUFFLGFBQWEsRUFBRSxJQUFJLEVBQUUsUUFBUSxFQUFFLFFBQVEsRUFBRTtBQUMzRixJQUFJLElBQUksRUFBRSxDQUFDLENBQUM7O0lBRVIsV0FBVyxDQUFDLFlBQVksQ0FBQyxJQUFJLEVBQUUsU0FBUyxJQUFJLENBQUM7UUFDekMsUUFBUSxDQUFDO1lBQ0wsT0FBTyxFQUFFLElBQUksQ0FBQyxPQUFPO1lBQ3JCLFlBQVksRUFBRSxJQUFJLENBQUMsS0FBSztZQUN4QixRQUFRLEVBQUUsUUFBUTtTQUNyQixDQUFDLENBQUM7S0FDTixDQUFDLENBQUM7QUFDUCxDQUFDLENBQUM7O0FBRUYsSUFBSSw2QkFBNkIsdUJBQUE7SUFDN0IsZUFBZSxFQUFFLFVBQVU7UUFDdkIsT0FBTztZQUNILFdBQVcsRUFBRSxTQUFTO1NBQ3pCO0tBQ0o7SUFDRCxNQUFNLEVBQUUsVUFBVTtRQUNkLE9BQU8sb0JBQUEsS0FBSSxFQUFBLENBQUEsQ0FBQyxTQUFBLEVBQVMsQ0FBQyxTQUFVLENBQUEsRUFBQyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQWtCLENBQUEsQ0FBQztLQUNsRTtBQUNMLENBQUMsQ0FBQyxDQUFDOztBQUVILFFBQVEsQ0FBQyxNQUFNLENBQUMsb0JBQUMsbUJBQW1CLEVBQUEsQ0FBQSxDQUFDLGtCQUFBLEVBQWtCLENBQUUsUUFBUSxFQUFDLENBQUMsZ0JBQUEsRUFBZ0IsQ0FBRSxPQUFPLEVBQUMsQ0FBQyxVQUFBLEVBQVUsQ0FBRSxLQUFLLEVBQUMsQ0FBQyxPQUFBLEVBQU8sQ0FBRSxDQUFDLE1BQU0sRUFBRSxPQUFPLEVBQUUsY0FBYyxFQUFFLFlBQVksQ0FBQyxFQUFDLENBQUMsY0FBQSxFQUFjLENBQUUsRUFBRSxFQUFDLENBQUMsVUFBQSxFQUFVLENBQUUsS0FBSyxFQUFDLENBQUMsWUFBQSxFQUFZLENBQUUsS0FBTSxDQUFBLENBQUcsQ0FBQSxFQUFFLFFBQVEsQ0FBQyxjQUFjLENBQUMsa0JBQWtCLENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiXG52YXIgc2V0RGVmYXVsdCA9IGZ1bmN0aW9uKG9yaWdpbmFsLCB2YWx1ZSl7XG4gICAgcmV0dXJuIHR5cGVvZiBvcmlnaW5hbCA9PT0gJ3VuZGVmaW5lZCcgPyB2YWx1ZSA6IG9yaWdpbmFsO1xufVxuXG52YXIgbG9hZERhdGEgPSBmdW5jdGlvbihmaWx0ZXJTdHJpbmcsIHNvcnRDb2x1bW4sIHNvcnRBc2NlbmRpbmcsIHBhZ2UsIHBhZ2VTaXplLCBjYWxsYmFjaykge1xuICAgIHBhZ2UrPTE7XG5cbiAgICBzd2FwaU1vZHVsZS5nZXRTdGFyc2hpcHMocGFnZSwgZnVuY3Rpb24oZGF0YSl7XG4gICAgICAgIGNhbGxiYWNrKHtcbiAgICAgICAgICAgIHJlc3VsdHM6IGRhdGEucmVzdWx0cyxcbiAgICAgICAgICAgIHRvdGFsUmVzdWx0czogZGF0YS5jb3VudCxcbiAgICAgICAgICAgIHBhZ2VTaXplOiBwYWdlU2l6ZVxuICAgICAgICB9KTsgICAgXG4gICAgfSk7XG59O1xuXG52YXIgTG9hZGluZyA9IFJlYWN0LmNyZWF0ZUNsYXNzKHtcbiAgICBnZXREZWZhdWx0UHJvcHM6IGZ1bmN0aW9uKCl7XG4gICAgICAgIHJldHVybiB7XG4gICAgICAgICAgICBsb2FkaW5nVGV4dDogXCJMb2FkaW5nXCJcbiAgICAgICAgfVxuICAgIH0sXG4gICAgcmVuZGVyOiBmdW5jdGlvbigpe1xuICAgICAgICByZXR1cm4gPGRpdiBjbGFzc05hbWU9XCJsb2FkaW5nXCI+e3RoaXMucHJvcHMubG9hZGluZ1RleHR9PC9kaXY+O1xuICAgIH1cbn0pO1xuXG5SZWFjdERPTS5yZW5kZXIoPEdyaWRkbGVXaXRoQ2FsbGJhY2sgZ2V0RXh0ZXJuYWxSZXN1bHRzPXtsb2FkRGF0YX0gbG9hZGluZ0NvbXBvbmVudD17TG9hZGluZ30gZW5hYmxlU29ydD17ZmFsc2V9IGNvbHVtbnM9e1tcIm5hbWVcIiwgXCJtb2RlbFwiLCBcIm1hbnVmYWN0dXJlclwiLCBcInBhc3NlbmdlcnNcIl19IHJlc3VsdHNQZXJQYWdlPXsxMH0gc2hvd0ZpbHRlcj17ZmFsc2V9IHNob3dTZXR0aW5ncz17ZmFsc2V9IC8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZ3JpZGRsZS1jYWxsYmFjaycpKTtcbiJdfQ==</script></head>
+<body id="docs-page">
+  <header class="background-primary-dark border-bottom border-secondary">
+  	<div class="container">
+  		<div class="row">
+  			<div class="eight columns">
+          <a href="https://griddlegriddle.github.io/v0-docs/index.html"><img src="External%20Data_files/griddle.png" alt="Griddle"></a>
+  			</div>
+	  		<div class="four columns right">
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=watch&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=GriddleGriddle&amp;repo=Griddle&amp;type=fork&amp;count=true" allowtransparency="true" scrolling="0" width="90" height="20" frameborder="0"></iframe>
+            <br>
+          <a href="https://griddlegriddle.github.io/v0-docs/quickstart.html" class="button border-light text-light big">Documentation</a>
+	  		</div>
+  		</div>
+  	</div>
+  </header>
+	<div class="container page-content">
+		<div class="row">
+			<div class="two columns">
+				<nav class="side">
+					<ul>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/quickstart.html">Quickstart</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/styling.html">Styling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/subgrids.html">Subgrids</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/customization.html">Customization</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/externalData.html">External Data</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/infiniteScroll.html">Infinite Scrolling</a></li>
+						<li><a href="https://griddlegriddle.github.io/v0-docs/properties.html">Properties</a></li>
+						<li class="border-top border-lighter-grey"><a href="https://reactjsnews.com/isomorphic-javascript-with-react-node/">Isomorphic Rendering <small>(at ReactJS News)</small></a>
+					</li></ul>
+				</nav>
+			</div>
+			<div class="ten columns docs">
+				<h2 id="external-data">External Data</h2>
+<p>Often times it is not practical to load all of a grid's data in one 
+request. Griddle supports loading external data through creation of a 
+wrapper component or writing a callback function (the wrapper component 
+is the recommended route). </p>
+<h4 id="wrapper-component-recommended-">Wrapper Component (recommended)</h4>
+<p>Griddle comes with a handful of properties that must be set when working with external data.</p>
+<dl>
+    <dt>useExternal</dt>
+    <dd><strong>bool</strong> - Griddle will run expecting results to be
+ coming from an external source. This affects paging, filtering, 
+sorting, etc. (i.e. Griddle will not sort the local data set but will 
+tell the wrapper component to get the sorted data from the source). 
+Default: false
+</dd></dl>
+
+<dl>
+    <dt>externalSetPage</dt>
+    <dd><strong>function</strong> - The function that will be used to set the page. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalChangeSort</dt>
+    <dd><strong>function</strong> - The function that will be used to change the sort. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalSetFilter</dt>
+    <dd><strong>function</strong> - The function that will be used to change the filter. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalSetPageSize</dt>
+    <dd><strong>function</strong> - The function that will be used to change the number of results per page. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalMaxPage</dt>
+    <dd><strong>int</strong> - The max number of pages that can be displayed for the result-set. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalCurrentPage</dt>
+    <dd><strong>int</strong> - The page that is currently displayed from the result-set. Default: null</dd>
+</dl>
+<dl>
+    <dt>externalSortColumn</dt>
+    <dd><strong>string</strong> - The column name that determines the sort of the result-set Default: null</dd>
+</dl>
+<dl>
+    <dt>externalSortAscending</dt>
+    <dd><strong>bool</strong> - Specifies the sort direction for the current sort column. Default: true</dd>
+</dl>
+
+<hr>
+
+<h5 id="example-wrapper-component">Example Wrapper Component</h5>
+<p>Below is a skeleton wrapper component for dealing with external 
+results in Griddle. This wrapper does not need to be used but it could 
+serve as a decent starting point. </p>
+<pre><code><span class="keyword">var</span> ExternalComponent = React.createClass({
+    getInitialState: <span class="keyword">function</span>(){
+      <span class="keyword">var</span> initial = { <span class="string">"results"</span>: [],
+          <span class="string">"currentPage"</span>: <span class="number">0</span>,
+          <span class="string">"maxPages"</span>: <span class="number">0</span>,
+          <span class="string">"externalResultsPerPage"</span>: <span class="number">5</span>,
+          <span class="string">"externalSortColumn"</span>:<span class="literal">null</span>,
+          <span class="string">"externalSortAscending"</span>:<span class="literal">true</span>
+      };
+
+      <span class="keyword">return</span> initial;
+    },
+    <span class="comment">//general lifecycle methods</span>
+    componentWillMount: <span class="keyword">function</span>(){
+    },
+    componentDidMount: <span class="keyword">function</span>(){
+    },
+    <span class="comment">//what page is currently viewed</span>
+    setPage: <span class="keyword">function</span>(index){
+    },
+    <span class="comment">//this will handle how the data is sorted</span>
+    sortData: <span class="keyword">function</span>(sort, sortAscending, data){
+    },
+    <span class="comment">//this changes whether data is sorted in ascending or descending order</span>
+    changeSort: <span class="keyword">function</span>(sort, sortAscending){
+    },
+    <span class="comment">//this method handles the filtering of the data</span>
+    setFilter: <span class="keyword">function</span>(filter){
+    },
+    <span class="comment">//this method handles determining the page size</span>
+    setPageSize: <span class="keyword">function</span>(size){
+    },
+    render: <span class="keyword">function</span>(){
+      <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">useExternal</span>=<span class="value">{true}</span> <span class="attribute">externalSetPage</span>=<span class="value">{this.setPage}</span>
+        <span class="attribute">externalChangeSort</span>=<span class="value">{this.changeSort}</span> <span class="attribute">externalSetFilter</span>=<span class="value">{this.setFilter}</span>
+        <span class="attribute">externalSetPageSize</span>=<span class="value">{this.setPageSize}</span> <span class="attribute">externalMaxPage</span>=<span class="value">{this.state.maxPages}</span>
+        <span class="attribute">externalCurrentPage</span>=<span class="value">{this.state.currentPage}</span> <span class="attribute">results</span>=<span class="value">{this.state.results}</span> 
+        <span class="attribute">resultsPerPage</span>=<span class="value">{this.state.externalResultsPerPage}</span> 
+        <span class="attribute">externalSortColumn</span>=<span class="value">{this.state.externalSortColumn}</span> 
+        <span class="attribute">externalSortAscending</span>=<span class="value">{this.state.externalSortAscending}</span>
+        <span class="attribute">showFilter</span>=<span class="value">{true}</span> <span class="attribute">showSettings</span>=<span class="value">{true}</span> /&gt;</span>
+    }
+});</span></code></pre>
+<hr>
+
+<h5 id="external-api-example-">External API Example:</h5>
+<p>The following example uses the <a href="http://swapi.co/">Star Wars API</a> and the <a href="https://github.com/cfjedimaster/SWAPI-Wrapper">SWAPI-Wrapper</a>. </p>
+<p>First off, the skeleton wrapper was modified to include a get external data method. </p>
+<pre><code class="lang-javascript">getExternalData: <span class="keyword">function</span>(page){
+  <span class="keyword">var</span> that = <span class="keyword">this</span>;
+  page = page||<span class="number">1</span>
+
+  swapiModule.getStarships(page, <span class="keyword">function</span>(data) {
+   that.setState({
+      results: data.results,
+      currentPage: page-<span class="number">1</span>,
+      maxPages: Math.round(data.count/<span class="number">10</span>)
+    })
+  });
+}</code></pre>
+<p>The component was then modified to use getExternalData method for 
+changing the pages and obtaining the initial data. Notice that 
+filtering, sorting, etc are not enabled on this example (the next 
+example has all of these options turned on). </p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> ExternalSwapiComponent = React.createClass({
+    getInitialState: <span class="keyword">function</span>(){
+      <span class="keyword">var</span> initial = { <span class="string">"results"</span>: [],
+          <span class="string">"currentPage"</span>: <span class="number">0</span>,
+          <span class="string">"maxPages"</span>: <span class="number">0</span>,
+          <span class="string">"externalResultsPerPage"</span>: <span class="number">10</span>,
+          <span class="string">"externalSortColumn"</span>:<span class="literal">null</span>,
+          <span class="string">"externalSortAscending"</span>:<span class="literal">true</span>,
+          <span class="string">"results"</span>: []
+      };
+
+      <span class="keyword">return</span> initial;
+    },
+    componentWillMount: <span class="keyword">function</span>(){
+    },
+    componentDidMount: <span class="keyword">function</span>(){
+      <span class="keyword">this</span>.getExternalData();
+    },
+    getExternalData: <span class="keyword">function</span>(page){
+         ...
+    },
+    setPage: <span class="keyword">function</span>(index){
+      <span class="comment">//This should interact with the data source to get the page at the given index</span>
+      index = index &gt; <span class="keyword">this</span>.state.maxPages ? <span class="keyword">this</span>.state.maxPages : index &lt; <span class="number">1</span> ? <span class="number">1</span> : index + <span class="number">1</span>;
+      <span class="keyword">this</span>.getExternalData(index);
+    },
+    setPageSize: <span class="keyword">function</span>(size){
+    },
+    render: <span class="keyword">function</span>(){
+      <span class="comment">//columns={["name", "city", "state", "country"]}</span>
+      <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">useExternal</span>=<span class="value">{true}</span> <span class="attribute">externalSetPage</span>=<span class="value">{this.setPage}</span> <span class="attribute">enableSort</span>=<span class="value">{false}</span> 
+        <span class="attribute">columns</span>=<span class="value">{["name",</span> "<span class="attribute">model</span>", "<span class="attribute">manufacturer</span>", "<span class="attribute">passengers</span>"]}
+        <span class="attribute">externalSetPageSize</span>=<span class="value">{this.setPageSize}</span> <span class="attribute">externalMaxPage</span>=<span class="value">{this.state.maxPages}</span>
+        <span class="attribute">externalChangeSort</span>=<span class="value">{function(){}}</span> <span class="attribute">externalSetFilter</span>=<span class="value">{function(){}}</span>
+        <span class="attribute">externalCurrentPage</span>=<span class="value">{this.state.currentPage}</span> <span class="attribute">results</span>=<span class="value">{this.state.results}</span> <span class="attribute">tableClassName</span>=<span class="value">"table"</span> <span class="attribute">resultsPerPage</span>=<span class="value">{this.state.externalResultsPerPage}</span>
+        <span class="attribute">externalSortColumn</span>=<span class="value">{this.state.externalSortColumn}</span> <span class="attribute">externalSortAscending</span>=<span class="value">{this.state.externalSortAscending}</span> /&gt;</span>
+    }
+});</span></code></pre>
+<div id="griddle-external-swapi"><div data-reactroot="" class="griddle"><!-- react-text: 2 --><!-- /react-text --><!-- react-text: 3 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="table" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="name" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>name</span></th><th data-title="model" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>model</span></th><th data-title="manufacturer" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>manufacturer</span></th><th data-title="passengers" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>passengers</span></th></tr></thead><tbody></tbody><tbody><tr><td colspan="4" style="text-align: center; padding-bottom: 40px;"><div class="loading">Loading</div></td></tr></tbody><tbody><tr><td colspan="4" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select></select><!-- react-text: 30 --> / <!-- /react-text --><!-- react-text: 31 -->0<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 34 -->Next<!-- /react-text --><!-- react-text: 35 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/javascript" src="External%20Data_files/swapi.js"></script>
+
+<script type="text/jsx">
+var Loading = React.createClass({
+  getDefaultProps: function(){
+    return {
+      loadingText: "Loading"
+    }
+  },
+  render: function(){
+    return <div className="loading">{this.props.loadingText}</div>;
+  }
+});
+
+var ExternalSwapiComponent = React.createClass({
+    getInitialState: function(){
+      var initial = { "results": [],
+          "currentPage": 0,
+          "isLoading": false,
+          "maxPages": 0,
+          "externalResultsPerPage": 10,
+          "externalSortColumn":null,
+          "externalSortAscending":true,
+          "results": []
+      };
+
+      return initial;
+    },
+    componentWillMount: function(){
+    },
+    componentDidMount: function(){
+      this.getExternalData();
+    },
+    getExternalData: function(page){
+      var that = this;
+      page = page||1
+
+      this.setState({
+        isLoading: true
+      });
+
+      swapiModule.getStarships(page, function(data) {
+       that.setState({
+          results: data.results,
+          currentPage: page-1,
+          maxPages: Math.round(data.count/10),
+          isLoading: false
+        })
+      });
+    },
+    setPage: function(index){
+      //This should interact with the data source to get the page at the given index
+      index = index > this.state.maxPages ? this.state.maxPages : index < 1 ? 1 : index + 1;
+      this.getExternalData(index);
+    },
+    setPageSize: function(size){
+    },
+    render: function(){
+      //columns={["name", "city", "state", "country"]}
+      return <Griddle useExternal={true} externalSetPage={this.setPage} enableSort={false} columns={["name", "model", "manufacturer", "passengers"]}
+        externalSetPageSize={this.setPageSize} externalMaxPage={this.state.maxPages}
+        externalChangeSort={function(){}} externalSetFilter={function(){}}
+        externalCurrentPage={this.state.currentPage} results={this.state.results} tableClassName="table" resultsPerPage={this.state.externalResultsPerPage}
+        externalSortColumn={this.state.externalSortColumn} externalSortAscending={this.state.externalSortAscending} externalLoadingComponent={Loading} externalIsLoading={this.state.isLoading}/>
+    }
+});
+
+
+  ReactDOM.render(<ExternalSwapiComponent />, document.getElementById("griddle-external-swapi"));
+</script>
+
+
+<hr>
+
+<h5 id="simulated-external-results-example-">Simulated External Results Example:</h5>
+<p>The following example is using the skeleton template above and 
+simulating what loading results externally could look like (while still 
+using the example data that has been used through-out the Griddle 
+documentation). </p>
+<p>Please keep in mind that a good deal of this code is to simulate the 
+type of actions that would generally take place on a server (or wherever
+ the data is coming from) -- most of the time the functions should deal 
+with passing data back and forth to the source of the data (e.g. an 
+API).</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> externalData = fakeData.slice(<span class="number">0</span>, <span class="number">53</span>);
+
+<span class="keyword">var</span> SimulatedExternalComponent = React.createClass({
+    getInitialState: <span class="keyword">function</span>(){
+      <span class="keyword">var</span> initial = { <span class="string">"results"</span>: [],
+          <span class="string">"currentPage"</span>: <span class="number">0</span>,
+          <span class="string">"maxPages"</span>: <span class="number">0</span>,
+          <span class="string">"externalResultsPerPage"</span>: <span class="number">5</span>,
+          <span class="string">"externalSortColumn"</span>:<span class="literal">null</span>,
+          <span class="string">"externalSortAscending"</span>:<span class="literal">true</span>,
+          <span class="string">"pretendServerData"</span>: externalData
+      };
+
+      <span class="keyword">return</span> initial;
+    },
+    componentWillMount: <span class="keyword">function</span>(){
+        <span class="keyword">this</span>.setState({
+            maxPages: Math.round(<span class="keyword">this</span>.state.pretendServerData.length/<span class="keyword">this</span>.state.externalResultsPerPage),
+            <span class="string">"results"</span>: <span class="keyword">this</span>.state.pretendServerData.slice(<span class="number">0</span>,<span class="keyword">this</span>.state.externalResultsPerPage)
+        })
+    },
+    setPage: <span class="keyword">function</span>(index){
+      <span class="comment">//This should interact with the data source to get the page at the given index</span>
+      <span class="keyword">var</span> number = index === <span class="number">0</span> ? <span class="number">0</span> : index * <span class="keyword">this</span>.state.externalResultsPerPage;
+      <span class="keyword">this</span>.setState(
+        {
+          <span class="string">"results"</span>: <span class="keyword">this</span>.state.pretendServerData.slice(number, number+<span class="number">5</span>&gt;<span class="keyword">this</span>.state.pretendServerData.length ? <span class="keyword">this</span>.state.pretendServerData.length : number+<span class="keyword">this</span>.state.externalResultsPerPage),
+          <span class="string">"currentPage"</span>: index
+        });
+    },
+    sortData: <span class="keyword">function</span>(sort, sortAscending, data){
+      <span class="comment">//sorting should generally happen wherever the data is coming from </span>
+      sortedData = _.sortBy(data, <span class="keyword">function</span>(item){
+        <span class="keyword">return</span> item[sort];
+      });
+
+      <span class="keyword">if</span>(sortAscending === <span class="literal">false</span>){
+        sortedData.reverse();
+      }
+      <span class="keyword">return</span> {
+        <span class="string">"currentPage"</span>: <span class="number">0</span>,
+        <span class="string">"externalSortColumn"</span>: sort,
+        <span class="string">"externalSortAscending"</span>: sortAscending,
+        <span class="string">"pretendServerData"</span>: sortedData,
+        <span class="string">"results"</span>: sortedData.slice(<span class="number">0</span>,<span class="keyword">this</span>.state.externalResultsPerPage)
+      };
+    },
+    changeSort: <span class="keyword">function</span>(sort, sortAscending){
+      <span class="comment">//this should change the sort for the given column</span>
+      <span class="keyword">this</span>.setState(<span class="keyword">this</span>.sortData(sort, sortAscending, <span class="keyword">this</span>.state.pretendServerData));
+    },
+    setFilter: <span class="keyword">function</span>(filter){
+        <span class="comment">//filtering should generally occur on the server (or wherever) </span>
+        <span class="comment">//this is a lot of code for what should normally just be a method that is used to pass data back and forth</span>
+        <span class="keyword">var</span> sortedData = <span class="keyword">this</span>.sortData(<span class="keyword">this</span>.state.externalSortColumn, <span class="keyword">this</span>.state.externalSortAscending, externalData);
+
+        <span class="keyword">if</span>(filter === <span class="string">""</span>){
+            <span class="keyword">this</span>.setState(_.extend(sortedData, {maxPages: Math.round(sortedData.pretendServerData.length &gt; <span class="keyword">this</span>.state.externalResultsPerPage ? sortedData.pretendServerData.length/<span class="keyword">this</span>.state.externalResultsPerPage : <span class="number">1</span>)}));
+
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">var</span> filteredData = _.filter(sortedData.pretendServerData,
+            <span class="keyword">function</span>(item) {
+                <span class="keyword">var</span> arr = _.values(item);
+                <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++){
+                   <span class="keyword">if</span> ((arr[i]||<span class="string">""</span>).toString().toLowerCase().indexOf(filter.toLowerCase()) &gt;= <span class="number">0</span>){
+                    <span class="keyword">return</span> <span class="literal">true</span>;
+                   }
+                }
+
+                <span class="keyword">return</span> <span class="literal">false</span>;
+            });
+
+        <span class="keyword">this</span>.setState({
+            pretendServerData: filteredData,
+            maxPages: Math.round(filteredData.length &gt; <span class="keyword">this</span>.state.externalResultsPerPage ? filteredData.length/<span class="keyword">this</span>.state.externalResultsPerPage : <span class="number">1</span>),
+            <span class="string">"results"</span>: filteredData.slice(<span class="number">0</span>,<span class="keyword">this</span>.state.externalResultsPerPage)
+        });
+    },
+    setPageSize: <span class="keyword">function</span>(size){
+        <span class="keyword">this</span>.setState({
+            currentPage: <span class="number">0</span>,
+            externalResultsPerPage: size,
+            maxPages: Math.round(<span class="keyword">this</span>.state.pretendServerData.length &gt; size ? <span class="keyword">this</span>.state.pretendServerData.length/size : <span class="number">1</span>),
+            results: <span class="keyword">this</span>.state.pretendServerData.slice(<span class="number">0</span>,size)
+        });
+    },
+    render: <span class="keyword">function</span>(){
+      <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="title">Griddle</span> <span class="attribute">useExternal</span>=<span class="value">{true}</span> <span class="attribute">externalSetPage</span>=<span class="value">{this.setPage}</span>
+        <span class="attribute">externalChangeSort</span>=<span class="value">{this.changeSort}</span> <span class="attribute">externalSetFilter</span>=<span class="value">{this.setFilter}</span>
+        <span class="attribute">externalSetPageSize</span>=<span class="value">{this.setPageSize}</span> <span class="attribute">externalMaxPage</span>=<span class="value">{this.state.maxPages}</span>
+        <span class="attribute">externalCurrentPage</span>=<span class="value">{this.state.currentPage}</span> <span class="attribute">results</span>=<span class="value">{this.state.results}</span> <span class="attribute">tableClassName</span>=<span class="value">"table"</span> <span class="attribute">resultsPerPage</span>=<span class="value">{this.state.externalResultsPerPage}</span>
+        <span class="attribute">externalSortColumn</span>=<span class="value">{this.state.externalSortColumn}</span> <span class="attribute">externalSortAscending</span>=<span class="value">{this.state.externalSortAscending}</span> <span class="attribute">showFilter</span>=<span class="value">{true}</span> <span class="attribute">showSettings</span>=<span class="value">{true}</span> /&gt;</span>
+    }
+});
+
+React.render(<span class="tag">&lt;<span class="title">SimulatedExternalComponent</span> /&gt;</span>, document.getElementById("griddle-external-simulated"));</span></code></pre>
+<div id="griddle-external-simulated"><div data-reactroot="" class="griddle"><div class="top-section" style="clear: both; display: table; width: 100%;"><div class="griddle-filter" style="float: left; width: 50%; text-align: left; color: rgb(34, 34, 34); min-height: 1px;"><div class="filter-container"><input name="filter" placeholder="Filter Results" class="form-control" type="text"></div></div><div class="griddle-settings-toggle" style="float: left; width: 50%; text-align: right;"><button type="button" class="settings" style="background: transparent none repeat scroll 0% 0%; border: medium none; padding: 0px; margin: 0px; font-size: 14px;"><!-- react-text: 8 -->Settings<!-- /react-text --><!-- react-text: 9 --><!-- /react-text --></button></div></div><!-- react-text: 10 --><!-- /react-text --><div class="griddle-container" style="border: 1px solid rgb(221, 221, 221);"><div class="griddle-body"><div><table class="table" style="width: 100%; table-layout: fixed;"><thead><tr><th data-title="id" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>id</span></th><th data-title="name" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>name</span></th><th data-title="city" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>city</span></th><th data-title="state" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>state</span></th><th data-title="country" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>country</span></th><th data-title="company" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>company</span></th><th data-title="favoriteNumber" class="" style="background-color: rgb(237, 237, 239); border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(221, 221, 221); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; color: rgb(34, 34, 34); padding: 5px; cursor: pointer;"><span>favoriteNumber</span></th></tr></thead><tbody><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 34 --><!-- /react-text --><!-- react-text: 35 -->0<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 37 --><!-- /react-text --><!-- react-text: 38 -->Mayer Leonard<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 40 --><!-- /react-text --><!-- react-text: 41 -->Kapowsin<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 43 --><!-- /react-text --><!-- react-text: 44 -->Hawaii<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 46 --><!-- /react-text --><!-- react-text: 47 -->United Kingdom<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 49 --><!-- /react-text --><!-- react-text: 50 -->Ovolo<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 52 --><!-- /react-text --><!-- react-text: 53 -->7<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 56 --><!-- /react-text --><!-- react-text: 57 -->1<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 59 --><!-- /react-text --><!-- react-text: 60 -->Koch Becker<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 62 --><!-- /react-text --><!-- react-text: 63 -->Johnsonburg<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 65 --><!-- /react-text --><!-- react-text: 66 -->New Jersey<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 68 --><!-- /react-text --><!-- react-text: 69 -->Madagascar<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 71 --><!-- /react-text --><!-- react-text: 72 -->Eventage<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 74 --><!-- /react-text --><!-- react-text: 75 -->2<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 78 --><!-- /react-text --><!-- react-text: 79 -->2<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 81 --><!-- /react-text --><!-- react-text: 82 -->Lowery Hopkins<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 84 --><!-- /react-text --><!-- react-text: 85 -->Blanco<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 87 --><!-- /react-text --><!-- react-text: 88 -->Arizona<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 90 --><!-- /react-text --><!-- react-text: 91 -->Ukraine<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 93 --><!-- /react-text --><!-- react-text: 94 -->Comtext<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 96 --><!-- /react-text --><!-- react-text: 97 -->3<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 100 --><!-- /react-text --><!-- react-text: 101 -->3<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 103 --><!-- /react-text --><!-- react-text: 104 -->Walters Mays<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 106 --><!-- /react-text --><!-- react-text: 107 -->Glendale<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 109 --><!-- /react-text --><!-- react-text: 110 -->Illinois<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 112 --><!-- /react-text --><!-- react-text: 113 -->New Zealand<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 115 --><!-- /react-text --><!-- react-text: 116 -->Corporana<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 118 --><!-- /react-text --><!-- react-text: 119 -->6<!-- /react-text --></td></tr><tr class="standard-row"><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 122 --><!-- /react-text --><!-- react-text: 123 -->4<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 125 --><!-- /react-text --><!-- react-text: 126 -->Shaw Lowe<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 128 --><!-- /react-text --><!-- react-text: 129 -->Coultervillle<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 131 --><!-- /react-text --><!-- react-text: 132 -->Wyoming<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 134 --><!-- /react-text --><!-- react-text: 135 -->Ecuador<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 137 --><!-- /react-text --><!-- react-text: 138 -->Isologica<!-- /react-text --></td><td style="margin: 0px; padding: 5px; height: 15px; background-color: rgb(255, 255, 255); border-top-color: rgb(221, 221, 221); color: rgb(34, 34, 34);"><!-- react-text: 140 --><!-- /react-text --><!-- react-text: 141 -->2<!-- /react-text --></td></tr></tbody><tbody><tr><td colspan="7" class="footer-container" style="padding: 0px; background-color: rgb(237, 237, 237); border: 0px none; color: rgb(34, 34, 34);"><div class="griddle-footer"><div style="min-height: 35px;"><div class="griddle-previous" style="width: 33%; float: left; min-height: 1px; margin-top: 5px;"></div><div class="griddle-page" style="text-align: center; width: 33%; float: left; min-height: 1px; margin-top: 5px;"><select><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option></select><!-- react-text: 161 --> / <!-- /react-text --><!-- react-text: 162 -->11<!-- /react-text --></div><div class="griddle-next" style="text-align: right; width: 34%; float: left; min-height: 1px; margin-top: 5px;"><button type="button" style="color: rgb(34, 34, 34); border: medium none; background: transparent none repeat scroll 0% 0%; margin: 0px 10px 0px 0px;"><!-- react-text: 165 -->Next<!-- /react-text --><!-- react-text: 166 --><!-- /react-text --></button></div></div></div></td></tr></tbody></table></div></div></div></div></div>
+
+<script type="text/jsx">
+var externalData = fakeData.slice(0, 53);
+
+var SimulatedExternalComponent = React.createClass({
+    getInitialState: function(){
+      var initial = { "results": [],
+          "currentPage": 0,
+          "maxPages": 0,
+          "externalResultsPerPage": 5,
+          "externalSortColumn":null,
+          "externalSortAscending":true,
+          "pretendServerData": externalData
+      };
+
+      return initial;
+    },
+    componentWillMount: function(){
+        this.setState({
+            maxPages: Math.ceil(this.state.pretendServerData.length/this.state.externalResultsPerPage),
+            "results": this.state.pretendServerData.slice(0,this.state.externalResultsPerPage)
+        })
+    },
+    setPage: function(index){
+      //This should interact with the data source to get the page at the given index
+      var number = index === 0 ? 0 : index * this.state.externalResultsPerPage;
+      this.setState(
+        {
+          "results": this.state.pretendServerData.slice(number, number+5>this.state.pretendServerData.length ? this.state.pretendServerData.length : number+this.state.externalResultsPerPage),
+          "currentPage": index
+        });
+    },
+    sortData: function(sort, sortAscending, data){
+      //sorting should generally happen wherever the data is coming from
+      sortedData = _.sortBy(data, function(item){
+        return item[sort];
+      });
+
+      if(sortAscending === false){
+        sortedData.reverse();
+      }
+      return {
+        "currentPage": 0,
+        "externalSortColumn": sort,
+        "externalSortAscending": sortAscending,
+        "pretendServerData": sortedData,
+        "results": sortedData.slice(0,this.state.externalResultsPerPage)
+      };
+    },
+    changeSort: function(sort, sortAscending){
+      //this should change the sort for the given column
+      this.setState(this.sortData(sort, sortAscending, this.state.pretendServerData));
+    },
+    setFilter: function(filter){
+        //filtering should generally occur on the server (or wherever) 
+        //this is a lot of code for what should normally just be a method that is used to pass data back and forth
+        var sortedData = this.sortData(this.state.externalSortColumn, this.state.externalSortAscending, externalData);
+
+        if(filter === ""){
+            this.setState(_.extend(sortedData, {maxPages: Math.ceil(sortedData.pretendServerData.length > this.state.externalResultsPerPage ? sortedData.pretendServerData.length/this.state.externalResultsPerPage : 1)}));
+
+            return;
+        }
+
+        var filteredData = _.filter(sortedData.pretendServerData,
+            function(item) {
+                var arr = _.values(item);
+                for(var i = 0; i < arr.length; i++){
+                   if ((arr[i]||"").toString().toLowerCase().indexOf(filter.toLowerCase()) >= 0){
+                    return true;
+                   }
+                }
+
+                return false;
+            });
+
+        this.setState({
+            pretendServerData: filteredData,
+            maxPages: Math.ceil(filteredData.length > this.state.externalResultsPerPage ? filteredData.length/this.state.externalResultsPerPage : 1),
+            "results": filteredData.slice(0,this.state.externalResultsPerPage)
+        });
+    },
+    setPageSize: function(size){
+        this.setState({
+            currentPage: 0,
+            externalResultsPerPage: size,
+            maxPages: Math.ceil(this.state.pretendServerData.length > size ? this.state.pretendServerData.length/size : 1),
+            results: this.state.pretendServerData.slice(0,size)
+        });
+    },
+    render: function(){
+      return <Griddle useExternal={true} externalSetPage={this.setPage}
+        externalChangeSort={this.changeSort} externalSetFilter={this.setFilter}
+        externalSetPageSize={this.setPageSize} externalMaxPage={this.state.maxPages}
+        externalCurrentPage={this.state.currentPage} results={this.state.results} tableClassName="table" resultsPerPage={this.state.externalResultsPerPage}
+        externalSortColumn={this.state.externalSortColumn} externalSortAscending={this.state.externalSortAscending} showFilter={true} showSettings={true} />
+    }
+});
+
+ReactDOM.render(<SimulatedExternalComponent />, document.getElementById("griddle-external-simulated"));
+</script>
+
+<hr>
+
+<h4 id="griddle-with-callback">Griddle With Callback</h4>
+<p>Previous versions of Griddle had a built-in callback for obtaining 
+external data. This has since been moved into its own component to help 
+simplify the main Griddle component. The call definition is the same. </p>
+<h5 id="important-">Important!</h5>
+<p><strong>GriddleWithCallback is in its own GitHub repository and npm package. To install GriddleWithCallback <code>npm install griddle-callback</code> and anywhere where it is used, <code>require GriddleWithCallback = require('griddle-callback');</code></strong></p>
+<h5 id="example-">Example:</h5>
+<p>Lets assume we want to obtain Star Wars data like in the example 
+above except using GriddleWithCallback instead of using the exernal 
+results properties. We will start out by creating a callback method. The
+ Griddle callback has access to <code>filterString, sortColumn, sortAscending, page, pageSize, callback</code> parameters.</p>
+<p>For the example, our Callback looks like this: </p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> loadData = <span class="keyword">function</span>(filterString, sortColumn, sortAscending, page, pageSize, callback) {
+    page+=<span class="number">1</span>;
+
+    swapiModule.getStarships(page, <span class="keyword">function</span>(data){
+        callback({
+            results: data.results,
+            totalResults: data.count,
+            pageSize: pageSize
+        });    
+    });
+};</code></pre>
+<p></p><div id="griddle-callback"></div><p></p>
+<script type="text/javascript" src="External%20Data_files/GriddleWithCallback.js"></script>
+<script type="text/jsx">
+var setDefault = function(original, value){
+    return typeof original === 'undefined' ? value : original;
+}
+
+var loadData = function(filterString, sortColumn, sortAscending, page, pageSize, callback) {
+    page+=1;
+
+    swapiModule.getStarships(page, function(data){
+        callback({
+            results: data.results,
+            totalResults: data.count,
+            pageSize: pageSize
+        });    
+    });
+};
+
+var Loading = React.createClass({
+    getDefaultProps: function(){
+        return {
+            loadingText: "Loading"
+        }
+    },
+    render: function(){
+        return <div className="loading">{this.props.loadingText}</div>;
+    }
+});
+
+ReactDOM.render(<GriddleWithCallback getExternalResults={loadData} loadingComponent={Loading} enableSort={false} columns={["name", "model", "manufacturer", "passengers"]} resultsPerPage={10} showFilter={false} showSettings={false} />, document.getElementById('griddle-callback'));
+</script>
+			</div>
+		</div>
+	</div>
+  <div class="order-primary content-section background-darker-grey text-light-grey" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="ten columns offset-by-two">
+          <p>Griddle is a project maintained by <a href="http://twitter.com/ryanlanciaux">Ryan Lanciaux</a> and <a href="http://www.twitter.com/joellanciaux">Joel Lanciaux</a> in collaboration with all of <a href="https://github.com/GriddleGriddle/Griddle/graphs/contributors">the awesome contributors!</a></p>
+         	<small>
+        		© 2015 <a href="http://www.twitter.com/ryanlanciaux">Ryan Lanciaux</a> | <a href="https://www.github.com/DynamicTyped">DynamicTyped</a>
+        	</small> 
+        	<br>
+          <small>
+						Example data has been generated with <a href="http://json-generator.com/">json-generator.com</a>. Any data that resembles real people, places, companies, etc. is coincidence.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-58716212-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script> 
+
+
+</body></html>

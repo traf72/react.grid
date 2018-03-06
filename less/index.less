@@ -1,0 +1,121 @@
+@import "./variables";
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-size: 13px;
+	padding: 15px;
+}
+
+input[type="search"] {
+    -webkit-appearance: searchfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: searchfield-decoration;
+}
+
+.form-control {
+    height: 30px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+.page-loader {
+    width: 50px;
+    height: 50px;
+    top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-loader div {
+    background: #A9A9A9;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .page-loader {
+        .loader-inner {
+            top: 100px;
+        }
+
+        div {
+            background: white;
+        }
+    }
+}
+
+.icons-column {
+    font-size: 1.1em;
+    text-align: right;
+
+    span {
+        color: black;
+        text-decoration: none;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+}
+
+.alert-container {
+    position: fixed;
+    z-index: 1000000;
+    left: 0;
+    right: 0;
+    margin-left: 35%;
+    margin-right: 35%;
+    opacity: .9;
+    top: 140px;
+}
+
+.error-color {
+    color: @error-color;
+}
+
+.warning-color {
+    color: @warning-color;
+}
+
+.success-color {
+    color: @success-color;
+}
+
+.display-none {
+    display: none;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.custom-grid {
+	width: 50%;
+}
+
+.custom-grid {
+	.country-column, .city-column, .latitude-column, .longitude-column {
+		width: 200px;
+	}
+}
