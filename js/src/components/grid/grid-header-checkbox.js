@@ -1,17 +1,17 @@
 ﻿'use strict';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 
 export default class GridHeaderCheckbox extends React.Component {
     constructor(props) {
         super(props);
-		
+
         this._toggleChecked = this._toggleChecked.bind(this);
     }
 
     componentDidMount() {
-        this.props.setHeaderCheckbox(ReactDom.findDOMNode(this));
+        this.props.setHeaderCheckbox(ReactDOM.findDOMNode(this));
         this.props.updateHeaderCheckbox();
     }
 

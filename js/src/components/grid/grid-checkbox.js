@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 
 export default class GridCheckbox extends React.Component {
     constructor(props) {
@@ -12,11 +12,11 @@ export default class GridCheckbox extends React.Component {
     }
 
     componentDidMount() {
-        this.props.extraProps.saveCheckboxToColletion(ReactDom.findDOMNode(this));
+        this.props.extraProps.saveCheckboxToColletion(ReactDOM.findDOMNode(this));
     }
 
     componentWillUnmount() {
-        this.props.extraProps.removeCheckboxFromColletion(ReactDom.findDOMNode(this));
+        this.props.extraProps.removeCheckboxFromColletion(ReactDOM.findDOMNode(this));
     }
 
     _toggleChecked(e) {

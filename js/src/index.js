@@ -5,7 +5,7 @@ import 'babel-polyfill';
 import $ from 'jquery';
 import 'bootstrap';
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import Grid from './components/grid/grid.js';
 import runAsync from './components/async.js';
 import cities from 'cities.json';
@@ -76,5 +76,5 @@ class Sample extends React.PureComponent {
 }
 
 export function init(options) {
-    ReactDom.render(<Sample />, document.getElementById('grid'));
+    ReactDOM.render(<Sample />, document.getElementById('grid'));
 }

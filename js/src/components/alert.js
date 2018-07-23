@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 const alertId = 'custom-alert';
@@ -34,7 +34,7 @@ class Alert extends React.Component {
         clearTimeout(this._timerId);
         $(`#${alertCloseBtnId}`).alert();
         this._onCloseFunction();
-        ReactDom.unmountComponentAtNode(document.getElementById(alertContainerId));
+        ReactDOM.unmountComponentAtNode(document.getElementById(alertContainerId));
     }
 
     _onCloseFunction() {
@@ -60,7 +60,7 @@ Alert.propTypes = {
 };
 
 function showAlert(type, message, automaticCloseTimeoutInMs, onCloseFunction) {
-    ReactDom.render(<Alert type={type} message={message} automaticCloseTimeoutInMs={automaticCloseTimeoutInMs} onCloseFunction={onCloseFunction} />, getContainer().get(0));
+    ReactDOM.render(<Alert type={type} message={message} automaticCloseTimeoutInMs={automaticCloseTimeoutInMs} onCloseFunction={onCloseFunction} />, getContainer().get(0));
 }
 
 function getContainer() {

@@ -13,6 +13,17 @@ module.exports = {
         libraryTarget: 'var',
         library: '[name]',
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /\.js/,
+                    name: 'common',
+                    chunks: 'all',
+                }
+            }
+        },
+    },
     plugins: [
         new ExtractTextPlugin('../css/[name].css'),
         new CopyWebpackPlugin([
