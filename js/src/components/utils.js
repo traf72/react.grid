@@ -177,6 +177,10 @@ let utils = {
     lowerFirstLetter(string) {
         return string ? string.charAt(0).toLowerCase() + string.slice(1) : string;
     },
+
+    normalizeNumber(number) {
+        return typeof number === 'string' ? number.replace(/,/g, '.').replace(/\s/g, '') : number;
+    },
 };
 
 export default utils;
