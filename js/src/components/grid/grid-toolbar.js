@@ -53,7 +53,10 @@ export default class GridToolbar extends React.Component {
     }
 
     _handleFilterKeyPress(e) {
-        this.setState({ searchText: getFilterTextDependOnKeyPressed(e.key, e.target.value) });
+        let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
+        if (e.target.value !== filterText) {
+            this._applyFilterChanges(filterText);
+        }
     }
 
     _handleFilterPaste(e) {
@@ -85,10 +88,10 @@ export default class GridToolbar extends React.Component {
         if (this.props.extraProps.isShowFilter()) {
             return (
                 <div className="search-block">
-					<input ref="commonSearch" type="search" className="form-control" name="search" placeholder="Search..."
-						onChange={this._searchChanged} onKeyPress={this._handleFilterKeyPress} onPaste={this._handleFilterPaste}
-						value={this.state.searchText} onMouseUp={this._searchMouseUp}
-					/>
+                    <input ref="commonSearch" type="search" className="form-control" name="search" placeholder="Search..."
+                        onChange={this._searchChanged} onKeyPress={this._handleFilterKeyPress} onPaste={this._handleFilterPaste}
+                        value={this.state.searchText} onMouseUp={this._searchMouseUp}
+                    />
                 </div>
             );
         }
@@ -111,8 +114,8 @@ export default class GridToolbar extends React.Component {
                     <div className="form-group">
                         <label htmlFor="pageSize">Page size:</label>
                         <select className="form-control" id="pageSize" style={{ marginLeft: '10px', width: '70px' }}
-							value={this.props.extraProps.getCurrentPageSize()} onChange={this._pageSizeChanged}
-						>
+                            value={this.props.extraProps.getCurrentPageSize()} onChange={this._pageSizeChanged}
+                        >
                             {this.props.extraProps.getPageSizes().map(item => <option key={item}>{item}</option>)}
                         </select>
                     </div>

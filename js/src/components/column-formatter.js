@@ -5,58 +5,50 @@ import React from 'react';
 import Formatter from './formatter.js';
 import moment from './moment.js';
 
-export class FormattedNumberColumn extends React.Component {
-    render() {
-        return (
-            <span>
-                {new Formatter().formatNumber(this.props.metadata.columnFormat, this.props.data)}
-            </span>
-        );
-    }
+export const FormattedNumberColumn = ({metadata, data}) => {
+    return (
+        <span>
+            {new Formatter().formatNumber(metadata.columnFormat, data)}
+        </span>
+    );
 }
 
-export class FormattedDateColumn extends React.Component {
-    render() {
-        return (
-            <span>
-                {new Formatter().formatDate(this.props.metadata.columnFormat, this.props.data)}
-            </span>
-        );
-    }
+export const FormattedDateColumn = ({metadata, data}) => {
+    return (
+        <span>
+            {new Formatter().formatDate(metadata.columnFormat, data)}
+        </span>
+    );
 }
 
-export class DefaultFormattedDateTimeColumn extends React.Component {
-    _getFormattedValue() {
-		let dateStr;
-		if (moment.isToday(this.props.data)) {
-			dateStr = 'Today';
-		} else if (moment.isYesterday(this.props.data)) {
-			dateStr = 'Yesterday';
-		} else {
-		    let format = 'D MMM';
-		    format = moment().isSame(moment(this.props.data), 'year') ? format : `${format} YYYY`;
-		    dateStr = moment(this.props.data).format(format);
-		}
-        return dateStr + ' ' + new Formatter().formatByDefault('time', this.props.data);
+export const DefaultFormattedDateTimeColumn = ({data}) => {
+    function getFormattedValue() {
+        let dateStr;
+        if (moment.isToday(data)) {
+            dateStr = 'Today';
+        } else if (moment.isYesterday(data)) {
+            dateStr = 'Yesterday';
+        } else {
+            let format = 'D MMM';
+            format = moment().isSame(moment(data), 'year') ? format : `${format} YYYY`;
+            dateStr = moment(data).format(format);
+        }
+        return `${dateStr} ${new Formatter().formatByDefault('time', data)}`;
     }
-    
-    render() {
-        return (
-            <span>
-                {this._getFormattedValue()}
-            </span>
-        );
-    }
+
+    return (
+        <span>
+            {getFormattedValue()}
+        </span>
+    );
 }
 
-export class FormattedBoolColumn extends React.Component {
-    render() {
-        return (
-            <span>
-                {new Formatter().formatBool(this.props.data)}
-            </span>
-        );
-    }
+export const FormattedBoolColumn = ({data}) => {
+    return (
+        <span>
+            {new Formatter().formatBool(data)}
+        </span>
+    );
 }
 
 export default class ColumnDefaultFormatter {
@@ -83,12 +75,12 @@ export default class ColumnDefaultFormatter {
     }
 
     getDefaultColumnToStringConverter(dataType, format) {
-		if (!dataType || !dataType.trim()) {
+        if (!dataType || !dataType.trim()) {
             return null;
         }
 
         dataType = dataType.trim().toLowerCase();
-		const formatter = new Formatter();
+        const formatter = new Formatter();
         if (~dateTypes.indexOf(dataType)) {
             return formatter.formatDate.bind(formatter, this.getDefaultColumnFormat(dataType));
         }

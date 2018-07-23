@@ -1,8 +1,9 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: {
         'index': './js/src/index.js',
     },
@@ -13,16 +14,25 @@ module.exports = {
         library: '[name]',
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('common'),
         new ExtractTextPlugin('../css/[name].css'),
+        new CopyWebpackPlugin([
+            {
+                from: './node_modules/bootstrap/dist/css/*.min.css',
+                to: '../css/bootstrap/css/[name].[ext]',
+            },
+            {
+                from: './node_modules/bootstrap/dist/fonts',
+                to: '../css/bootstrap/fonts',
+            },
+        ]),
     ],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 exclude: [/node_modules/, /libs/],
                 loader: 'babel-loader',
-                query: { presets: ['es2015', 'react'] },
+                query: { presets: ['env', 'react'] },
             },
             {
                 test: /\.css$/,

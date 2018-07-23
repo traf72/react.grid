@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const alertId = 'custom-alert';
 const alertContainerId = 'alert-container';
+const alertCloseBtnId = 'alert-close-btn';
 
 class Alert extends React.Component {
     constructor(props) {
@@ -15,43 +16,47 @@ class Alert extends React.Component {
     }
 
     componentDidMount() {
-		$(document.body).on('click', this._closeAlert);
-		if (this.props.automaticCloseTimeoutInMs) {
-			this._timerId = setTimeout(() => $(`#${alertId}`).fadeOut('slow', () => this._closeAlert()), this.props.automaticCloseTimeoutInMs);
-		}
+        $(document.body).on('click', this._closeAlert);
+        if (this.props.automaticCloseTimeoutInMs) {
+            this._timerId = setTimeout(() => $(`#${alertId}`).fadeOut('slow', () => this._closeAlert()), this.props.automaticCloseTimeoutInMs);
+        }
     }
-	
-	componentWillUnmount() {
-		$(document.body).off('click', this._closeAlert);
-	}
-	
-	_closeAlert() {
-		clearTimeout(this._timerId);
-	    $('.close').alert();
-	    this._onCloseFunction();
-	    ReactDom.unmountComponentAtNode(document.getElementById(alertContainerId));
-	}
 
-	_onCloseFunction() {
-	    if (typeof this.props.onCloseFunction === 'function') {
+    componentWillUnmount() {
+        $(document.body).off('click', this._closeAlert);
+    }
+
+    _closeAlert(e) {
+        if (e != null && e.target.id === alertCloseBtnId) {
+            e.preventDefault();
+        }
+
+        clearTimeout(this._timerId);
+        $(`#${alertCloseBtnId}`).alert();
+        this._onCloseFunction();
+        ReactDom.unmountComponentAtNode(document.getElementById(alertContainerId));
+    }
+
+    _onCloseFunction() {
+        if (typeof this.props.onCloseFunction === 'function') {
             this.props.onCloseFunction();
         }
     }
-	
+
     render() {
-		return (
-			<div className={'alert alert-' + this.props.type} id={alertId}>
-			  <a href="#" className="close" aria-label="close">&times;</a>
-			  {this.props.message}
-			</div>
-		);
+        return (
+            <div className={'alert alert-' + this.props.type} id={alertId}>
+                <a href="#" id={alertCloseBtnId} className="close" aria-label="close">&times;</a>
+                {this.props.message}
+            </div>
+        );
     }
 }
 
 Alert.propTypes = {
-	type: PropTypes.string,
-	message: PropTypes.string,
-	automaticCloseTimeoutInMs: PropTypes.number,
+    type: PropTypes.string,
+    message: PropTypes.string,
+    automaticCloseTimeoutInMs: PropTypes.number,
 };
 
 function showAlert(type, message, automaticCloseTimeoutInMs, onCloseFunction) {
@@ -59,14 +64,14 @@ function showAlert(type, message, automaticCloseTimeoutInMs, onCloseFunction) {
 }
 
 function getContainer() {
-	let container = $(`#${alertContainerId}`);
-	if (!container.length) {
-		container = $('<div/>', {
-			'id': alertContainerId,
-			'class': 'alert-container',
-		}).appendTo(document.body);
-	}
-	return container;
+    let container = $(`#${alertContainerId}`);
+    if (!container.length) {
+        container = $('<div/>', {
+            'id': alertContainerId,
+            'class': 'alert-container',
+        }).appendTo(document.body);
+    }
+    return container;
 }
 
 export function showSuccess(message, automaticCloseTimeoutInMs, onCloseFunction) {

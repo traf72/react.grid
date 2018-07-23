@@ -13,42 +13,42 @@ import cities from 'cities.json';
 const columnMetadata = [{
         columnName: 'country',
         displayName: 'Country',
-		cssClassName: 'country-column',
+        cssClassName: 'country-column',
     }, {
         columnName: 'name',
         displayName: 'City',
-		cssClassName: 'city-column',
+        cssClassName: 'city-column',
     }, {
         columnName: 'lat',
         displayName: 'Latitude',
-		cssClassName: 'latitude-column',
+        cssClassName: 'latitude-column',
     }, {
         columnName: 'lng',
         displayName: 'Longitude',
-		cssClassName: 'longitude-column',
+        cssClassName: 'longitude-column',
     },
 ];
 
 class Sample extends React.PureComponent {
     constructor(props) {
         super(props);
-		
-		this.state = {
-			data: [],
-		};
-		
-		this.refresh = this.refresh.bind(this);
+
+        this.state = {
+            data: [],
+        };
+
+        this.refresh = this.refresh.bind(this);
     }
 
     componentDidMount() {
-		this.refresh();
+        this.refresh();
     }
 
     _getData(isRefresh) {
-		runAsync(() => this.setState({
-			data: cities.slice(1),
-			isRefresh: isRefresh,
-		}), 200);
+        runAsync(() => this.setState({
+            data: cities.slice(1),
+            isRefresh: isRefresh,
+        }), 200);
     }
 
     refresh() {
@@ -57,21 +57,21 @@ class Sample extends React.PureComponent {
     }
 
     render() {
-		return (
-			<Grid ref="grid" 
-				tableClassName="grid table"
-				results={this.state.data}
-				isRefresh={this.state.isRefresh}
-				resultsPerPage={30}
-				showFilter
-				showPageSizeSelector
-				withCheckboxColumn
-				columnMetadata={columnMetadata}
-				selectable
-				defaultSelectedRow="firstOnPage"
-				refreshFunc={this.refresh}
-			/>
-		);
+        return (
+            <Grid ref="grid" 
+                tableClassName="grid table"
+                results={this.state.data}
+                isRefresh={this.state.isRefresh}
+                resultsPerPage={30}
+                showFilter
+                showPageSizeSelector
+                withCheckboxColumn
+                columnMetadata={columnMetadata}
+                selectable
+                defaultSelectedRow="firstOnPage"
+                refreshFunc={this.refresh}
+            />
+        );
     }
 }
 

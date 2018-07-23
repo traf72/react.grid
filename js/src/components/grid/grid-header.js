@@ -40,7 +40,10 @@ export default class CustomHeaderComponent extends React.Component {
     }
 
     _handleColumnFilterKeyPress(e) {
-        this._updateColumnFilterState(getFilterTextDependOnKeyPressed(e.key, e.target.value));
+        let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
+        if (e.target.value !== filterText) {
+            this._applyColumnFilterChanges(this.props.columnName, filterText);
+        }
     }
 
     _handleColumnFilterPaste(e) {
@@ -72,23 +75,23 @@ export default class CustomHeaderComponent extends React.Component {
     _renderSortArrow() {
         if (this.props.columnName === this.props.getCurrentSortColumn()) {
             return this.props.isCurrentSortAscending()
-                ? <span className="glyphicon glyphicon-chevron-down"></span>
-                : <span className="glyphicon glyphicon-chevron-up"></span>;
+                ? <span className="glyphicon glyphicon-chevron-up"></span>
+                : <span className="glyphicon glyphicon-chevron-down"></span>;
         }
     }
 
     _renderFilterBlock() {
         if (this.props.isShowColumnFilter(this.props.columnName)) {
             return (
-                <div id={'column-filter-' + this.props.columnName} className={this.props.isColumnsFilterDisplayed() ? '' : 'hidden'} style={{ fontWeight: 		'normal' }}>
+                <div id={this.props.gridId + '-column-filter-' + this.props.columnName} className={this.props.isColumnsFilterDisplayed() ? '' : 'hidden'} style={{ fontWeight: 'normal' }}>
                     <input ref="columnFilterInput"
-						className="form-control"
-						type="search"
-						onClick={this._columnFilterClick}
-						value={this.state.columnFilter}
-						onChange={this._columnFilterChanged} onKeyPress={this._handleColumnFilterKeyPress}
-						onPaste={this._handleColumnFilterPaste} onMouseUp={this._searchInputMouseUp}
-					/>
+                        className="form-control"
+                        type="search"
+                        onClick={this._columnFilterClick}
+                        value={this.state.columnFilter}
+                        onChange={this._columnFilterChanged} onKeyPress={this._handleColumnFilterKeyPress}
+                        onPaste={this._handleColumnFilterPaste} onMouseUp={this._searchInputMouseUp}
+                    />
                 </div>
             );
         }

@@ -6,20 +6,23 @@ import utils from './utils.js';
 export const orCharacter = '|';
 export const negateCharacter = '!';
 export const equalCharacter = '=';
+export const startsWithCharacter = '*';
+export const escapeCharacter = '\\';
 
 const maxParsedSymbolsCount = 2; // Парсим на предмет наличия спец. символов только первые 2 символа
-const allSpecialCharacter = [negateCharacter, equalCharacter];
+const allSpecialCharacter = [negateCharacter, equalCharacter, startsWithCharacter, escapeCharacter];
 
 export default class Filter {
     constructor(keyCol) {
-		this._keyColumn = keyCol || 'id';
-		this._filterFunctionsMapping = {};
+        this._keyColumn = keyCol || 'id';
+        this._filterFunctionsMapping = {};
         this._mapFilterFunctions();
     }
 
     _mapFilterFunctions() {
         this._filterFunctionsMapping.default = this._like;
         this._filterFunctionsMapping[equalCharacter] = this._equal;
+        this._filterFunctionsMapping[startsWithCharacter] = this._startsWith;
     }
 
     apply(inputData, filterByColumns, commonFilter, toStringConverters) {
@@ -80,7 +83,7 @@ export default class Filter {
     // Функции объекта setOps сортируют входные данные в непонятном порядке для увеличения производительности,
     // а нам нужно возвратить данные в исходном порядке, поэтому приходится делать такой хак
     _restoreInitialDataOrder(inputData, filteredData) {
-		return utils.restoreDataOrder(inputData, filteredData, this._keyColumn);
+        return utils.restoreDataOrder(inputData, filteredData, this._keyColumn);
     }
 
     _combineFilterFunctions(filterFunctions, combineFunction, column, inputData) {
@@ -97,7 +100,7 @@ export default class Filter {
 
     _getFilterFunctions(filterText) {
         const filterFunctions = [];
-        const filterStrings = filterText.split(orCharacter).filter(item => !!item || !!item.trim());
+        const filterStrings = utils.splitStringWithEscaping(filterText, orCharacter, escapeCharacter).filter(item => !!item || !!item.trim());
         for (let filterString of filterStrings) {
             filterString = filterString.trim();
             const specialCharacters = this._parseSpecialCharacters(filterString);
@@ -119,13 +122,20 @@ export default class Filter {
     _parseSpecialCharacters(filterString) {
         const specialCharacters = [];
         let actualFilterString = filterString;
+        let currentSymbol = actualFilterString[0];
         let parsedSymbolsCount = 0;
         const totalParsedSymbolsCount = Math.min(maxParsedSymbolsCount, actualFilterString.length);
         while (parsedSymbolsCount < totalParsedSymbolsCount &&
-            allSpecialCharacter.indexOf(actualFilterString[0]) !== -1 &&
-            specialCharacters.indexOf(actualFilterString[0]) === -1) {
-            specialCharacters.push(actualFilterString[0]);
+            allSpecialCharacter.indexOf(currentSymbol) !== -1 &&
+            specialCharacters.indexOf(currentSymbol) === -1)
+        {
             actualFilterString = actualFilterString.substring(1);
+            if (currentSymbol === escapeCharacter) {
+                break;
+            }
+            
+            specialCharacters.push(currentSymbol);
+            currentSymbol = actualFilterString[0];
             parsedSymbolsCount++;
         }
 
@@ -138,25 +148,37 @@ export default class Filter {
     _like(negate, filterText, column, inputData) {
         return negate
             ? inputData.filter(item =>
-                (item[column] == null && filterText) ||
-                (item[column] != null &&
-                    this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) ===
-                    -1))
+                (item[column] == null && filterText)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) === -1)
+            )
             : inputData.filter(item =>
-                (item[column] == null && !filterText) ||
-                (item[column] != null &&
-                    this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) !==
-                    -1));
+                (item[column] == null && !filterText)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) !== -1)
+            );
     }
 
     _equal(negate, filterText, column, inputData) {
         return negate
-            ? inputData.filter(item => (item[column] == null && filterText) ||
-            (item[column] != null &&
-                this._getToStringConverter(column)(item[column]).toLowerCase() !== filterText.toLowerCase()))
-            : inputData.filter(item => (item[column] == null && !filterText) ||
-            (item[column] != null &&
-                this._getToStringConverter(column)(item[column]).toLowerCase() === filterText.toLowerCase()));
+            ? inputData.filter(item =>
+                (item[column] == null && filterText)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase() !== filterText.toLowerCase())
+            )
+            : inputData.filter(item =>
+                (item[column] == null && !filterText)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase() === filterText.toLowerCase())
+            );
+    }
+
+    _startsWith(negate, filterText, column, inputData) {
+        return negate
+            ? inputData.filter(item =>
+                (item[column] == null && filterText)
+                || (item[column] != null && !this._getToStringConverter(column)(item[column]).toLowerCase().startsWith(filterText.toLowerCase()))
+            )
+            : inputData.filter(item =>
+                (item[column] == null && !filterText)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().startsWith(filterText.toLowerCase()))
+            );
     }
 
     _getToStringConverter(column) {
@@ -184,7 +206,7 @@ export default class Filter {
     }
 
     _setKeyMethod() {
-		const keyCol = this._keyColumn;
+        const keyCol = this._keyColumn;
         setOps.pushUid(function() { return this[keyCol]; });
     }
 

@@ -12,14 +12,14 @@ describe("Filter test", () => {
     };
 
     let data = [
-		{id: 1, name: 'Иванов Иван', position: 'Инженер', isWorked: true, startDate: new Date(2016, 0, 1)},
-		{id: 2, name: 'Петров Алексей', position: 'Менеджер', isWorked: false, startDate: new Date(2016, 3, 28)},
-		{id: 3, name: 'Сидоров Сидор', position: 'Директор', isWorked: true, startDate: new Date(2014, 11, 31)},
-		{id: 4, name: 'Петров Иван', position: 'Системный администратор', isWorked: true, startDate: new Date(2015, 10, 15)},
-		{id: 5, name: 'Иванов Александр', position: 'Уборщик', isWorked: true, startDate: new Date(1900, 1, 1)},
-		{id: 6, name: null, position: null, isWorked: false, startDate: null},
-		{id: 7, name: undefined, position: undefined, isWorked: false, startDate: undefined},
-		{id: 0, name: '', position: '', isWorked: false, startDate: null},
+        {id: 1, name: 'Иванов Иван', position: 'Инженер', isWorked: true, startDate: new Date(2016, 0, 1)},
+        {id: 2, name: 'Петров Алексей', position: 'Менеджер', isWorked: false, startDate: new Date(2016, 3, 28)},
+        {id: 3, name: 'Сидоров Сидор', position: 'Директор', isWorked: true, startDate: new Date(2014, 11, 31)},
+        {id: 4, name: 'Петров Иван', position: 'Системный администратор', isWorked: true, startDate: new Date(2015, 10, 15)},
+        {id: 5, name: 'Иванов Александр', position: 'Уборщик', isWorked: true, startDate: new Date(1900, 1, 1)},
+        {id: 6, name: null, position: null, isWorked: false, startDate: null},
+        {id: 7, name: undefined, position: undefined, isWorked: false, startDate: undefined},
+        {id: 0, name: '', position: '', isWorked: false, startDate: null},
     ];
 
     it("Test parse special characters", () => {
@@ -35,9 +35,21 @@ describe("Filter test", () => {
         expect(result.characters).to.deep.equal([]);
         expect(result.actualFilterString).to.equal('#emp');
 
+        result = filter._parseSpecialCharacters('\\#emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('#emp');
+
+        result = filter._parseSpecialCharacters('\\\\#emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('\\#emp');
+
         result = filter._parseSpecialCharacters('!emp');
         expect(result.characters).to.deep.equal(['!']);
         expect(result.actualFilterString).to.equal('emp');
+
+        result = filter._parseSpecialCharacters('\\!emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!emp');
 
         result = filter._parseSpecialCharacters(' !emp');
         expect(result.characters).to.deep.equal([]);
@@ -47,6 +59,10 @@ describe("Filter test", () => {
         expect(result.characters).to.deep.equal(['=']);
         expect(result.actualFilterString).to.equal('emp');
 
+        result = filter._parseSpecialCharacters('\\=emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('=emp');
+
         result = filter._parseSpecialCharacters(' =emp');
         expect(result.characters).to.deep.equal([]);
         expect(result.actualFilterString).to.equal(' =emp');
@@ -55,24 +71,92 @@ describe("Filter test", () => {
         expect(result.characters).to.deep.equal(['!', '=']);
         expect(result.actualFilterString).to.equal('emp');
 
+        result = filter._parseSpecialCharacters('\\!=emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!=emp');
+
+        result = filter._parseSpecialCharacters('!\\=emp');
+        expect(result.characters).to.deep.equal(['!']);
+        expect(result.actualFilterString).to.equal('=emp');
+
         result = filter._parseSpecialCharacters('=!emp');
         expect(result.characters).to.deep.equal(['=', '!']);
+        expect(result.actualFilterString).to.equal('emp');
+
+        result = filter._parseSpecialCharacters('\\=!emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('=!emp');
+
+        result = filter._parseSpecialCharacters('=\\!emp');
+        expect(result.characters).to.deep.equal(['=']);
+        expect(result.actualFilterString).to.equal('!emp');
+
+        result = filter._parseSpecialCharacters('*emp');
+        expect(result.characters).to.deep.equal(['*']);
+        expect(result.actualFilterString).to.equal('emp');
+
+        result = filter._parseSpecialCharacters('\\*emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('*emp');
+
+        result = filter._parseSpecialCharacters(' *emp');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal(' *emp');
+
+        result = filter._parseSpecialCharacters('!*emp');
+        expect(result.characters).to.deep.equal(['!', '*']);
+        expect(result.actualFilterString).to.equal('emp');
+
+        result = filter._parseSpecialCharacters('*!emp');
+        expect(result.characters).to.deep.equal(['*', '!']);
         expect(result.actualFilterString).to.equal('emp');
 
         result = filter._parseSpecialCharacters('=');
         expect(result.characters).to.deep.equal(['=']);
         expect(result.actualFilterString).to.equal('');
 
+        result = filter._parseSpecialCharacters('\\=');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('=');
+
         result = filter._parseSpecialCharacters('!');
         expect(result.characters).to.deep.equal(['!']);
         expect(result.actualFilterString).to.equal('');
+
+        result = filter._parseSpecialCharacters('\\!');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!');
+
+        result = filter._parseSpecialCharacters('*');
+        expect(result.characters).to.deep.equal(['*']);
+        expect(result.actualFilterString).to.equal('');
+
+        result = filter._parseSpecialCharacters('\\*');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('*');
 
         result = filter._parseSpecialCharacters('!=');
         expect(result.characters).to.deep.equal(['!', '=']);
         expect(result.actualFilterString).to.equal('');
 
+        result = filter._parseSpecialCharacters('\\!=');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!=');
+
+        result = filter._parseSpecialCharacters('!\\=');
+        expect(result.characters).to.deep.equal(['!']);
+        expect(result.actualFilterString).to.equal('=');
+
         result = filter._parseSpecialCharacters('=!');
         expect(result.characters).to.deep.equal(['=', '!']);
+        expect(result.actualFilterString).to.equal('');
+
+        result = filter._parseSpecialCharacters('!*');
+        expect(result.characters).to.deep.equal(['!', '*']);
+        expect(result.actualFilterString).to.equal('');
+
+        result = filter._parseSpecialCharacters('*!');
+        expect(result.characters).to.deep.equal(['*', '!']);
         expect(result.actualFilterString).to.equal('');
 
         result = filter._parseSpecialCharacters('e');
@@ -87,29 +171,65 @@ describe("Filter test", () => {
         expect(result.characters).to.deep.equal(['=']);
         expect(result.actualFilterString).to.equal('e');
 
+        result = filter._parseSpecialCharacters('*e');
+        expect(result.characters).to.deep.equal(['*']);
+        expect(result.actualFilterString).to.equal('e');
+
         result = filter._parseSpecialCharacters('!=e');
         expect(result.characters).to.deep.equal(['!', '=']);
+        expect(result.actualFilterString).to.equal('e');
+
+        result = filter._parseSpecialCharacters('!*e');
+        expect(result.characters).to.deep.equal(['!', '*']);
         expect(result.actualFilterString).to.equal('e');
 
         result = filter._parseSpecialCharacters('=!e');
         expect(result.characters).to.deep.equal(['=', '!']);
         expect(result.actualFilterString).to.equal('e');
 
-        result = filter._parseSpecialCharacters('!!e');
+        result = filter._parseSpecialCharacters('*!e');
+        expect(result.characters).to.deep.equal(['*', '!']);
+        expect(result.actualFilterString).to.equal('e');
+
+        result = filter._parseSpecialCharacters('\\!e');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!e');
+
+        result = filter._parseSpecialCharacters('\\!!e');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('!!e');
+
+        result = filter._parseSpecialCharacters('!\\!e');
         expect(result.characters).to.deep.equal(['!']);
         expect(result.actualFilterString).to.equal('!e');
 
-        result = filter._parseSpecialCharacters('==e');
+        result = filter._parseSpecialCharacters('\\==e');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('==e');
+
+        result = filter._parseSpecialCharacters('=\\=e');
         expect(result.characters).to.deep.equal(['=']);
         expect(result.actualFilterString).to.equal('=e');
+
+        result = filter._parseSpecialCharacters('\\*e');
+        expect(result.characters).to.deep.equal([]);
+        expect(result.actualFilterString).to.equal('*e');
 
         result = filter._parseSpecialCharacters('!=!=e');
         expect(result.characters).to.deep.equal(['!', '=']);
         expect(result.actualFilterString).to.equal('!=e');
 
+        result = filter._parseSpecialCharacters('!*!*e');
+        expect(result.characters).to.deep.equal(['!', '*']);
+        expect(result.actualFilterString).to.equal('!*e');
+
         result = filter._parseSpecialCharacters('!=e=!');
         expect(result.characters).to.deep.equal(['!', '=']);
         expect(result.actualFilterString).to.equal('e=!');
+
+        result = filter._parseSpecialCharacters('!*e*!');
+        expect(result.characters).to.deep.equal(['!', '*']);
+        expect(result.actualFilterString).to.equal('e*!');
     });
 
     it("Test apply filter by columns", () => {
@@ -178,6 +298,10 @@ describe("Filter test", () => {
         expect(result[0].id).to.be.equal(1);
         expect(result[1].id).to.be.equal(3);
 
+        filterByColumns.id = '1\\|3';
+        result = filter.apply(data, filterByColumns);
+        expect(result.length).to.be.equal(0);
+
         filterByColumns.id = '1 || 3';
         result = filter.apply(data, filterByColumns);
         expect(result.length).to.be.equal(2);
@@ -235,9 +359,23 @@ describe("Filter test", () => {
         expect(result.find(item => item.id === 6)).to.be.an('undefined');
         expect(result.find(item => item.id === 7)).to.be.an('undefined');
 
+        filterByColumns.name = '*';
+        result = filter.apply(data, filterByColumns);
+        expect(result.length).to.be.equal(8);
+
+        filterByColumns.name = '!*';
+        result = filter.apply(data, filterByColumns);
+        expect(result.length).to.be.equal(0);
+
         filterByColumns.name = '=петр';
         result = filter.apply(data, filterByColumns);
         expect(result.length).to.be.equal(0);
+
+        filterByColumns.name = '*петр';
+        result = filter.apply(data, filterByColumns);
+        expect(result.length).to.be.equal(2);
+        expect(result[0].id).to.be.equal(2);
+        expect(result[1].id).to.be.equal(4);
 
         filterByColumns.name = '=Петров Иван';
         result = filter.apply(data, filterByColumns);
@@ -268,6 +406,12 @@ describe("Filter test", () => {
         expect(result.find(item => item.id === 1)).to.be.an('undefined');
         expect(result.find(item => item.id === 4)).to.be.an('undefined');
         expect(result.find(item => item.id === 5)).to.be.an('undefined');
+
+        filterByColumns.name = '!*петр';
+        result = filter.apply(data, filterByColumns);
+        expect(result.length).to.be.equal(6);
+        expect(result.find(item => item.id === 2)).to.be.an('undefined');
+        expect(result.find(item => item.id === 4)).to.be.an('undefined');
 
         filterByColumns.name = '!=Петров ИВАН';
         result = filter.apply(data, filterByColumns);
@@ -345,6 +489,12 @@ describe("Filter test", () => {
         expect(result.length).to.be.equal(2);
         expect(result[0].id).to.be.equal(2);
         expect(result[1].id).to.be.equal(3);
+
+        commonFilter.text = '*СИ';
+        result = filter.apply(data, null, commonFilter);
+        expect(result.length).to.be.equal(2);
+        expect(result[0].id).to.be.equal(3);
+        expect(result[1].id).to.be.equal(4);
 
         commonFilter.text = 'Иванов Иван';
         commonFilter.filterableColumns = ['name'];

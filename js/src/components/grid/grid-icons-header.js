@@ -5,20 +5,14 @@ import React from 'react';
 const hideFilterString = 'Hide filter'
 const showFilterString = 'Show filter'
 
-export default class IconsHeader extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this._filterVisibilityChanged = this._filterVisibilityChanged.bind(this);
+const IconsHeader = props => {
+    function filterVisibilityChanged() {
+        props.columnsFilterVisibilityChanged();
+        toggleColumnsFilter(props.isColumnsFilterDisplayed());
     }
 
-    _filterVisibilityChanged() {
-        this.props.columnsFilterVisibilityChanged();
-        this._toggleColumnsFilter(this.props.isColumnsFilterDisplayed());
-    }
-
-    _toggleColumnsFilter(isDisplay) {
-        let columnFilters = $('[id^=column-filter]');
+    function toggleColumnsFilter(isDisplay) {
+        let columnFilters = $(`[id^=${props.gridId}-column-filter]`);
         let title;
         if (isDisplay) {
             columnFilters.removeClass('hidden');
@@ -27,38 +21,39 @@ export default class IconsHeader extends React.Component {
             columnFilters.addClass('hidden');
             title = showFilterString;
         }
-        $('#columns-filter-icon').attr('title', title);
+        $(`#${props.gridId}-columns-filter-icon`).attr('title', title);
     }
 
-    _getExportIcon() {
-		if (this.props.isExportEnabled()) {
-            return <span title="Export to Excel" className="glyphicon glyphicon-export" onClick={this.props.exportFunc}></span>;
+    function getExportIcon() {
+        if (props.isExportEnabled()) {
+            return <span title="Export to Excel" className="glyphicon glyphicon-export" onClick={props.exportFunc}></span>;
         }
     }
 
-    _getRefreshIcon() {
-        if (typeof this.props.refreshFunc === 'function') {
-            return <span title="Refresh" className="glyphicon glyphicon-refresh" onClick={this.props.refreshFunc}></span>;
+    function getRefreshIcon() {
+        if (typeof props.refreshFunc === 'function') {
+            return <span title="Refresh" className="glyphicon glyphicon-refresh" onClick={props.refreshFunc}></span>;
         }
     }
 
-    _getFilterIcon() {
-        if (this.props.isShowColumnsFilter()) {
+    function getFilterIcon() {
+        if (props.isShowColumnsFilter()) {
             return (
-                <span id="columns-filter-icon" title={this.props.isColumnsFilterDisplayed() ? hideFilterString : showFilterString}
-                    className="glyphicon glyphicon-filter" onClick={this._filterVisibilityChanged}>
+                <span id={props.gridId + '-columns-filter-icon'} title={props.isColumnsFilterDisplayed() ? hideFilterString : showFilterString}
+                    className="glyphicon glyphicon-filter" onClick={filterVisibilityChanged}>
                 </span>
             );
         }
     }
 
-    render() {
-        return (
-            <div>
-                {this._getExportIcon()}
-                {this._getFilterIcon()}
-                {this._getRefreshIcon()}
-            </div>
-        );
-    }
+    return (
+        <div>
+            {getExportIcon()}
+            {getFilterIcon()}
+            {getRefreshIcon()}
+        </div>
+    );
 }
+
+
+export default IconsHeader;

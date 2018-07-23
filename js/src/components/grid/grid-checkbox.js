@@ -20,7 +20,7 @@ export default class GridCheckbox extends React.Component {
     }
 
     _toggleChecked(e) {
-		if (typeof this.props.extraProps.recordCheckedChanged === 'function') {
+        if (typeof this.props.extraProps.recordCheckedChanged === 'function') {
             this.props.extraProps.recordCheckedChanged(this.props.rowData, e.target.checked, this._shiftKey);
         }
     }

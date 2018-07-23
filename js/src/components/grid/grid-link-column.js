@@ -2,8 +2,21 @@
 
 import React from 'react';
 
-export default class LinkColumn extends React.Component {
-    render() {
-        return <a href={this.props.rowData[this.props.metadata.urlField]} onMouseDown={this.props.metadata.onMouseDown}>{this.props.data}</a>;
+const LinkColumn = ({metadata, data}) => {
+    function onClick(e) {
+        if (typeof metadata.onClick === 'function') {
+            metadata.onClick(e, rowData);
+        }
     }
+
+    function onMouseDown(e) {
+        if (typeof metadata.onMouseDown === 'function') {
+            metadata.onMouseDown(e, rowData);
+        }
+    }
+
+    const href = metadata.url ? metadata.url : rowData[metadata.urlField];
+    return <a href={href} onMouseDown={onMouseDown} onClick={onClick}>{data}</a>;
 }
+
+export default LinkColumn;

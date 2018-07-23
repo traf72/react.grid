@@ -20,19 +20,24 @@ import GridToolbar from './grid-toolbar.js';
 import IconsHeader from './grid-icons-header.js';
 import GridHeaderCheckbox from './grid-header-checkbox.js';
 import GridCheckbox from './grid-checkbox.js';
+import GridCollapse from './grid-collapse.js';
 import LinkColumn from './grid-link-column.js';
 import CustomHeaderComponent from './grid-header.js';
+import uuid from 'uuid';
 
 const million = 1000000;
 const filterDelayInMilliseconds = 600;
 const defaultAsyncDelay = 20;
 const defaultPageSizes = [10, 15, 20, 25, 50, 100];
 const defaultNoDataMessage = 'No results found';
+const expandColumnName = 'isExpanded';
 
 // TODO Вариант с данными с сервера нужно ещё допиливать, как минимум фильтрацию и сортировку
 export default class Grid extends React.PureComponent {
     constructor(props) {
         super(props);
+
+        this._gridId = uuid.v4();
 
         this._isRowSelected = this._isRowSelected.bind(this);
         this._onRowSelected = this._onRowSelected.bind(this);
@@ -54,6 +59,8 @@ export default class Grid extends React.PureComponent {
         this._showOnlyCheckedRecordsChanged = this._showOnlyCheckedRecordsChanged.bind(this);
         this._columnsFilterVisibilityChanged = this._columnsFilterVisibilityChanged.bind(this);
         this._exportFunc = this._exportFunc.bind(this);
+        this._onRowCollapse = this._onRowCollapse.bind(this);
+        this._onRowExpand = this._onRowExpand.bind(this);
 
         this.isShowFilter = this.isShowFilter.bind(this);
         this.isShowPageSizeSelector = this.isShowPageSizeSelector.bind(this);
@@ -66,6 +73,7 @@ export default class Grid extends React.PureComponent {
         this.getCurrentSortColumn = this.getCurrentSortColumn.bind(this);
         this.isCurrentSortAscending = this.isCurrentSortAscending.bind(this);
         this.isWithCheckboxColumn = this.isWithCheckboxColumn.bind(this);
+        this.isWithGrouping = this.isWithGrouping.bind(this);
         this.getKeyColumn = this.getKeyColumn.bind(this);
         this.getCommonFilterText = this.getCommonFilterText.bind(this);
         this.getPageSizes = this.getPageSizes.bind(this);
@@ -73,6 +81,7 @@ export default class Grid extends React.PureComponent {
         this.getCurrentPage = this.getCurrentPage.bind(this);
         this.getPagesCount = this.getPagesCount.bind(this);
         this.getCheckedRecordsKeys = this.getCheckedRecordsKeys.bind(this);
+        this.getExpandedRecordsKeys = this.getExpandedRecordsKeys.bind(this);
         this.isExportEnabled = this.isExportEnabled.bind(this);
         this.onChangePageSize = this.onChangePageSize.bind(this);
 
@@ -94,8 +103,8 @@ export default class Grid extends React.PureComponent {
     }
 
     componentWillReceiveProps(props) {
-		if (!utils.isObjectsEquals(this.props, props)) {
-			this.props = props;
+        if (!utils.isObjectsEquals(this.props, props)) {
+            this.props = props;
             this._handleProps();
         }
     }
@@ -147,19 +156,40 @@ export default class Grid extends React.PureComponent {
     }
 
     _handleProps() {
-		this._columnMetadata = cloneDeep(this.props.columnMetadata);
-		this._clearPreviousToggledRecord();
-		
-        this._allGridData = this._allData = this.props.serverData ? [] : cloneDeep(this.props.results);
-		
-        this._setKeyColumn();
-		this._filter = new Filter(this.getKeyColumn().columnName);
-        this._handleColumnMetadata();
+        this._columnMetadata = cloneDeep(this.props.columnMetadata);
+        this._clearPreviousToggledRecord();
 
-		this._applyExternalFiltersIfNeed();
-		this._filterGridData(this._allGridData);
+        this._allGridData = this._allData = this.props.serverData ? [] : cloneDeep(this.props.results);
+
+        this._setKeyColumn();
+        this._filter = new Filter(this.getKeyColumn().columnName);
+        this._handleColumnMetadata();
+        this._handleRowMetadata();
+
+        this._removeNotActualColumnsFromColumnsFilter();
+
+        this._applyExternalFiltersIfNeed();
+        this._applySortOptions(this.props.sortOptions);
+        this._filterGridData(this._allGridData);
         this._sortGridData();
-		
+        this._groupGridDataIfNeed();
+
+        if (this.isWithCheckboxColumn() || this.isWithGrouping()) {
+            this._fillAllGridRecordsKeysOnClient();
+        }
+
+        if (this.isWithCheckboxColumn()) {
+            this._addCheckboxColumn();
+            this._changeCheckedRecordsKeys(setOps.intersection(this.props.defaultCheckedRecordsKeys.slice(0), this._allGridRecordsKeys), false);
+            this._checkRecords(this._allGridData);
+            this._handleHeaderChecked();
+        }
+        if (this.isWithGrouping()) {
+            this._changeExpandedRecordsKeys(setOps.intersection(this.props.defaultExpandedRecordsKeys.slice(0), this._allGridRecordsKeys));
+            this._addExpandColumn();
+            this._filterCollapsedRows(this._allGridData);
+        }
+
         const pagesCount = this.getPagesCount(this._allGridData.length);
         this._setCurrentPage(pagesCount);
 
@@ -172,12 +202,13 @@ export default class Grid extends React.PureComponent {
             externalSortColumn: this.getCurrentSortColumn(),
             externalSortAscending: this.isCurrentSortAscending(),
         };
-        if (this.isWithCheckboxColumn()) {
-            this._addCheckboxColumn();
-            this._fillAllGridRecordsKeysOnClient();
-            this._changeCheckedRecordsKeys(setOps.intersection(this.props.defaultCheckedRecordsKeys.slice(0), this._allGridRecordsKeys), false);
-            this._checkRecords(this._allGridData);
-            this._handleHeaderChecked();
+    }
+
+    _removeNotActualColumnsFromColumnsFilter() {
+        for (let columnName in this._filterByColumns) {
+            if (this._filterableColumns.indexOf(columnName) === -1) {
+                delete this._filterByColumns[columnName]; 
+            }
         }
     }
 
@@ -203,7 +234,7 @@ export default class Grid extends React.PureComponent {
 
     _handleColumnMetadata() {
         this._addIconsColumn();
-		this._applyColumnsDataType();
+        this._applyColumnsDataType();
         this._hideInvisibleColumns();
         this._makeLinkColumns();
         this._fillFilterableColumns();
@@ -212,38 +243,39 @@ export default class Grid extends React.PureComponent {
         this._makeHeaders();
     }
 
-	_addIconsColumn() {
-		let iconsColumn = this._columnMetadata.find(column => column.columnName === 'icons');
+    _addIconsColumn() {
+        let iconsColumn = this._columnMetadata.find(column => column.columnName === 'icons');
 
-		if (!iconsColumn && (this._filterableColumns.length !== 0 || this.props.refreshFunc)) {
-			iconsColumn = {
-				columnName: 'icons',
-				order: million,
-				cssClassName: 'icons-column',
-			};
-			this._columnMetadata.push(iconsColumn);
-		}
-		
-		if (iconsColumn) {
-			iconsColumn.customHeaderComponent = IconsHeader;
+        if (!iconsColumn && (this._filterableColumns.length !== 0 || this.props.refreshFunc)) {
+            iconsColumn = {
+                columnName: 'icons',
+                order: million,
+                cssClassName: 'icons-column',
+            };
+            this._columnMetadata.push(iconsColumn);
+        }
+
+        if (iconsColumn) {
+            iconsColumn.customHeaderComponent = IconsHeader;
             iconsColumn.customHeaderComponentProps = {
-				isShowColumnsFilter: this.isShowColumnsFilter,
-				columnsFilterVisibilityChanged: this._columnsFilterVisibilityChanged,
-				isColumnsFilterDisplayed: this.isColumnsFilterDisplayed,
-				refreshFunc: this.props.refreshFunc,
-				exportFunc: this._exportFunc,
-				isExportEnabled: this.isExportEnabled,
-			};
+                isShowColumnsFilter: this.isShowColumnsFilter,
+                columnsFilterVisibilityChanged: this._columnsFilterVisibilityChanged,
+                isColumnsFilterDisplayed: this.isColumnsFilterDisplayed,
+                refreshFunc: this.props.refreshFunc,
+                exportFunc: this._exportFunc,
+                isExportEnabled: this.isExportEnabled,
+                gridId: this._gridId,
+            };
             iconsColumn.sortable = false;
             iconsColumn.filterable = false;
             iconsColumn.exportable = false;
-			
+
             this._allGridData.forEach(item => item.icons = null);
-		} else {
-			this._allGridData.forEach(item => delete item.icons);
-		}
+        } else {
+            this._allGridData.forEach(item => delete item.icons);
+        }
     }
-	
+
     _applyColumnsDataType() {
         const columnsWithDataType = this._columnMetadata.filter(column => column.columnType);
         for (let column of columnsWithDataType) {
@@ -254,8 +286,7 @@ export default class Grid extends React.PureComponent {
                 column.columnFormat = this._columnDefaultFormatter.getDefaultColumnFormat(column.columnType);
             }
             if (column.toStringConverter === undefined) {
-                column.toStringConverter = this._columnDefaultFormatter
-                    .getDefaultColumnToStringConverter(column.columnType);
+                column.toStringConverter = this._columnDefaultFormatter.getDefaultColumnToStringConverter(column.columnType);
             }
             const convertFunction = this._converter.getConvertFunction(column.columnType);
             this._allData.forEach(item => item[column.columnName] = convertFunction(item[column.columnName]));
@@ -275,7 +306,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _makeLinkColumns() {
-        this._columnMetadata.filter(column => column.urlField)
+        this._columnMetadata.filter(column => column.urlField || column.url)
             .forEach(column => column.customComponent = LinkColumn);
     }
 
@@ -367,14 +398,14 @@ export default class Grid extends React.PureComponent {
             return;
         } else if (this.props.defaultSelectedRow != null) {
             switch (this.props.defaultSelectedRow) {
-				case 'firstOnPage':
-					this._selectedRow = pageRecords[0];
-					break;
-				case 'lastOnPage':
-					this._selectedRow = pageRecords[pageRecords.length - 1];
-					break;
-				default:
-					this._selectedRow = pageRecords.find(x => x[this.getKeyColumn().columnName] == this.props.defaultSelectedRow);
+                case 'firstOnPage':
+                    this._selectedRow = pageRecords[0];
+                    break;
+                case 'lastOnPage':
+                    this._selectedRow = pageRecords[pageRecords.length - 1];
+                    break;
+                default:
+                    this._selectedRow = pageRecords.find(x => x[this.getKeyColumn().columnName] == this.props.defaultSelectedRow);
             }
         } else {
             this._selectedRow = null;
@@ -400,6 +431,13 @@ export default class Grid extends React.PureComponent {
             let externalFilterText = self._makeFilterString(values);
             let currentFilter = currentFilterText ? currentFilterText : '';
             return isAppend && currentFilter !== '' ? `${currentFilter}${orFilterCharacter}${externalFilterText}` : externalFilterText;
+        }
+    }
+
+    _applySortOptions(sortOptions) {
+        if (sortOptions) {
+            this._currentSortColumn = sortOptions.columnName;
+            this._isCurrentSortAscending = !this.props.sortOptions.direction || this.props.sortOptions.direction.toLowerCase() !== 'desc';
         }
     }
 
@@ -432,13 +470,12 @@ export default class Grid extends React.PureComponent {
         return filterStrings.join(orFilterCharacter);
     }
 
-
     _columnsFilterVisibilityChanged() {
         this._isColumnsFilterDisplayed = !this.isColumnsFilterDisplayed();
     }
 
     _getCustomHeaderComponentProps(column) {
-		return {
+        return {
             getColumnTitle: this.getColumnTitle,
             getColumnFilter: this.getColumnFilter,
             isColumnSortable: this.isColumnSortable,
@@ -447,6 +484,7 @@ export default class Grid extends React.PureComponent {
             getCurrentSortColumn: this.getCurrentSortColumn,
             isCurrentSortAscending: this.isCurrentSortAscending,
             setFilterByColumn: this._setFilterByColumn,
+            gridId: this._gridId,
         }
     }
 
@@ -459,6 +497,88 @@ export default class Grid extends React.PureComponent {
         if (~index) {
             this._checkboxes.splice(index, 1);
         }
+    }
+
+    _addExpandColumn() {
+        const expandColumn = this._columnMetadata.find(column => column.columnName == expandColumnName);
+        if (!expandColumn) {
+            this._columnMetadata.push({
+                columnName: expandColumnName,
+                displayName: '',
+                order: -1,
+                sortable: false,
+                filterable: false,
+                exportable: false,
+                customComponent: GridCollapse,
+                customComponentProps: {
+                    onRowCollapse: this._onRowCollapse,
+                    onRowExpand: this._onRowExpand,
+                },
+                cssClassName: 'collapse-column'
+            });
+        }
+
+        this._markExpandableRows();
+    }
+
+    _markExpandableRows() {
+        let parentsWithChildren = this._allGridData.filter(r => r.parentKey != null).map(r => r.parentKey);
+        let keyColumn = this.getKeyColumn().columnName;
+        for (let record of this._allGridData) {
+            let recordKey = record[keyColumn];
+            if (~parentsWithChildren.indexOf(recordKey)) {
+                record[expandColumnName] = ~this.getExpandedRecordsKeys().indexOf(recordKey);
+            } else {
+                record[expandColumnName] = null;
+            }
+        }
+    }
+
+    _onRowCollapse(rowData) {
+        const keyColumn = this.getKeyColumn().columnName;
+        this._expandedRecordsKeys = this._expandedRecordsKeys.filter(k => k !== rowData[keyColumn]);
+        this._allGridData = this._allGridData.filter(r => r.parentKey !== rowData[keyColumn]);
+
+        const results = this._getPageRecords(this._allGridData);
+        const parentRow = results.find(r => r[keyColumn] === rowData[keyColumn]);
+        if (parentRow != null) {
+            parentRow[expandColumnName] = false;
+        }
+
+        const pagesCount = this.getPagesCount(this._allGridData.length);
+        this.setState({
+            results: results,
+            currentPage: this.getCurrentPage(),
+            pagesCount: pagesCount,
+            showPager: this._isNeedShowPager(pagesCount),
+        });
+    }
+
+    _onRowExpand(rowData) {
+        const keyColumn = this.getKeyColumn().columnName;
+        this._expandedRecordsKeys.push(rowData[keyColumn]);
+        this._filterGridData(this._allData);
+        this._filterCollapsedRows(this._allGridData);
+        this._sortGridData();
+        this._groupGridDataIfNeed();
+
+        const results = this._getPageRecords(this._allGridData);
+        const parentRow = results.find(r => r[keyColumn] === rowData[keyColumn]);
+        if (parentRow != null) {
+            parentRow[expandColumnName] = true;
+        }
+
+        if (this.isWithCheckboxColumn()) {
+            this._checkRecords(results, true);
+        }
+
+        const pagesCount = this.getPagesCount(this._allGridData.length);
+        this.setState({
+            results: results,
+            currentPage: this.getCurrentPage(),
+            pagesCount: pagesCount,
+            showPager: this._isNeedShowPager(pagesCount),
+        });
     }
 
     _addCheckboxColumn() {
@@ -489,26 +609,29 @@ export default class Grid extends React.PureComponent {
                 cssClassName: 'checkbox-column'
             });
         }
-        this.state.results.forEach(item => item[checkboxColumnName] = false);
     }
 
     _fillAllGridRecordsKeysOnClient() {
         this._allGridRecordsKeys = this._allGridData.map(item => item[this.getKeyColumn().columnName]);
     }
 
-	_changeCheckedRecordsKeys(newCheckedRecords, notify = true) {
+    _changeExpandedRecordsKeys(newExpandedRecords) {
+        this._expandedRecordsKeys = newExpandedRecords;
+    }
+
+    _changeCheckedRecordsKeys(newCheckedRecords, notify = true) {
         let previousCheckedRecords;
         const isNotificationNeed = notify && typeof this.props.checkedRecordsChanged === 'function';
         if (isNotificationNeed) {
             previousCheckedRecords = this.getCheckedRecordsKeys().slice(0);
         }
 
-		this._checkedRecordsKeys = newCheckedRecords;
+        this._checkedRecordsKeys = newCheckedRecords;
         if (isNotificationNeed) {
             this.props.checkedRecordsChanged(this.getCheckedRecordsKeys(), previousCheckedRecords);
         }
     }
-	
+
     _headerCheckedChanged(isChecked) {
         if (isChecked) {
             this._changeCheckedRecordsKeys(setOps.union(this.getCheckedRecordsKeys(), this._allGridRecordsKeys));
@@ -629,6 +752,7 @@ export default class Grid extends React.PureComponent {
 
     _sortOnClient() {
         this._sortGridData();
+        this._groupGridDataIfNeed();
         const results = this._getPageRecords(this._allGridData);
         if (this.isWithCheckboxColumn()) {
             this._checkRecords(results);
@@ -643,18 +767,40 @@ export default class Grid extends React.PureComponent {
     }
 
     _sortGridData() {
-        if (!this.getCurrentSortColumn()) {
+        const sortColumn = this.getCurrentSortColumn();
+        if (!sortColumn) {
             return;
         }
 
-        const column = this._columnMetadata.find(column => column.columnName === this.getCurrentSortColumn());
+        const column = this._columnMetadata.find(column => column.columnName === sortColumn);
         if (!column) {
             return;
         }
 
-        this._allGridData = orderBy(this._allGridData,
-            item => this._sorter.getDefaultSortFunction(column.columnType)(item[this.getCurrentSortColumn()]),
-            this._getSortDirection());
+        const sortDirection = this._getSortDirection();
+        if (typeof column.customSortFunc === 'function') {
+            this._allGridData = column.customSortFunc(this._allGridData, sortColumn, sortDirection);
+        } else {
+            const defaultSortFunc = this._sorter.getDefaultSortFunction(column.columnType);
+            this._allGridData = orderBy(this._allGridData, item => defaultSortFunc(item[sortColumn]), sortDirection);
+        }
+    }
+
+    _groupGridDataIfNeed() {
+        if (!this.isWithGrouping()) {
+            return;
+        }
+
+        let result = [];
+        let parentRows = this._allGridData.filter(r => r.parentKey == null);
+        let keyColumn = this.getKeyColumn().columnName;
+        for (let parentRow of parentRows) {
+            result.push(parentRow);
+            let childRows = this._allGridData.filter(r => r.parentKey == parentRow[keyColumn]);
+            result.push(...childRows);
+        }
+
+        this._allGridData = result;
     }
 
     _getSortDirection() {
@@ -667,7 +813,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _setCommonFilter(filterText, withApply = true) {
-		this._commonFilterText = filterText.trim();
+        this._commonFilterText = filterText.trim();
         if (withApply) {
             this._applyAllFilters();
         }
@@ -706,6 +852,11 @@ export default class Grid extends React.PureComponent {
     _filterOnClient() {
         this._filterGridData(this._allData);
         this._sortGridData();
+        if (this.isWithGrouping()) {
+            this._markExpandableRows();
+            this._filterCollapsedRows(this._allGridData);
+        }
+
         const results = this._getPageRecords(this._allGridData);
         if (this.isWithCheckboxColumn()) {
             this._fillAllGridRecordsKeysOnClient();
@@ -729,6 +880,10 @@ export default class Grid extends React.PureComponent {
         if (this._showOnlyCheckedRecords) {
             this._filterByOnlyChecked();
         }
+    }
+
+    _filterCollapsedRows(data) {
+        this._allGridData = data.filter(r => r.parentKey == null || ~this.getExpandedRecordsKeys().indexOf(r.parentKey));
     }
 
     _filterByOnlyChecked() {
@@ -817,24 +972,24 @@ export default class Grid extends React.PureComponent {
         }
     }
 
-	_isRowSelected(rowData) {
-		return this._selectedRow && rowData[this.getKeyColumn().columnName] === this._selectedRow[this.getKeyColumn().columnName];
-	}
-	
-	_onRowSelected(row, event) {
-		if (this.props.selectable) {
+    _isRowSelected(rowData) {
+        return this._selectedRow && rowData[this.getKeyColumn().columnName] === this._selectedRow[this.getKeyColumn().columnName];
+    }
+
+    _onRowSelected(row, event) {
+        if (this.props.selectable) {
             this._selectRow(row.props.data, $(event.target).parents('tr'));
             this._raiseSelectedRowChangedEvent();
         }
-	}
-	
-	_selectRow(rowData, rowElement) {
+    }
+
+    _selectRow(rowData, rowElement) {
         this._previousSelectedRow = this._selectedRow;
         this._selectedRow = rowData;
         rowElement.parent().find('tr').removeClass('selected');
         rowElement.addClass('selected');
     }
-	
+
     _raiseSelectedRowChangedEvent() {
         if (this.props.selectable && this._previousSelectedRow != this._selectedRow && typeof this.props.selectedRowChanged === 'function') {
             this.props.selectedRowChanged(this._selectedRow, this._previousSelectedRow);
@@ -842,7 +997,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _exportFunc() {
-		if (this.props.export.customExport === 'function') {
+        if (this.props.export.customExport === 'function') {
             this.props.export.customExport(); // TODO передать все необходимые параметры
             return;
         }
@@ -911,6 +1066,10 @@ export default class Grid extends React.PureComponent {
         }
     }
 
+    isWithGrouping() {
+        return this.props.withGrouping;
+    }
+
     isWithCheckboxColumn() {
         return this.props.withCheckboxColumn;
     }
@@ -947,10 +1106,14 @@ export default class Grid extends React.PureComponent {
         return this._checkedRecordsKeys;
     }
 
-	getGridData() {
-		return this._allGridData.slice(0);
-	}
-	
+    getExpandedRecordsKeys() {
+        return this._expandedRecordsKeys;
+    }
+
+    getGridData() {
+        return this._allGridData.slice(0);
+    }
+
     getCurrentSortColumn() {
         return this._currentSortColumn;
     }
@@ -984,10 +1147,10 @@ export default class Grid extends React.PureComponent {
         return this.props.showColumnsFilter && this._filterableColumns.length > 0;
     }
 
-	isShowColumnFilter(colName) {
+    isShowColumnFilter(colName) {
         return this.props.showColumnsFilter && this._filterableColumns.indexOf(colName) !== -1;
     }
-	
+
     isExportEnabled() {
         return this.props.export != null;
     }
@@ -998,13 +1161,28 @@ export default class Grid extends React.PureComponent {
     }
 
     onChangePageSize(size) {
-        if (this.props.onChangePageSize && typeof this.props.onChangePageSize === 'function') {
+        if (typeof this.props.onChangePageSize === 'function') {
             this.props.onChangePageSize(size);
         }
     }
-	
+
+    _handleRowMetadata() {
+        if (!this.isWithGrouping()) {
+            return;
+        }
+
+        const originalFunc = this.props.rowMetadata.bodyCssClassName;
+        this.props.rowMetadata.bodyCssClassName = rowData => {
+            let originalClasses = '';
+            if (typeof originalFunc === 'function') {
+                originalClasses = originalFunc(rowData);
+            }
+            return rowData.parentKey != null ? `${originalClasses} child-row` : originalClasses;
+        };
+    }
+
     render() {
-		return (
+        return (
             <div className="custom-grid">
                 <div className="overlay hidden" ref="overlay">
                     <Loader/>
@@ -1012,7 +1190,7 @@ export default class Grid extends React.PureComponent {
                 { /* https://griddlegriddle.github.io/v0-docs/customization.html */ }
                 <Griddle
                     {...this.props}
-					columnMetadata={this._columnMetadata}
+                    columnMetadata={this._columnMetadata}
                     filterPlaceholderText='Search...'
                     settingsText='Settings'
                     nextText='Next page'
@@ -1038,15 +1216,17 @@ export default class Grid extends React.PureComponent {
                     showPager={this.state.showPager}
                     isRowSelected={this._isRowSelected}
                     onRowSelected={this._onRowSelected}
-					isSelectable={this.props.selectable}
-				/>
+                    isSelectable={this.props.selectable}
+                />
             </div>
         );
     }
 }
 
 Grid.defaultProps = {
+    rowMetadata: {},
     defaultCheckedRecordsKeys: [],
+    defaultExpandedRecordsKeys: [],
     showFilter: true,
     showPageSizeSelector: true,
     showColumnsFilter: true,

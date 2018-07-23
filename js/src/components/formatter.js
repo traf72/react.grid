@@ -5,12 +5,12 @@ import numeral from './numeral.js';
 import moment from './moment.js';
 
 export default class Formatter {
-    formatByDefault(dataType, input) {
+    formatByDefault(dataType, input, withoutDigitGroupSeparator = false) {
         if (!dataType) {
             return input;
         }
 
-        const defaultFormat = this.getDataTypeDefaultFormat(dataType);
+        const defaultFormat = this.getDataTypeDefaultFormat(dataType, withoutDigitGroupSeparator);
         if (!defaultFormat) {
             return input;
         }
@@ -28,28 +28,48 @@ export default class Formatter {
         return input;
     }
 
-    getDataTypeDefaultFormat(dataType) {
+    getDataTypeDefaultFormat(dataType, withoutDigitGroupSeparator = false) {
         if (!dataType) {
             return null;
         }
 
         dataType = dataType.trim().toLowerCase();
+        if (~allNumberTypes.indexOf(dataType)) {
+            return this.getNumberDefaultFormat(dataType, withoutDigitGroupSeparator);
+        }
+        if (~dateTypes.indexOf(dataType)) {
+            return this.getDateDefaultFormat();
+        }
+        if (~timeTypes.indexOf(dataType)) {
+            return this.getTimeDefaultFormat();
+        }
+        if (~boolTypes.indexOf(dataType)) {
+            return this.getBoolDefaultFormat();
+        }
+        return null;
+    }
+
+    getNumberDefaultFormat(dataType, withoutDigitGroupSeparator = false) {
+        dataType = dataType.trim().toLowerCase();
         if (~decimalTypes.indexOf(dataType)) {
-            return '0,0.00';
+            return withoutDigitGroupSeparator ? '0.00' : '0,0.00';
         }
         if (~allNumberTypes.indexOf(dataType)) {
             return '0.[000000000]';
         }
-        if (~dateTypes.indexOf(dataType)) {
-            return 'L';
-        }
-        if (~timeTypes.indexOf(dataType)) {
-            return 'LT';
-        }
-        if (~boolTypes.indexOf(dataType)) {
-            return 'YN';
-        }
         return null;
+    }
+
+    getDateDefaultFormat() {
+        return 'L';
+    }
+
+    getTimeDefaultFormat() {
+        return 'LT';
+    }
+
+    getBoolDefaultFormat() {
+        return 'YN';
     }
 
     formatNumber(format, input) {

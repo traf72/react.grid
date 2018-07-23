@@ -114,16 +114,21 @@ var GridRow = createReactClass({
         columnStyles = assign(columnStyles, { paddingLeft: 10 });
       }
 
+      var colTitle;
+      if (meta != null && meta.showTitle) {
+          colTitle = col[1];
+      }
+
       if (_this.props.columnSettings.hasColumnMetadata() && typeof meta !== 'undefined' && meta !== null) {
         if (typeof meta.customComponent !== 'undefined' && meta.customComponent !== null) {
           var customComponent = React.createElement(meta.customComponent, { data: col[1], rowData: dataView, metadata: meta, extraProps: meta.customComponentProps });
-          returnValue = React.createElement('td', { onClick: _this.handleClick, className: meta.cssClassName, key: index, style: columnStyles }, customComponent);
+          returnValue = React.createElement('td', { onClick: _this.handleClick, className: meta.cssClassName, key: index, style: columnStyles, title: colTitle }, customComponent);
         } else {
-          returnValue = React.createElement('td', { onClick: _this.handleClick, className: meta.cssClassName, key: index, style: columnStyles }, firstColAppend, col[1]);
+          returnValue = React.createElement('td', { onClick: _this.handleClick, className: meta.cssClassName, key: index, style: columnStyles, title: colTitle }, firstColAppend, col[1]);
         }
       }
 
-      return returnValue || React.createElement('td', { onClick: _this.handleClick, key: index, style: columnStyles }, firstColAppend, col[1]);
+      return returnValue || React.createElement('td', { onClick: _this.handleClick, key: index, style: columnStyles, title: colTitle }, firstColAppend, col[1]);
     });
 
     if (nodes && this.props.multipleSelectionSettings && this.props.multipleSelectionSettings.isMultipleSelection) {
