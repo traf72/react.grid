@@ -472,89 +472,95 @@ describe("Filter test", () => {
         });
     });
     
-    it("Test apply common filter", () => {
-        let commonFilter = { text: 'с' };
-        let result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(4);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(3);
-        expect(result[2].id).to.be.equal(4);
-        expect(result[3].id).to.be.equal(5);
+    describe("Test apply common filter", () => {
+        it("Test apply empty filter", () => {
+            let commonFilter = { text: '' };
+            let result = filter.apply(data, null, commonFilter);
+            expect(result).to.be.deep.equal(data);
 
-        commonFilter.text = '!с';
-        result = filter.apply(data, null, commonFilter);
-        expect(result).to.be.deep.equal(data);
+            commonFilter.text = null;
+            result = filter.apply(data, null, commonFilter);
+            expect(result).to.be.deep.equal(data);
 
-        commonFilter.text = 'кт|ей';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(3);
+            commonFilter.text = undefined;
+            result = filter.apply(data, null, commonFilter);
+            expect(result).to.be.deep.equal(data);
+        });
+        
+        it("Test apply empty filter with special symbols", () => {
+            let commonFilter = { text: '!' };
+            let result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(0);
+            
+            commonFilter.text = '!=';
+            commonFilter.filterableColumns = ['name', 'position'];
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(5);
+            expect(result.find(item => item.id === 0)).to.be.an('undefined');
+            expect(result.find(item => item.id === 6)).to.be.an('undefined');
+            expect(result.find(item => item.id === 7)).to.be.an('undefined');
 
-        commonFilter.text = '+СИ';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(3);
-        expect(result[1].id).to.be.equal(4);
+            commonFilter.text = '=';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(3);
+            expect(result[0].id).to.be.equal(6);
+            expect(result[1].id).to.be.equal(7);
+            expect(result[2].id).to.be.equal(0);
+        });
+        
+        it("Test apply filter in common case", () => {
+            let commonFilter = { text: 'с' };
+            let result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(4);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(3);
+            expect(result[2].id).to.be.equal(4);
+            expect(result[3].id).to.be.equal(5);
 
-        commonFilter.text = 'Иванов Иван';
-        commonFilter.filterableColumns = ['name'];
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(1);
+            commonFilter.text = '!с';
+            result = filter.apply(data, null, commonFilter);
+            expect(result).to.be.deep.equal(data);
 
-        commonFilter.filterableColumns = null;
-        commonFilter.text = 'not found';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(0);
+            commonFilter.text = 'кт|ей';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(3);
 
-        commonFilter.text = '=not found';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(0);
+            commonFilter.text = '+СИ';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(3);
+            expect(result[1].id).to.be.equal(4);
 
-        commonFilter.text = '!';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(0);
+            commonFilter.text = 'Иванов Иван';
+            commonFilter.filterableColumns = ['name'];
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(1);
 
-        commonFilter.text = '01.01.2016';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(0);
+            commonFilter.filterableColumns = null;
+            commonFilter.text = 'not found';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(0);
 
-        result = filter.apply(data, null, commonFilter, columnsToStringConverters);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(1);
+            commonFilter.text = '=not found';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(0);
 
-        commonFilter.text = '!=';
-        commonFilter.filterableColumns = ['name', 'position'];
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(5);
-        expect(result.find(item => item.id === 0)).to.be.an('undefined');
-        expect(result.find(item => item.id === 6)).to.be.an('undefined');
-        expect(result.find(item => item.id === 7)).to.be.an('undefined');
+            commonFilter.text = '01.01.2016';
+            result = filter.apply(data, null, commonFilter);
+            expect(result.length).to.be.equal(0);
 
-        commonFilter.text = '=';
-        result = filter.apply(data, null, commonFilter);
-        expect(result.length).to.be.equal(3);
-        expect(result[0].id).to.be.equal(6);
-        expect(result[1].id).to.be.equal(7);
-        expect(result[2].id).to.be.equal(0);
+            result = filter.apply(data, null, commonFilter, columnsToStringConverters);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(1);
 
-        commonFilter.text = '';
-        result = filter.apply(data, null, commonFilter);
-        expect(result).to.be.deep.equal(data);
-
-        commonFilter.text = null;
-        result = filter.apply(data, null, commonFilter);
-        expect(result).to.be.deep.equal(data);
-
-        commonFilter.text = undefined;
-        result = filter.apply(data, null, commonFilter);
-        expect(result).to.be.deep.equal(data);
-
-        commonFilter.text = 'с';
-        commonFilter.filterableColumns = [];
-        result = filter.apply(data, null, commonFilter);
-        expect(result).to.be.deep.equal(data);
+            commonFilter.text = 'с';
+            commonFilter.filterableColumns = [];
+            result = filter.apply(data, null, commonFilter);
+            expect(result).to.be.deep.equal(data);
+        });
     });
 
     it("Test apply", () => {
