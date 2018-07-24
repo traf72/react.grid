@@ -6,7 +6,7 @@ import utils from './utils.js';
 export const orCharacter = '|';
 export const negateCharacter = '!';
 export const equalCharacter = '=';
-export const startsWithCharacter = '*';
+export const startsWithCharacter = '+';
 export const escapeCharacter = '\\';
 
 const maxParsedSymbolsCount = 2; // Парсим на предмет наличия спец. символов только первые 2 символа
