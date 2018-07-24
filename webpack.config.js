@@ -10,8 +10,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './bundles/js'),
         filename: '[name].bundle.js',
-        libraryTarget: 'var',
-        library: '[name]',
     },
     optimization: {
         splitChunks: {

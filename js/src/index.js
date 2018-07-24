@@ -75,6 +75,4 @@ class Sample extends React.PureComponent {
     }
 }
 
-export function init(options) {
-    ReactDOM.render(<Sample />, document.getElementById('grid'));
-}
+ReactDOM.render(<Sample />, document.getElementById('grid'));
