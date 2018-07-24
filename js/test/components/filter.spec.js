@@ -232,245 +232,246 @@ describe("Filter test", () => {
         });
     });
 
-    it("Test apply filter by columns", () => {
-        expect(filter.apply.bind(null, null)).to.throw(Error);
-        expect(filter.apply.bind(null, undefined)).to.throw(Error);
-        expect(filter.apply.bind(null, {})).to.throw(Error);
+    describe("Test apply filter by columns", () => {
+        it("Test apply filter with incorrect parameters", () => {
+            expect(filter.apply.bind(null, null)).to.throw(Error);
+            expect(filter.apply.bind(null, undefined)).to.throw(Error);
+            expect(filter.apply.bind(null, {})).to.throw(Error);
+        });
+        
+        it("Test apply by one column with empty filter", () => {
+            let filterByColumns = null;
+            let result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        let filterByColumns = null;
-        let result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns = { };
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns = { };
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = '';
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns.id = '';
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = '  ';
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns.id = '  ';
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = null;
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns.id = null;
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = undefined;
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
+        });
+        
+        it("Test apply by one column without special symbols", () => {
+            const filterByColumns = { id: '1' };
+            let result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(1);
+            
+            delete filterByColumns.id;
+            
+            filterByColumns.name = 'петр';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(4);
 
-        filterByColumns.id = undefined;
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.name = 'ПЕТР';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(4);
+        });
+        
+        it("Test apply by one column with special symbols and empty filter", () => {
+            const filterByColumns = { id: '!' };
+            let result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
+            
+            delete filterByColumns.id;
+            
+            filterByColumns.name = '=';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(3);
+            expect(result[0].id).to.be.equal(6);
+            expect(result[1].id).to.be.equal(7);
+            expect(result[2].id).to.be.equal(0);
 
-        filterByColumns.id = '!';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+            filterByColumns.name = '!=';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(5);
+            expect(result.find(item => item.id === 0)).to.be.an('undefined');
+            expect(result.find(item => item.id === 6)).to.be.an('undefined');
+            expect(result.find(item => item.id === 7)).to.be.an('undefined');
 
-        filterByColumns.id = '100|1000';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+            filterByColumns.name = '+';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(8);
 
-        filterByColumns.id = '1';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(1);
+            filterByColumns.name = '!+';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
+        });
+        
+        it("Test apply by one column with special symbols", () => {
+            const filterByColumns = { id: '!1' };
+            let result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(7);
+            expect(result.find(item => item.id === 1)).to.be.an('undefined');
 
-        filterByColumns.id = '!1';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(7);
-        expect(result.find(item => item.id === 1)).to.be.an('undefined');
+            filterByColumns.id = '  !1';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(7);
+            expect(result.find(item => item.id === 1)).to.be.an('undefined');
+            
+            filterByColumns.id = '100|1000';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
+            
+            filterByColumns.id = '|';
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns.id = '  !1';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(7);
-        expect(result.find(item => item.id === 1)).to.be.an('undefined');
+            filterByColumns.id = '  |  ';
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
 
-        filterByColumns.id = '|';
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = '1|3';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(1);
+            expect(result[1].id).to.be.equal(3);
 
-        filterByColumns.id = '  |  ';
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.id = '1\\|3';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
 
-        filterByColumns.id = '1|3';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(1);
-        expect(result[1].id).to.be.equal(3);
+            filterByColumns.id = '1 || 3';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(1);
+            expect(result[1].id).to.be.equal(3);
 
-        filterByColumns.id = '1\\|3';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+            filterByColumns.id = '1|3 | 5';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(3);
+            expect(result[0].id).to.be.equal(1);
+            expect(result[1].id).to.be.equal(3);
+            expect(result[2].id).to.be.equal(5);
 
-        filterByColumns.id = '1 || 3';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(1);
-        expect(result[1].id).to.be.equal(3);
+            filterByColumns.id = '!1|!3';
+            result = filter.apply(data, filterByColumns);
+            expect(result).to.be.deep.equal(data);
+            
+            delete filterByColumns.id;
+            
+            filterByColumns.name = '=Петров Иван || =иванов александр';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(4);
+            expect(result[1].id).to.be.equal(5);
 
-        filterByColumns.id = '1|3 | 5';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(3);
-        expect(result[0].id).to.be.equal(1);
-        expect(result[1].id).to.be.equal(3);
-        expect(result[2].id).to.be.equal(5);
+            filterByColumns.name = '=петр';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
 
-        filterByColumns.id = '!1|!3';
-        result = filter.apply(data, filterByColumns);
-        expect(result).to.be.deep.equal(data);
+            filterByColumns.name = '+петр';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(2);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(4);
 
-        delete filterByColumns.id;
-        filterByColumns.name = 'петр';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(4);
+            filterByColumns.name = '=Петров Иван';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(4);
 
-        filterByColumns.name = 'ПЕТР';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(4);
+            filterByColumns.name = '  =Петров Иван';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(4);
 
-        filterByColumns.position = 'админ';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(4);
+            filterByColumns.name = '!ан';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(5);
+            expect(result.find(item => item.id === 1)).to.be.an('undefined');
+            expect(result.find(item => item.id === 4)).to.be.an('undefined');
+            expect(result.find(item => item.id === 5)).to.be.an('undefined');
+        });
 
-        filterByColumns.id = '1';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+        it("Test apply by multiple columns", () => {
+            const filterByColumns = {
+                name: 'петр',
+                position: 'админ',
+            };
 
-        delete filterByColumns.id;
-        delete filterByColumns.name;
-        delete filterByColumns.position;
+            let result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(4);
 
-        filterByColumns.name = '=';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(3);
-        expect(result[0].id).to.be.equal(6);
-        expect(result[1].id).to.be.equal(7);
-        expect(result[2].id).to.be.equal(0);
+            filterByColumns.id = '1';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
+            
+            filterByColumns.id = '=4';
+            filterByColumns.name = '=Петров ИВАН';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(4);
+        });
+        
+        it("Test apply with string conversion", () => {
+            const filterByColumns = { isWorked: 'true' };
+            let result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(4);
+            expect(result[0].id).to.be.equal(1);
+            expect(result[1].id).to.be.equal(3);
+            expect(result[2].id).to.be.equal(4);
+            expect(result[3].id).to.be.equal(5);
 
-        filterByColumns.name = '!=';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(5);
-        expect(result.find(item => item.id === 0)).to.be.an('undefined');
-        expect(result.find(item => item.id === 6)).to.be.an('undefined');
-        expect(result.find(item => item.id === 7)).to.be.an('undefined');
+            filterByColumns.isWorked = 'false';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(4);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(6);
+            expect(result[2].id).to.be.equal(7);
+            expect(result[3].id).to.be.equal(0);
 
-        filterByColumns.name = '+';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(8);
+            filterByColumns.isWorked = 'Y';
+            result = filter.apply(data, filterByColumns);
+            expect(result.length).to.be.equal(0);
 
-        filterByColumns.name = '!+';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+            result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
+            expect(result.length).to.be.equal(4);
+            expect(result[0].id).to.be.equal(1);
+            expect(result[1].id).to.be.equal(3);
+            expect(result[2].id).to.be.equal(4);
+            expect(result[3].id).to.be.equal(5);
 
-        filterByColumns.name = '=петр';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
+            filterByColumns.isWorked = '=no';
+            result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
+            expect(result.length).to.be.equal(4);
+            expect(result[0].id).to.be.equal(2);
+            expect(result[1].id).to.be.equal(6);
+            expect(result[2].id).to.be.equal(7);
+            expect(result[3].id).to.be.equal(0);
 
-        filterByColumns.name = '+петр';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(4);
+            filterByColumns.isWorked = '=YES';
+            filterByColumns.startDate = '2014';
+            result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(3);
 
-        filterByColumns.name = '=Петров Иван';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(4);
-
-        filterByColumns.name = '  =Петров Иван';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(4);
-
-        filterByColumns.name = '=Петров Иван || =иванов александр';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(2);
-        expect(result[0].id).to.be.equal(4);
-        expect(result[1].id).to.be.equal(5);
-
-        filterByColumns.id = '=4';
-        filterByColumns.name = '=Петров ИВАН';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(4);
-
-        delete filterByColumns.id;
-        filterByColumns.name = '!ан';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(5);
-        expect(result.find(item => item.id === 1)).to.be.an('undefined');
-        expect(result.find(item => item.id === 4)).to.be.an('undefined');
-        expect(result.find(item => item.id === 5)).to.be.an('undefined');
-
-        filterByColumns.name = '!+петр';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(6);
-        expect(result.find(item => item.id === 2)).to.be.an('undefined');
-        expect(result.find(item => item.id === 4)).to.be.an('undefined');
-
-        filterByColumns.name = '!=Петров ИВАН';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(7);
-        expect(result.find(item => item.id === 4)).to.be.an('undefined');
-
-        filterByColumns.name = '=!Петров ИВАН';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(7);
-        expect(result.find(item => item.id === 4)).to.be.an('undefined');
-
-        delete filterByColumns.name;
-        filterByColumns.isWorked = 'true';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(4);
-        expect(result[0].id).to.be.equal(1);
-        expect(result[1].id).to.be.equal(3);
-        expect(result[2].id).to.be.equal(4);
-        expect(result[3].id).to.be.equal(5);
-
-        filterByColumns.isWorked = 'false';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(4);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(6);
-        expect(result[2].id).to.be.equal(7);
-        expect(result[3].id).to.be.equal(0);
-
-        filterByColumns.isWorked = 'Y';
-        result = filter.apply(data, filterByColumns);
-        expect(result.length).to.be.equal(0);
-
-        result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
-        expect(result.length).to.be.equal(4);
-        expect(result[0].id).to.be.equal(1);
-        expect(result[1].id).to.be.equal(3);
-        expect(result[2].id).to.be.equal(4);
-        expect(result[3].id).to.be.equal(5);
-
-        filterByColumns.isWorked = '=no';
-        result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
-        expect(result.length).to.be.equal(4);
-        expect(result[0].id).to.be.equal(2);
-        expect(result[1].id).to.be.equal(6);
-        expect(result[2].id).to.be.equal(7);
-        expect(result[3].id).to.be.equal(0);
-
-        filterByColumns.isWorked = '=YES';
-        filterByColumns.startDate = '2014';
-        result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(3);
-
-        filterByColumns.startDate = '=15.11.2015';
-        result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
-        expect(result.length).to.be.equal(1);
-        expect(result[0].id).to.be.equal(4);
+            filterByColumns.startDate = '=15.11.2015';
+            result = filter.apply(data, filterByColumns, null, columnsToStringConverters);
+            expect(result.length).to.be.equal(1);
+            expect(result[0].id).to.be.equal(4);
+        });
     });
-
+    
     it("Test apply common filter", () => {
         let commonFilter = { text: 'с' };
         let result = filter.apply(data, null, commonFilter);
