@@ -112,7 +112,7 @@ export default class Filter {
                 }
             }
 
-            const negate = specialCharacters.characters.indexOf(negateCharacter) !== -1;
+            const negate = specialCharacters.characters.includes(negateCharacter);
             filterFunctions.push(filterFunction.bind(this, negate, specialCharacters.actualFilterString));
         }
 
@@ -126,8 +126,8 @@ export default class Filter {
         let parsedSymbolsCount = 0;
         const totalParsedSymbolsCount = Math.min(maxParsedSymbolsCount, actualFilterString.length);
         while (parsedSymbolsCount < totalParsedSymbolsCount &&
-            allSpecialCharacter.indexOf(currentSymbol) !== -1 &&
-            specialCharacters.indexOf(currentSymbol) === -1)
+            allSpecialCharacter.includes(currentSymbol) &&
+            !specialCharacters.includes(currentSymbol))
         {
             actualFilterString = actualFilterString.substring(1);
             if (currentSymbol === escapeCharacter) {
@@ -149,11 +149,11 @@ export default class Filter {
         return negate
             ? inputData.filter(item =>
                 (item[column] == null && filterText)
-                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) === -1)
+                || (item[column] != null && !this._getToStringConverter(column)(item[column]).toLowerCase().includes(filterText.toLowerCase()))
             )
             : inputData.filter(item =>
                 (item[column] == null && !filterText)
-                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().indexOf(filterText.toLowerCase()) !== -1)
+                || (item[column] != null && this._getToStringConverter(column)(item[column]).toLowerCase().includes(filterText.toLowerCase()))
             );
     }
 

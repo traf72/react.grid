@@ -204,7 +204,7 @@ export default class Grid extends React.PureComponent {
 
     _removeNotActualColumnsFromColumnsFilter() {
         for (let columnName in this._filterByColumns) {
-            if (this._filterableColumns.indexOf(columnName) === -1) {
+            if (!this._filterableColumns.includes(columnName)) {
                 delete this._filterByColumns[columnName]; 
             }
         }
@@ -523,7 +523,7 @@ export default class Grid extends React.PureComponent {
         let keyColumn = this.getKeyColumn().columnName;
         for (let record of this._allGridData) {
             let recordKey = record[keyColumn];
-            if (~parentsWithChildren.indexOf(recordKey)) {
+            if (parentsWithChildren.includes(recordKey)) {
                 record[expandColumnName] = ~this.getExpandedRecordsKeys().indexOf(recordKey);
             } else {
                 record[expandColumnName] = null;
@@ -705,8 +705,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _checkRecords(records, withCheckboxes) {
-        records.forEach(item => item.isChecked = ~this.getCheckedRecordsKeys()
-            .indexOf(item[this.getKeyColumn().columnName]));
+        records.forEach(item => item.isChecked = this.getCheckedRecordsKeys().includes(item[this.getKeyColumn().columnName]));
         if (withCheckboxes) {
             this._checkboxes.forEach(c => c.checked = this.getCheckedRecordsKeys().find(k => k.toString() === c.dataset.key) != null);
         }
@@ -880,13 +879,13 @@ export default class Grid extends React.PureComponent {
     }
 
     _filterCollapsedRows(data) {
-        this._allGridData = data.filter(r => r.parentKey == null || ~this.getExpandedRecordsKeys().indexOf(r.parentKey));
+        this._allGridData = data.filter(r => r.parentKey == null || this.getExpandedRecordsKeys().includes(r.parentKey));
     }
 
     _filterByOnlyChecked() {
         // При малом кол-ве отмеченных записей производительность чуть лучше варианта ниже,
         // однако при большом кол-ве выбранных записей этот вариант очень сильно проигрывает
-        // return this._allGridData.filter(item => ~this.getCheckedRecordsKeys().indexOf(item[this.getKeyColumn().columnName]));
+        // return this._allGridData.filter(item => this.getCheckedRecordsKeys().includes(item[this.getKeyColumn().columnName]));
 
         let keyCol = this.getKeyColumn();
         setOps.pushUid(function() { return this[keyCol.columnName]; });
@@ -1048,6 +1047,27 @@ export default class Grid extends React.PureComponent {
         }
     }
 
+    _handleRowMetadata() {
+        if (!this.isWithGrouping()) {
+            return;
+        }
+
+        const originalFunc = this.props.rowMetadata.bodyCssClassName;
+        this.props.rowMetadata.bodyCssClassName = rowData => {
+            let originalClasses = '';
+            if (typeof originalFunc === 'function') {
+                originalClasses = originalFunc(rowData);
+            }
+            return rowData.parentKey != null ? `${originalClasses} child-row` : originalClasses;
+        };
+    }
+
+    onChangePageSize(size) {
+        if (typeof this.props.onChangePageSize === 'function') {
+            this.props.onChangePageSize(size);
+        }
+    }
+
     showLoader() {
         this._overlayCounter++;
         let overlay = $(this.refs.overlay);
@@ -1128,7 +1148,7 @@ export default class Grid extends React.PureComponent {
     }
 
     isColumnSortable(colName) {
-        return this._sortableColumns.indexOf(colName) !== -1;
+        return this._sortableColumns.includes(colName);
     }
 
     getColumnTitle(colName) {
@@ -1145,7 +1165,7 @@ export default class Grid extends React.PureComponent {
     }
 
     isShowColumnFilter(colName) {
-        return this.props.showColumnsFilter && this._filterableColumns.indexOf(colName) !== -1;
+        return this.props.showColumnsFilter && this._filterableColumns.includes(colName);
     }
 
     isExportEnabled() {
@@ -1155,27 +1175,6 @@ export default class Grid extends React.PureComponent {
     getAllGridRecordsKeys() {
         const keyColumn = this.getKeyColumn();
         return this.getGridData().map(x => x[keyColumn.columnName]);
-    }
-
-    onChangePageSize(size) {
-        if (typeof this.props.onChangePageSize === 'function') {
-            this.props.onChangePageSize(size);
-        }
-    }
-
-    _handleRowMetadata() {
-        if (!this.isWithGrouping()) {
-            return;
-        }
-
-        const originalFunc = this.props.rowMetadata.bodyCssClassName;
-        this.props.rowMetadata.bodyCssClassName = rowData => {
-            let originalClasses = '';
-            if (typeof originalFunc === 'function') {
-                originalClasses = originalFunc(rowData);
-            }
-            return rowData.parentKey != null ? `${originalClasses} child-row` : originalClasses;
-        };
     }
 
     render() {

@@ -58,13 +58,13 @@ export default class ColumnDefaultFormatter {
         }
 
         dataType = dataType.trim().toLowerCase();
-        if (~allNumberTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType)) {
             return FormattedNumberColumn;
         }
-        if (~dateTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType)) {
             return FormattedDateColumn;
         }
-        if (~boolTypes.indexOf(dataType)) {
+        if (boolTypes.includes(dataType)) {
             return FormattedBoolColumn;
         }
         return null;
@@ -81,10 +81,10 @@ export default class ColumnDefaultFormatter {
 
         dataType = dataType.trim().toLowerCase();
         const formatter = new Formatter();
-        if (~dateTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType)) {
             return formatter.formatDate.bind(formatter, this.getDefaultColumnFormat(dataType));
         }
-        if (~boolTypes.indexOf(dataType)) {
+        if (boolTypes.includes(dataType)) {
             return formatter.formatBool;
         }
         return null;

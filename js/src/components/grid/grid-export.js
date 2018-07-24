@@ -121,10 +121,10 @@ function getFormattedValue(type, value) {
     }
 
     type = type.trim().toLowerCase();
-    if (~boolTypes.indexOf(type)) {
+    if (boolTypes.includes(type)) {
         return formatter.formatBool(value);
     }
-    if (~dateTypes.indexOf(type)) {
+    if (dateTypes.includes(type)) {
         return moment(value).format('YYYYMMDDhhmmss');
     }
 

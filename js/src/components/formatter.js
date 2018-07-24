@@ -16,13 +16,13 @@ export default class Formatter {
         }
 
         dataType = dataType.trim().toLowerCase();
-        if (~allNumberTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType)) {
             return this.formatNumber(defaultFormat, input);
         }
-        if (~dateTypes.indexOf(dataType) || ~timeTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType) || timeTypes.includes(dataType)) {
             return this.formatDate(defaultFormat, input);
         }
-        if (~boolTypes.indexOf(dataType)) {
+        if (boolTypes.includes(dataType)) {
             return this.formatBool(input);
         }
         return input;
@@ -34,16 +34,16 @@ export default class Formatter {
         }
 
         dataType = dataType.trim().toLowerCase();
-        if (~allNumberTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType)) {
             return this.getNumberDefaultFormat(dataType, withoutDigitGroupSeparator);
         }
-        if (~dateTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType)) {
             return this.getDateDefaultFormat();
         }
-        if (~timeTypes.indexOf(dataType)) {
+        if (timeTypes.includes(dataType)) {
             return this.getTimeDefaultFormat();
         }
-        if (~boolTypes.indexOf(dataType)) {
+        if (boolTypes.includes(dataType)) {
             return this.getBoolDefaultFormat();
         }
         return null;
@@ -51,10 +51,10 @@ export default class Formatter {
 
     getNumberDefaultFormat(dataType, withoutDigitGroupSeparator = false) {
         dataType = dataType.trim().toLowerCase();
-        if (~decimalTypes.indexOf(dataType)) {
+        if (decimalTypes.includes(dataType)) {
             return withoutDigitGroupSeparator ? '0.00' : '0,0.00';
         }
-        if (~allNumberTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType)) {
             return '0.[000000000]';
         }
         return null;

@@ -15,13 +15,13 @@ export default class Converter {
         }
 
         dataType = dataType.trim().toLowerCase();
-        if (~allNumberTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType)) {
             return this.convertStringToNumber; 
         }
-        if (~dateTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType)) {
             return this.convertStringToDate;
         }
-        if (~boolTypes.indexOf(dataType)) {
+        if (boolTypes.includes(dataType)) {
             return this.convertStringToBool;
         }
         return this._noConverter;

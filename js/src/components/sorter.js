@@ -10,10 +10,10 @@ export default class Sorter {
         }
 
         dataType = dataType.trim().toLowerCase();
-        if (~allNumberTypes.indexOf(dataType) || ~boolTypes.indexOf(dataType)) {
+        if (allNumberTypes.includes(dataType) || boolTypes.includes(dataType)) {
             return this.sortNumbers;
         }
-        if (~dateTypes.indexOf(dataType)) {
+        if (dateTypes.includes(dataType)) {
             return this.sortDates;
         }
         return this.sortStrings;
