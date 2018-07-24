@@ -86,8 +86,9 @@ export default class Grid extends React.PureComponent {
         this.onChangePageSize = this.onChangePageSize.bind(this);
 
         this._initProperties();
-        this._setInitialPageSize(this.props.resultsPerPage);
-        this._handleProps();
+        this._setInitialPageSize(props.resultsPerPage);
+
+        this.state = this._getStateFromProps(props);
     }
 
     componentWillMount() {
@@ -103,10 +104,7 @@ export default class Grid extends React.PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        if (!utils.isObjectsEquals(this.props, props)) {
-            this.props = props;
-            this._handleProps();
-        }
+        this.setState(this._getStateFromProps(props));
     }
 
     componentWillUpdate() {
@@ -155,11 +153,11 @@ export default class Grid extends React.PureComponent {
         }
     }
 
-    _handleProps() {
-        this._columnMetadata = cloneDeep(this.props.columnMetadata);
+    _getStateFromProps(props) {
+        this._columnMetadata = cloneDeep(props.columnMetadata);
         this._clearPreviousToggledRecord();
 
-        this._allGridData = this._allData = this.props.serverData ? [] : cloneDeep(this.props.results);
+        this._allGridData = this._allData = props.serverData ? [] : cloneDeep(props.results);
 
         this._setKeyColumn();
         this._filter = new Filter(this.getKeyColumn().columnName);
@@ -169,7 +167,7 @@ export default class Grid extends React.PureComponent {
         this._removeNotActualColumnsFromColumnsFilter();
 
         this._applyExternalFiltersIfNeed();
-        this._applySortOptions(this.props.sortOptions);
+        this._applySortOptions(props.sortOptions);
         this._filterGridData(this._allGridData);
         this._sortGridData();
         this._groupGridDataIfNeed();
@@ -180,12 +178,12 @@ export default class Grid extends React.PureComponent {
 
         if (this.isWithCheckboxColumn()) {
             this._addCheckboxColumn();
-            this._changeCheckedRecordsKeys(setOps.intersection(this.props.defaultCheckedRecordsKeys.slice(0), this._allGridRecordsKeys), false);
+            this._changeCheckedRecordsKeys(setOps.intersection(props.defaultCheckedRecordsKeys.slice(0), this._allGridRecordsKeys), false);
             this._checkRecords(this._allGridData);
             this._handleHeaderChecked();
         }
         if (this.isWithGrouping()) {
-            this._changeExpandedRecordsKeys(setOps.intersection(this.props.defaultExpandedRecordsKeys.slice(0), this._allGridRecordsKeys));
+            this._changeExpandedRecordsKeys(setOps.intersection(props.defaultExpandedRecordsKeys.slice(0), this._allGridRecordsKeys));
             this._addExpandColumn();
             this._filterCollapsedRows(this._allGridData);
         }
@@ -193,7 +191,7 @@ export default class Grid extends React.PureComponent {
         const pagesCount = this.getPagesCount(this._allGridData.length);
         this._setCurrentPage(pagesCount);
 
-        this.state = {
+        return {
             results: this._getPageRecords(this._allGridData),
             currentPage: this.getCurrentPage(),
             pagesCount: pagesCount,
@@ -245,7 +243,6 @@ export default class Grid extends React.PureComponent {
 
     _addIconsColumn() {
         let iconsColumn = this._columnMetadata.find(column => column.columnName === 'icons');
-
         if (!iconsColumn && (this._filterableColumns.length !== 0 || this.props.refreshFunc)) {
             iconsColumn = {
                 columnName: 'icons',
