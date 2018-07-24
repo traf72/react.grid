@@ -22,10 +22,12 @@ const columnMetadata = [{
         columnName: 'lat',
         displayName: 'Latitude',
         cssClassName: 'latitude-column',
+        dataType: 'number',
     }, {
         columnName: 'lng',
         displayName: 'Longitude',
         cssClassName: 'longitude-column',
+        dataType: 'number',
     },
 ];
 
