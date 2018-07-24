@@ -104,7 +104,9 @@ export default class Grid extends React.PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        this.setState(this._getStateFromProps(props));
+        if (!utils.isObjectsEquals(this.props, props)) {
+            this.setState(this._getStateFromProps(props));
+        }
     }
 
     componentWillUpdate() {
