@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-import {allNumberTypes, dateTypes, boolTypes} from './dataTypes.js';
+import {allNumberTypes, dateTypes, boolTypes} from './data-types.js';
 import React from 'react';
 import Formatter from './formatter.js';
 import moment from './moment.js';

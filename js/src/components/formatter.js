@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './dataTypes.js';
+import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types.js';
 import numeral from './numeral.js';
 import moment from './moment.js';
 
