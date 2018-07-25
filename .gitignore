@@ -1,4 +1,3 @@
 /node_modules
-/bundles/css/*.css
-/bundles/js
+/bundles
 /package-lock.json
