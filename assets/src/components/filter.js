@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-import setOps from '../libs/setOps.js';
-import utils from './utils.js';
+import setOps from '../libs/setOps';
+import utils from './utils';
 
 export const orCharacter = '|';
 export const negateCharacter = '!';

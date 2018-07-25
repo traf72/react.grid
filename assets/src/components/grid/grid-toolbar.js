@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 import React from 'react';
-import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common.js';
+import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
 import utils from '../utils';
 
 export default class GridToolbar extends React.Component {

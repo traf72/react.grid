@@ -1,8 +1,8 @@
 ﻿'use strict';
 
-import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types.js';
-import numeral from './numeral.js';
-import moment from './moment.js';
+import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types';
+import numeral from './numeral';
+import moment from './moment';
 
 export default class Formatter {
     formatByDefault(dataType, input, withoutDigitGroupSeparator = false) {

@@ -1,6 +1,6 @@
 'use strict';
 
-import utils from '../../src/components/utils.js';
+import utils from '../../src/components/utils';
 import {expect} from 'chai';
 
 describe("Utils test", () => {

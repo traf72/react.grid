@@ -1,6 +1,6 @@
 'use strict';
 
-import Filter from '../../src/components/filter.js';
+import Filter from '../../src/components/filter';
 import {expect} from 'chai';
 import moment from 'moment';
 

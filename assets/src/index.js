@@ -6,8 +6,8 @@ import $ from 'jquery';
 import 'bootstrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Grid from './components/grid/grid.js';
-import runAsync from './components/async.js';
+import Grid from './components/grid/grid';
+import runAsync from './components/async';
 import cities from 'cities.json';
 
 const columnMetadata = [{

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-import {allNumberTypes, dateTypes, boolTypes} from './data-types.js';
-import utils from './utils.js';
+import {allNumberTypes, dateTypes, boolTypes} from './data-types';
+import utils from './utils';
 import isString from 'lodash/isString';
 
 export default class Converter {

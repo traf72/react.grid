@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-import {allNumberTypes, dateTypes, boolTypes} from './data-types.js';
+import {allNumberTypes, dateTypes, boolTypes} from './data-types';
 import React from 'react';
-import Formatter from './formatter.js';
-import moment from './moment.js';
+import Formatter from './formatter';
+import moment from './moment';
 
 export const FormattedNumberColumn = ({metadata, data}) => {
     return (
