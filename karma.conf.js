@@ -1,6 +1,6 @@
 module.exports = function (config) {
     config.set( {
-        basePath: './js',
+        basePath: './assets',
         frameworks: ['mocha', 'chai'],
         reporters: ['mocha'],
         port: 9876,
