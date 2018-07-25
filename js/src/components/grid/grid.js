@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-import '../../../../less/components/grid.less';
+import './grid.less';
 import Loader from '../loader.js';
 import drop from 'lodash/drop';
 import take from 'lodash/take';

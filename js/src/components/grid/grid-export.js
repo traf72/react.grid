@@ -4,7 +4,7 @@ import { boolTypes, dateTypes } from '../data-types.js';
 import Formatter from '../formatter.js';
 import moment from '../moment.js';
 import sortBy from 'lodash/sortBy';
-import { showWarning } from '../alert.js';
+import { showWarning } from '../alert/alert.js';
 
 const headerBackgroundColor = '#EDEDEF';
 const formatter = new Formatter();

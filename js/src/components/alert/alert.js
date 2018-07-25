@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+import './alert.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -68,7 +69,7 @@ function getContainer() {
     if (!container.length) {
         container = $('<div/>', {
             'id': alertContainerId,
-            'class': 'alert-container',
+            'class': 'alert__alert-container',
         }).appendTo(document.body);
     }
     return container;

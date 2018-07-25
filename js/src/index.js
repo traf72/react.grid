@@ -1,6 +1,6 @@
 'use strict';
 
-import '../../less/index.less';
+import './index.less';
 import 'babel-polyfill';
 import $ from 'jquery';
 import 'bootstrap';
