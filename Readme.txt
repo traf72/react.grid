@@ -1,17 +1,14 @@
-Проект представляет из себя надстройку над библиотекой https://griddlegriddle.github.io/v0-docs/
-Добавлен функционал фильтрации (со спецсимволами), множественного выбора записей, сворачивания/разворачивания строк, экспорта в Excel и многое другое.
+The project is an add-on to the library https://griddlegriddle.github.io/v0-docs/.
+There were added the functionality of filtering (with wildcards), multiple records selection, collapse/expand rows, export to Excel and so on.
 
-Для запуска примера необходимо:
+Here is the steps to run the example:
 
-	1. Из корня проекта выполнить команду (npm должен быть установлен и добавлен в PATH):
+	1. From the root of the project run the command (npm must be installed and added to the PATH)):
 		npm install
 		
-	2. Из корня проекта выполнить команду:
+	2. From the root of the project run the command:
 		node_modules\.bin\webpack --mode=production
 		
-	3. Запустить файл index.html
-
-Для запуска unit-тестов необходимо из корня проекта выполнить команду:
-	npm test
+	3. Run the index.html file.
 	
-Это кусок из реального проекта. Весь код, кроме папки js\src\libs\ написан лично.
+This is the part of a real project. All code except the js\src\libs\ folder is written personally.
