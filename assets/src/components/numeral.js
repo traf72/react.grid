@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import numeral from 'numeral';
+﻿import numeral from 'numeral';
 
 numeral.register('locale',
     'ru',

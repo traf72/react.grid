@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import moment from 'moment';
+﻿import moment from 'moment';
 
 moment.locale('en');
 

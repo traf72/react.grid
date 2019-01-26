@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import React from 'react';
+﻿import React from 'react';
 import 'loaders.css';
 import { Loader as ReactLoader } from 'react-loaders';
 

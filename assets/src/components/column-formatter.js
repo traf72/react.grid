@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import {allNumberTypes, dateTypes, boolTypes} from './data-types';
+﻿import {allNumberTypes, dateTypes, boolTypes} from './data-types';
 import React from 'react';
 import Formatter from './formatter';
 import moment from './moment';

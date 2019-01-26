@@ -1,5 +1,3 @@
-'use strict';
-
 import './index.less';
 import '@babel/polyfill';
 import $ from 'jquery';

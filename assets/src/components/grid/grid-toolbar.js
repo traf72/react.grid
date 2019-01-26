@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import React from 'react';
+﻿import React from 'react';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
 import utils from '../utils';
 

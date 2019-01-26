@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import './grid.less';
+﻿import './grid.less';
 import drop from 'lodash/drop';
 import take from 'lodash/take';
 import orderBy from 'lodash/orderBy';

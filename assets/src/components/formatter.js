@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types';
+﻿import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types';
 import numeral from './numeral';
 import moment from './moment';
 

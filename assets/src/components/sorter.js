@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import {allNumberTypes, dateTypes, boolTypes} from './data-types';
+﻿import {allNumberTypes, dateTypes, boolTypes} from './data-types';
 import orderBy from 'lodash/orderBy';
 
 export default class Sorter {

@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import React from 'react';
+﻿import React from 'react';
 
 const GridCollapse = ({extraProps, rowData}) => {
      function collapseRow(e) {

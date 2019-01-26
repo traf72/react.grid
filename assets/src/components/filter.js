@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import setOps from '../libs/setOps';
+﻿import setOps from '../libs/setOps';
 import utils from './utils';
 
 export const orCharacter = '|';

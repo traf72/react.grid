@@ -1,6 +1,4 @@
-﻿'use strict';
-
-export const byteTypes = ['byte', 'tinyint'];
+﻿export const byteTypes = ['byte', 'tinyint'];
 export const shortTypes = ['short', 'int16', 'smallint'];
 export const intTypes = ['int', 'int32'];
 export const longTypes = ['long', 'int64', 'bigint'];

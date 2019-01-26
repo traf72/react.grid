@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import { boolTypes, dateTypes } from '../data-types';
+﻿import { boolTypes, dateTypes } from '../data-types';
 import Formatter from '../formatter';
 import moment from '../moment';
 import sortBy from 'lodash/sortBy';

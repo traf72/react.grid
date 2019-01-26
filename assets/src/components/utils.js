@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import sortedIndexBy from 'lodash/sortedIndexBy';
+﻿import sortedIndexBy from 'lodash/sortedIndexBy';
 
 let utils = {
     // http://stackoverflow.com/questions/4994201/is-object-empty#answer-4994244
