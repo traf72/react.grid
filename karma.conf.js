@@ -26,14 +26,14 @@ module.exports = function (config) {
                     {
                         test: /\.js$/,
                         exclude: [/node_modules/, /libs/],
-                        use: {
-                            loader: 'babel-loader'
-                        }
+                        loader: 'babel-loader',
                     },
                 ]
             },
         },
-        webpackMiddleware: {noInfo: true},
+        webpackMiddleware: {
+            stats: 'errors-only',
+        },
         
         concurrency: Infinity
     });
