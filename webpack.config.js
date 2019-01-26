@@ -13,7 +13,6 @@ module.exports = {
         filename: '[name].bundle.js',
     },
     plugins: [
-        new MiniCssExtractPlugin('../css/[name].css'),
         new CopyWebpackPlugin([
             {
                 from: './node_modules/bootstrap/dist/css/*.min.css',
