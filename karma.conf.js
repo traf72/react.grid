@@ -23,14 +23,14 @@ module.exports = function (config) {
             mode: 'development',
             module: {
                 rules: [
-                {
-                    test: /\.js$/,
-                    exclude: [/node_modules/, /libs/],
-                    loader: 'babel-loader',
-                    query: {
-                        presets: ['env']
-                    }
-                }]
+                    {
+                        test: /\.js$/,
+                        exclude: [/node_modules/, /libs/],
+                        use: {
+                            loader: 'babel-loader'
+                        }
+                    },
+                ]
             },
         },
         webpackMiddleware: {noInfo: true},
