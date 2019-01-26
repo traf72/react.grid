@@ -12,17 +12,6 @@ module.exports = {
         path: path.resolve(__dirname, './bundles/js'),
         filename: '[name].bundle.js',
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /\.js/,
-                    name: 'common',
-                    chunks: 'all',
-                }
-            }
-        },
-    },
     plugins: [
         new MiniCssExtractPlugin('../css/[name].css'),
         new CopyWebpackPlugin([

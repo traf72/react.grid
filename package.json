@@ -3,6 +3,7 @@
   "name": "portfolio.grid",
   "private": true,
   "scripts": {
+    "build": "./node_modules/.bin/webpack --mode=production",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS karma.conf.js"
   },
   "devDependencies": {
