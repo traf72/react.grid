@@ -11,7 +11,7 @@ module.exports = function (config) {
         singleRun: false,
         
         files: [
-            '../node_modules/babel-polyfill/dist/polyfill.min.js',
+            '../node_modules/@babel/polyfill/dist/polyfill.min.js',
             './test/**/*.spec.js'
         ],
         
