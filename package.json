@@ -31,14 +31,14 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
+    "@babel/polyfill": "^7.2.5",
     "bootstrap": "^3.3.7",
-    "cities.json": "^1.1.2",
+    "cities.json": "^1.1.5",
     "create-react-class": "^15.6.3",
     "jquery": "^3.3.1",
     "loaders.css": "^0.1.2",
-    "lodash": "^4.17.10",
-    "moment": "^2.22.2",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
