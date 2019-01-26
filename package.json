@@ -41,10 +41,10 @@
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
+    "react": "^16.7.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-addons-update": "^15.6.2",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.7.0",
     "react-loaders": "^3.0.1"
   }
 }
