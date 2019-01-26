@@ -4,13 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export default class GridCheckbox extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this._toggleChecked = this._toggleChecked.bind(this);
-        this._onClick = this._onClick.bind(this);
-    }
-
     componentDidMount() {
         this.props.extraProps.saveCheckboxToColletion(ReactDOM.findDOMNode(this));
     }
@@ -19,13 +12,13 @@ export default class GridCheckbox extends React.Component {
         this.props.extraProps.removeCheckboxFromColletion(ReactDOM.findDOMNode(this));
     }
 
-    _toggleChecked(e) {
+    _toggleChecked = e => {
         if (typeof this.props.extraProps.recordCheckedChanged === 'function') {
             this.props.extraProps.recordCheckedChanged(this.props.rowData, e.target.checked, this._shiftKey);
         }
     }
 
-    _onClick(e) {
+    _onClick = e => {
         this._shiftKey = e.shiftKey;
     }
 

@@ -8,13 +8,9 @@ export default class CustomHeaderComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        this._columnFilterChanged = this._columnFilterChanged.bind(this);
-        this._handleColumnFilterKeyPress = this._handleColumnFilterKeyPress.bind(this);
-        this._handleColumnFilterPaste = this._handleColumnFilterPaste.bind(this);
-        this._updateColumnFilterState = this._updateColumnFilterState.bind(this);
-        this._searchInputMouseUp = this._searchInputMouseUp.bind(this);
-
-        this.state = { columnFilter: this.props.getColumnFilter(this.props.columnName) };
+        this.state = {
+            columnFilter: this.props.getColumnFilter(this.props.columnName)
+        };
     }
 
     componentWillReceiveProps(props) {
@@ -30,7 +26,7 @@ export default class CustomHeaderComponent extends React.Component {
         e.stopPropagation();
     }
 
-    _columnFilterChanged(e) {
+    _columnFilterChanged = e => {
         this._applyColumnFilterChanges(this.props.columnName, e.target.value);
     }
 
@@ -39,20 +35,20 @@ export default class CustomHeaderComponent extends React.Component {
         this.props.setFilterByColumn(colName, filterValue);
     }
 
-    _handleColumnFilterKeyPress(e) {
+    _handleColumnFilterKeyPress = e => {
         let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
         if (e.target.value !== filterText) {
             this._applyColumnFilterChanges(this.props.columnName, filterText);
         }
     }
 
-    _handleColumnFilterPaste(e) {
+    _handleColumnFilterPaste = e => {
         e.preventDefault();
         const value = handleFilterPastedText(e.clipboardData.getData('Text'));
         this._applyColumnFilterChanges(this.props.columnName, value);
     }
 
-    _updateColumnFilterState(value) {
+    _updateColumnFilterState = value => {
         this.setState({ columnFilter: value });
     }
 
@@ -66,7 +62,7 @@ export default class CustomHeaderComponent extends React.Component {
         }
     }
 
-    _searchInputMouseUp(e) {
+    _searchInputMouseUp = e => {
         if (utils.detectIE()) {
             utils.handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges.bind(this, this.props.columnName));
         }

@@ -8,14 +8,6 @@ export default class GridToolbar extends React.Component {
     constructor(props) {
         super(props);
 
-        this._searchChanged = this._searchChanged.bind(this);
-        this._handleFilterKeyPress = this._handleFilterKeyPress.bind(this);
-        this._handleFilterPaste = this._handleFilterPaste.bind(this);
-        this._pageSizeChanged = this._pageSizeChanged.bind(this);
-        this._searchMouseUp = this._searchMouseUp.bind(this);
-        this._updateCheckedRecordsInfo = this._updateCheckedRecordsInfo.bind(this);
-        this._onlyCheckedChanged = this._onlyCheckedChanged.bind(this);
-
         this.state = { searchText: this.props.extraProps.getCommonFilterText() };
     }
 
@@ -37,13 +29,13 @@ export default class GridToolbar extends React.Component {
         }
     }
 
-    _updateCheckedRecordsInfo() {
+    _updateCheckedRecordsInfo = () => {
         if (typeof this.props.extraProps.updateCheckedRecordsInfo === 'function') {
             this.props.extraProps.updateCheckedRecordsInfo();
         }
     }
 
-    _searchChanged(e) {
+    _searchChanged = e => {
         this._applyFilterChanges(e.target.value);
     }
 
@@ -52,33 +44,33 @@ export default class GridToolbar extends React.Component {
         this.props.changeFilter(newValue);
     }
 
-    _handleFilterKeyPress(e) {
+    _handleFilterKeyPress = e => {
         let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
         if (e.target.value !== filterText) {
             this._applyFilterChanges(filterText);
         }
     }
 
-    _handleFilterPaste(e) {
+    _handleFilterPaste = e => {
         e.preventDefault();
         const value = handleFilterPastedText(e.clipboardData.getData('Text'));
         this.setState({ searchText: value });
         this.props.changeFilter(value);
     }
 
-    _pageSizeChanged(e) {
+    _pageSizeChanged = e => {
         if (typeof this.props.extraProps.pageSizeChanged === 'function') {
             this.props.extraProps.pageSizeChanged(e.target.value);
         }
     }
 
-    _onlyCheckedChanged(e) {
+    _onlyCheckedChanged = e => {
         if (typeof this.props.extraProps.showOnlyCheckedRecordsChanged === 'function') {
             this.props.extraProps.showOnlyCheckedRecordsChanged(e.target.checked);
         }
     }
 
-    _searchMouseUp(e) {
+    _searchMouseUp = e => {
         if (utils.detectIE()) {
             utils.handleClearSearchInputInIE(e.target, this._applyFilterChanges.bind(this));
         }

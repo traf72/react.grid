@@ -4,12 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export default class GridHeaderCheckbox extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this._toggleChecked = this._toggleChecked.bind(this);
-    }
-
     componentDidMount() {
         this.props.setHeaderCheckbox(ReactDOM.findDOMNode(this));
         this.props.updateHeaderCheckbox();
@@ -23,7 +17,7 @@ export default class GridHeaderCheckbox extends React.Component {
         this.props.removeHeaderCheckbox();
     }
 
-    _toggleChecked(e) {
+    _toggleChecked = e => {
         this.props.headerCheckedChanged(e.target.checked);
     }
 
