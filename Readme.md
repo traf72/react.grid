@@ -8,4 +8,6 @@ Here is the steps to run the example:
 * From the root of the project run the `node_modules\.bin\webpack --mode=production` command.
 * Run the index.html file.
 	
+To run client tests execute the `npm test` command from the root of the project.
+	
 This is the part of a real project. All code except the js\src\libs\ folder is written personally.
