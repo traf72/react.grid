@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
-import utils from '../utils';
+import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class CustomHeaderComponent extends React.Component {
     constructor(props) {
@@ -61,8 +61,8 @@ export default class CustomHeaderComponent extends React.Component {
     }
 
     _searchInputMouseUp = e => {
-        if (utils.detectIE()) {
-            utils.handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges.bind(this, this.props.columnName));
+        if (detectIE()) {
+            handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges.bind(this, this.props.columnName));
         }
     }
 

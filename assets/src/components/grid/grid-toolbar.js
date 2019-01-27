@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
-import utils from '../utils';
+import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class GridToolbar extends React.Component {
     constructor(props) {
@@ -69,8 +69,8 @@ export default class GridToolbar extends React.Component {
     }
 
     _searchMouseUp = e => {
-        if (utils.detectIE()) {
-            utils.handleClearSearchInputInIE(e.target, this._applyFilterChanges.bind(this));
+        if (detectIE()) {
+            handleClearSearchInputInIE(e.target, this._applyFilterChanges.bind(this));
         }
     }
 
@@ -91,7 +91,7 @@ export default class GridToolbar extends React.Component {
         if (this.props.extraProps.isWithCheckboxColumn()) {
             return (
                 <label className="only-checked">
-                    <input type="checkbox" onChange={this._onlyCheckedChanged}/> Only checked (<span ref="checkedRecordsInfo">{this.props.extraProps.getCheckedRecordsKeys().length}</span>)
+                    <input type="checkbox" onChange={this._onlyCheckedChanged} /> Only checked (<span ref="checkedRecordsInfo">{this.props.extraProps.getCheckedRecordsKeys().length}</span>)
                 </label>
             );
         }

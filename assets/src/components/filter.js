@@ -1,5 +1,5 @@
 ﻿import setOps from '../libs/setOps';
-import utils from './utils';
+import { restoreDataOrder, splitStringWithEscaping } from './utils';
 
 export const orCharacter = '|';
 export const negateCharacter = '!';
@@ -81,7 +81,7 @@ export default class Filter {
     // Функции объекта setOps сортируют входные данные в непонятном порядке для увеличения производительности,
     // а нам нужно возвратить данные в исходном порядке, поэтому приходится делать такой хак
     _restoreInitialDataOrder(inputData, filteredData) {
-        return utils.restoreDataOrder(inputData, filteredData, this._keyColumn);
+        return restoreDataOrder(inputData, filteredData, this._keyColumn);
     }
 
     _combineFilterFunctions(filterFunctions, combineFunction, column, inputData) {
@@ -98,7 +98,7 @@ export default class Filter {
 
     _getFilterFunctions(filterText) {
         const filterFunctions = [];
-        const filterStrings = utils.splitStringWithEscaping(filterText, orCharacter, escapeCharacter).filter(item => !!item || !!item.trim());
+        const filterStrings = splitStringWithEscaping(filterText, orCharacter, escapeCharacter).filter(item => !!item || !!item.trim());
         for (let filterString of filterStrings) {
             filterString = filterString.trim();
             const specialCharacters = this._parseSpecialCharacters(filterString);
@@ -125,13 +125,12 @@ export default class Filter {
         const totalParsedSymbolsCount = Math.min(maxParsedSymbolsCount, actualFilterString.length);
         while (parsedSymbolsCount < totalParsedSymbolsCount &&
             allSpecialCharacter.includes(currentSymbol) &&
-            !specialCharacters.includes(currentSymbol))
-        {
+            !specialCharacters.includes(currentSymbol)) {
             actualFilterString = actualFilterString.substring(1);
             if (currentSymbol === escapeCharacter) {
                 break;
             }
-            
+
             specialCharacters.push(currentSymbol);
             currentSymbol = actualFilterString[0];
             parsedSymbolsCount++;
@@ -205,7 +204,7 @@ export default class Filter {
 
     _setKeyMethod() {
         const keyCol = this._keyColumn;
-        setOps.pushUid(function() { return this[keyCol]; });
+        setOps.pushUid(function () { return this[keyCol]; });
     }
 
     _resetKeyMethod() {

@@ -12,7 +12,7 @@ import Sorter from '../sorter';
 import Converter from '../converter';
 import ColumnDefaultFormatter from '../column-formatter';
 import runAsync from '../async';
-import utils from '../utils';
+import { restoreDataOrder } from '../utils';
 import exportToXlsx from './grid-export';
 import GridToolbar from './grid-toolbar';
 import IconsHeader from './grid-icons-header';
@@ -157,7 +157,7 @@ export default class Grid extends React.PureComponent {
     _removeNotActualColumnsFromColumnsFilter() {
         for (let columnName in this._filterByColumns) {
             if (!this._filterableColumns.includes(columnName)) {
-                delete this._filterByColumns[columnName]; 
+                delete this._filterByColumns[columnName];
             }
         }
     }
@@ -343,7 +343,7 @@ export default class Grid extends React.PureComponent {
             return;
         }
         if (this._selectedRow != null && !this._isSelectedRowKeyPresent() && pageRecords.find(x => x[this.getKeyColumn().columnName] ==
-                this._selectedRow[this.getKeyColumn().columnName])) {
+            this._selectedRow[this.getKeyColumn().columnName])) {
             return;
         } else if (this.props.defaultSelectedRow != null) {
             switch (this.props.defaultSelectedRow) {
@@ -401,17 +401,17 @@ export default class Grid extends React.PureComponent {
                 filterStrings.push(val);
             } else if (val.text && typeof val.text === 'string') {
                 switch (val.filterType) {
-                case 'equal':
-                    filterStrings.push(`${equalFilterCharacter}${val.text}`);
-                    break;
-                case 'not-equal':
-                    filterStrings.push(`${negateFilterCharacter}${equalFilterCharacter}${val.text}`);
-                    break;
-                case 'not':
-                    filterStrings.push(`${negateFilterCharacter}${val.text}`);
-                    break;
-                default:
-                    filterStrings.push(val.text);
+                    case 'equal':
+                        filterStrings.push(`${equalFilterCharacter}${val.text}`);
+                        break;
+                    case 'not-equal':
+                        filterStrings.push(`${negateFilterCharacter}${equalFilterCharacter}${val.text}`);
+                        break;
+                    case 'not':
+                        filterStrings.push(`${negateFilterCharacter}${val.text}`);
+                        break;
+                    default:
+                        filterStrings.push(val.text);
                 }
             }
         }
@@ -784,16 +784,16 @@ export default class Grid extends React.PureComponent {
         // Делаем задержку перед поиском, иначе он будет запускаться на каждый введённый символ
         clearTimeout(this.filterTimeout);
         this.filterTimeout = setTimeout(() => {
-                this.showLoader();
-                this._clearPreviousToggledRecord();
-                this._currentPage = 0;
-                if (this.props.serverData) {
-                    // При серверном поиске нужно делать ограничение хотя бы от 2-х символов и желательно запускать поиск по кнопке "Найти"
-                    this._getData();
-                } else {
-                    runAsync(() => this._filterOnClient(), defaultAsyncDelay);
-                }
-            },
+            this.showLoader();
+            this._clearPreviousToggledRecord();
+            this._currentPage = 0;
+            if (this.props.serverData) {
+                // При серверном поиске нужно делать ограничение хотя бы от 2-х символов и желательно запускать поиск по кнопке "Найти"
+                this._getData();
+            } else {
+                runAsync(() => this._filterOnClient(), defaultAsyncDelay);
+            }
+        },
             delay);
     }
 
@@ -840,9 +840,9 @@ export default class Grid extends React.PureComponent {
         // return this._allGridData.filter(item => this.getCheckedRecordsKeys().includes(item[this.getKeyColumn().columnName]));
 
         let keyCol = this.getKeyColumn();
-        setOps.pushUid(function() { return this[keyCol.columnName]; });
+        setOps.pushUid(function () { return this[keyCol.columnName]; });
         const filteredData = setOps.intersection(this._allGridData, this.getCheckedRecordsKeys().map(key => ({ [keyCol.columnName]: key })));
-        this._allGridData = this.getCurrentSortColumn() ? filteredData : utils.restoreDataOrder(this._allData, filteredData, keyCol.columnName);
+        this._allGridData = this.getCurrentSortColumn() ? filteredData : restoreDataOrder(this._allData, filteredData, keyCol.columnName);
         setOps.popUid();
     }
 
@@ -953,18 +953,18 @@ export default class Grid extends React.PureComponent {
         this.showLoader();
 
         runAsync(() => {
-                exportToXlsx({
-                        data: this._allGridData,
-                        columns: this._columnMetadata,
-                        sheetName: this.props.export.sheetName,
-                        fileName: this.props.export.fileName,
-                        beforeHeaderExport: this.props.export.beforeHeaderExport,
-                        afterHeaderExport: this.props.export.afterHeaderExport,
-                        beforeBodyExport: this.props.export.beforeBodyExport,
-                        afterBodyExport: this.props.export.afterBodyExport,
-                    })
-                    .always(() => this.hideLoader());
-            },
+            exportToXlsx({
+                data: this._allGridData,
+                columns: this._columnMetadata,
+                sheetName: this.props.export.sheetName,
+                fileName: this.props.export.fileName,
+                beforeHeaderExport: this.props.export.beforeHeaderExport,
+                afterHeaderExport: this.props.export.afterHeaderExport,
+                beforeBodyExport: this.props.export.beforeBodyExport,
+                afterBodyExport: this.props.export.afterBodyExport,
+            })
+                .always(() => this.hideLoader());
+        },
             defaultAsyncDelay);
     }
 
@@ -1133,9 +1133,9 @@ export default class Grid extends React.PureComponent {
         return (
             <div className="custom-grid">
                 <div className="overlay hidden" ref="overlay">
-                    <Loader/>
+                    <Loader />
                 </div>
-                { /* https://griddlegriddle.github.io/v0-docs/customization.html */ }
+                { /* https://griddlegriddle.github.io/v0-docs/customization.html */}
                 <Griddle
                     {...this.props}
                     columnMetadata={this._columnMetadata}

@@ -1,5 +1,5 @@
-﻿import {allNumberTypes, dateTypes, boolTypes} from './data-types';
-import utils from './utils';
+﻿import { allNumberTypes, dateTypes, boolTypes } from './data-types';
+import { isTime } from './utils';
 import isString from 'lodash/isString';
 
 export default class Converter {
@@ -14,7 +14,7 @@ export default class Converter {
 
         dataType = dataType.trim().toLowerCase();
         if (allNumberTypes.includes(dataType)) {
-            return this.convertStringToNumber; 
+            return this.convertStringToNumber;
         }
         if (dateTypes.includes(dataType)) {
             return this.convertStringToDate;
@@ -42,7 +42,7 @@ export default class Converter {
     }
 
     convertTimeToNumber(item) {
-        if (item && utils.isTime(item)) {
+        if (item && isTime(item)) {
             const splitArray = item.split(':');
             return +splitArray[0] + +splitArray[1] / 60;
         }
