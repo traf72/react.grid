@@ -1,5 +1,5 @@
 module.exports = function (config) {
-    config.set( {
+    config.set({
         basePath: './assets',
         frameworks: ['mocha', 'chai'],
         reporters: ['mocha'],
@@ -9,16 +9,16 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: ['Firefox'],
         singleRun: false,
-        
+
         files: [
             '../node_modules/@babel/polyfill/dist/polyfill.min.js',
             './test/**/*.spec.js'
         ],
-        
+
         preprocessors: {
             './test/**/*.spec.js': ['webpack']
         },
-        
+
         webpack: {
             mode: 'development',
             module: {
@@ -34,7 +34,7 @@ module.exports = function (config) {
         webpackMiddleware: {
             stats: 'errors-only',
         },
-        
+
         concurrency: Infinity
     });
 };

@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 
-const GridCollapse = ({extraProps, rowData}) => {
-     function collapseRow(e) {
+const GridCollapse = ({ extraProps, rowData }) => {
+    function collapseRow(e) {
         if (typeof extraProps.onRowCollapse === 'function') {
             extraProps.onRowCollapse(rowData);
         }

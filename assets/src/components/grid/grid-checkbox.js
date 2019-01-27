@@ -22,7 +22,7 @@ export default class GridCheckbox extends React.Component {
 
     render() {
         return (
-            <input type="checkbox" data-key={this.props.rowData[this.props.extraProps.getKeyColumn().columnName]} defaultChecked={this.props.rowData.isChecked} onChange={this._toggleChecked} onClick={this._onClick}/>
+            <input type="checkbox" data-key={this.props.rowData[this.props.extraProps.getKeyColumn().columnName]} defaultChecked={this.props.rowData.isChecked} onChange={this._toggleChecked} onClick={this._onClick} />
         );
     }
 }

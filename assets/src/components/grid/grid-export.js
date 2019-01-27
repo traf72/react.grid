@@ -13,11 +13,11 @@ export default function exportToXlsx(settings) {
     exportSettings.exportableColumns = prepareColumns(settings.columns);
 
     const exportData = [];
-    
+
     callCallback(exportSettings.beforeHeaderExport, exportData);
     exportHeader(exportData);
     callCallback(exportSettings.afterHeaderExport, exportData);
-    
+
     callCallback(exportSettings.beforeBodyExport, exportData);
     exportBody(exportData);
     callCallback(exportSettings.afterBodyExport, exportData);
@@ -109,8 +109,8 @@ function saveExportedFile(exportData) {
     showWarning('Not supported in this version');
 
     // return $.post(urls.export.exportXlsx, { fileName: fileName, sheetName: sheetName, data: exportData })
-        // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)
-        // .fail(xhr => showError('Request error'));
+    // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)
+    // .fail(xhr => showError('Request error'));
 }
 
 function getFormattedValue(type, value) {

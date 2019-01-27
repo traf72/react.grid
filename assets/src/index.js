@@ -9,24 +9,24 @@ import runAsync from './components/async';
 import cities from 'cities.json';
 
 const columnMetadata = [{
-        columnName: 'country',
-        displayName: 'Country',
-        cssClassName: 'country-column',
-    }, {
-        columnName: 'name',
-        displayName: 'City',
-        cssClassName: 'city-column',
-    }, {
-        columnName: 'lat',
-        displayName: 'Latitude',
-        cssClassName: 'latitude-column',
-        dataType: 'number',
-    }, {
-        columnName: 'lng',
-        displayName: 'Longitude',
-        cssClassName: 'longitude-column',
-        dataType: 'number',
-    },
+    columnName: 'country',
+    displayName: 'Country',
+    cssClassName: 'country-column',
+}, {
+    columnName: 'name',
+    displayName: 'City',
+    cssClassName: 'city-column',
+}, {
+    columnName: 'lat',
+    displayName: 'Latitude',
+    cssClassName: 'latitude-column',
+    dataType: 'number',
+}, {
+    columnName: 'lng',
+    displayName: 'Longitude',
+    cssClassName: 'longitude-column',
+    dataType: 'number',
+},
 ];
 
 class Sample extends React.PureComponent {
@@ -58,7 +58,7 @@ class Sample extends React.PureComponent {
 
     render() {
         return (
-            <Grid ref="grid" 
+            <Grid ref="grid"
                 tableClassName="grid table"
                 results={this.state.data}
                 isRefresh={this.state.isRefresh}

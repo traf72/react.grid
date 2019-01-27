@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const LinkColumn = ({metadata, data}) => {
+const LinkColumn = ({ metadata, data }) => {
     function onClick(e) {
         if (typeof metadata.onClick === 'function') {
             metadata.onClick(e, rowData);

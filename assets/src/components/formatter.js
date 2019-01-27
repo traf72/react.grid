@@ -1,4 +1,4 @@
-﻿import {decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes} from './data-types';
+﻿import { decimalTypes, dateTypes, timeTypes, boolTypes, allNumberTypes } from './data-types';
 import numeral from './numeral';
 import moment from './moment';
 
@@ -82,12 +82,12 @@ export default class Formatter {
             return moment(input).format(format);
         }
         return input;
-    } 
-    
+    }
+
     formatCustomTime(input) {
-            const hours = Math.trunc(input);
-            const minutes = Math.round(Math.abs(input - hours)*60);
-            return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
+        const hours = Math.trunc(input);
+        const minutes = Math.round(Math.abs(input - hours) * 60);
+        return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
     }
 
     formatBool(input) {

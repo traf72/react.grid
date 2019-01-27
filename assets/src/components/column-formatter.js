@@ -1,9 +1,9 @@
-﻿import {allNumberTypes, dateTypes, boolTypes} from './data-types';
+﻿import { allNumberTypes, dateTypes, boolTypes } from './data-types';
 import React from 'react';
 import Formatter from './formatter';
 import moment from './moment';
 
-export const FormattedNumberColumn = ({metadata, data}) => {
+export const FormattedNumberColumn = ({ metadata, data }) => {
     return (
         <span>
             {new Formatter().formatNumber(metadata.columnFormat, data)}
@@ -11,7 +11,7 @@ export const FormattedNumberColumn = ({metadata, data}) => {
     );
 }
 
-export const FormattedDateColumn = ({metadata, data}) => {
+export const FormattedDateColumn = ({ metadata, data }) => {
     return (
         <span>
             {new Formatter().formatDate(metadata.columnFormat, data)}
@@ -19,7 +19,7 @@ export const FormattedDateColumn = ({metadata, data}) => {
     );
 }
 
-export const DefaultFormattedDateTimeColumn = ({data}) => {
+export const DefaultFormattedDateTimeColumn = ({ data }) => {
     function getFormattedValue() {
         let dateStr;
         if (moment.isToday(data)) {
@@ -41,7 +41,7 @@ export const DefaultFormattedDateTimeColumn = ({data}) => {
     );
 }
 
-export const FormattedBoolColumn = ({data}) => {
+export const FormattedBoolColumn = ({ data }) => {
     return (
         <span>
             {new Formatter().formatBool(data)}
