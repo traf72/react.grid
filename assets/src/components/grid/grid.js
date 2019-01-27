@@ -962,10 +962,8 @@ export default class Grid extends React.PureComponent {
                 afterHeaderExport: this.props.export.afterHeaderExport,
                 beforeBodyExport: this.props.export.beforeBodyExport,
                 afterBodyExport: this.props.export.afterBodyExport,
-            })
-                .always(() => this.hideLoader());
-        },
-            defaultAsyncDelay);
+            }).always(() => this.hideLoader());
+        }, defaultAsyncDelay);
     }
 
     _saveCheckedRecordsInfoElem = elem => {

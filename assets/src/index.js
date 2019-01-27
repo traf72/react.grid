@@ -8,36 +8,34 @@ import Grid from './components/grid/grid';
 import runAsync from './components/async';
 import cities from 'cities.json';
 
-const columnMetadata = [{
-    columnName: 'country',
-    displayName: 'Country',
-    cssClassName: 'country-column',
-}, {
-    columnName: 'name',
-    displayName: 'City',
-    cssClassName: 'city-column',
-}, {
-    columnName: 'lat',
-    displayName: 'Latitude',
-    cssClassName: 'latitude-column',
-    dataType: 'number',
-}, {
-    columnName: 'lng',
-    displayName: 'Longitude',
-    cssClassName: 'longitude-column',
-    dataType: 'number',
-},
+const columnMetadata = [
+    {
+        columnName: 'country',
+        displayName: 'Country',
+        cssClassName: 'country-column',
+    },
+    {
+        columnName: 'name',
+        displayName: 'City',
+        cssClassName: 'city-column',
+    },
+    {
+        columnName: 'lat',
+        displayName: 'Latitude',
+        cssClassName: 'latitude-column',
+        dataType: 'number',
+    },
+    {
+        columnName: 'lng',
+        displayName: 'Longitude',
+        cssClassName: 'longitude-column',
+        dataType: 'number',
+    },
 ];
 
 class Sample extends React.PureComponent {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-        };
-
-        this.refresh = this.refresh.bind(this);
+    state = {
+        data: []
     }
 
     componentDidMount() {
@@ -47,11 +45,11 @@ class Sample extends React.PureComponent {
     _getData(isRefresh) {
         runAsync(() => this.setState({
             data: cities.slice(1),
-            isRefresh: isRefresh,
+            isRefresh,
         }), 200);
     }
 
-    refresh() {
+    refresh = () => {
         this.refs.grid.showLoader();
         this._getData(true);
     }
