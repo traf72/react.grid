@@ -10,6 +10,3 @@ export const boolTypes = ['bool', 'boolean', 'bit'];
 export const stringTypes = ['string', 'char', 'varchar', 'text', 'nchar', 'nvarchar', 'ntext'];
 export const allIntegerTypes = byteTypes.concat(shortTypes).concat(intTypes).concat(longTypes);
 export const allNumberTypes = allIntegerTypes.concat(floatingTypes).concat(decimalTypes);
-
-export const attrTypes = ['Simple', 'Multilingual', 'List', 'OleObject'];
-export const attrOwners = ['Position', 'Employee'];
