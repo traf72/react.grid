@@ -1,5 +1,5 @@
 import Filter from '../../src/components/filter';
-import {expect} from 'chai';
+import { expect } from 'chai';
 import moment from 'moment';
 
 describe("Filter test", () => {
@@ -10,14 +10,14 @@ describe("Filter test", () => {
     };
 
     const data = [
-        {id: 1, name: 'Иванов Иван', position: 'Инженер', isWorked: true, startDate: new Date(2016, 0, 1)},
-        {id: 2, name: 'Петров Алексей', position: 'Менеджер', isWorked: false, startDate: new Date(2016, 3, 28)},
-        {id: 3, name: 'Сидоров Сидор', position: 'Директор', isWorked: true, startDate: new Date(2014, 11, 31)},
-        {id: 4, name: 'Петров Иван', position: 'Системный администратор', isWorked: true, startDate: new Date(2015, 10, 15)},
-        {id: 5, name: 'Иванов Александр', position: 'Уборщик', isWorked: true, startDate: new Date(1900, 1, 1)},
-        {id: 6, name: null, position: null, isWorked: false, startDate: null},
-        {id: 7, name: undefined, position: undefined, isWorked: false, startDate: undefined},
-        {id: 0, name: '', position: '', isWorked: false, startDate: null},
+        { id: 1, name: 'Иванов Иван', position: 'Инженер', isWorked: true, startDate: new Date(2016, 0, 1) },
+        { id: 2, name: 'Петров Алексей', position: 'Менеджер', isWorked: false, startDate: new Date(2016, 3, 28) },
+        { id: 3, name: 'Сидоров Сидор', position: 'Директор', isWorked: true, startDate: new Date(2014, 11, 31) },
+        { id: 4, name: 'Петров Иван', position: 'Системный администратор', isWorked: true, startDate: new Date(2015, 10, 15) },
+        { id: 5, name: 'Иванов Александр', position: 'Уборщик', isWorked: true, startDate: new Date(1900, 1, 1) },
+        { id: 6, name: null, position: null, isWorked: false, startDate: null },
+        { id: 7, name: undefined, position: undefined, isWorked: false, startDate: undefined },
+        { id: 0, name: '', position: '', isWorked: false, startDate: null },
     ];
 
     describe("Test parse special characters", () => {
@@ -29,22 +29,22 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters(' !emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal(' !emp');
-            
+
             result = filter._parseSpecialCharacters('!');
             expect(result.characters).to.deep.equal(['!']);
             expect(result.actualFilterString).to.equal('');
         });
-        
+
         it("Test parse escaping of negate symbol", () => {
             let result = filter._parseSpecialCharacters('\\!emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('!emp');
-            
+
             result = filter._parseSpecialCharacters('\\!');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('!');
         });
-        
+
         it("Test parse equals symbol", () => {
             let result = filter._parseSpecialCharacters('=emp');
             expect(result.characters).to.deep.equal(['=']);
@@ -53,30 +53,30 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters(' =emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal(' =emp');
-            
+
             result = filter._parseSpecialCharacters('=');
             expect(result.characters).to.deep.equal(['=']);
             expect(result.actualFilterString).to.equal('');
         });
-        
+
         it("Test parse escaping of equals symbol", () => {
             let result = filter._parseSpecialCharacters('\\=emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('=emp');
-            
+
             result = filter._parseSpecialCharacters('\\=');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('=');
-            
+
             result = filter._parseSpecialCharacters('\\==e');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('==e');
-            
+
             result = filter._parseSpecialCharacters('=\\=e');
             expect(result.characters).to.deep.equal(['=']);
             expect(result.actualFilterString).to.equal('=e');
         });
-        
+
         it("Test parse negate of equals symbol", () => {
             let result = filter._parseSpecialCharacters('!=emp');
             expect(result.characters).to.deep.equal(['!', '=']);
@@ -85,24 +85,24 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters('=!emp');
             expect(result.characters).to.deep.equal(['=', '!']);
             expect(result.actualFilterString).to.equal('emp');
-            
+
             result = filter._parseSpecialCharacters('!=');
             expect(result.characters).to.deep.equal(['!', '=']);
             expect(result.actualFilterString).to.equal('');
-            
+
             result = filter._parseSpecialCharacters('=!');
             expect(result.characters).to.deep.equal(['=', '!']);
             expect(result.actualFilterString).to.equal('');
-            
+
             result = filter._parseSpecialCharacters('!=!=e');
             expect(result.characters).to.deep.equal(['!', '=']);
             expect(result.actualFilterString).to.equal('!=e');
-            
+
             result = filter._parseSpecialCharacters('!=e=!');
             expect(result.characters).to.deep.equal(['!', '=']);
             expect(result.actualFilterString).to.equal('e=!');
         });
-        
+
         it("Test parse negate of equals symbol with escaping", () => {
             let result = filter._parseSpecialCharacters('\\!=emp');
             expect(result.characters).to.deep.equal([]);
@@ -119,16 +119,16 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters('=\\!emp');
             expect(result.characters).to.deep.equal(['=']);
             expect(result.actualFilterString).to.equal('!emp');
-            
+
             result = filter._parseSpecialCharacters('\\!=');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('!=');
-            
+
             result = filter._parseSpecialCharacters('!\\=');
             expect(result.characters).to.deep.equal(['!']);
             expect(result.actualFilterString).to.equal('=');
         });
-        
+
         it("Test parse startsWith symbol", () => {
             let result = filter._parseSpecialCharacters('+emp');
             expect(result.characters).to.deep.equal(['+']);
@@ -137,22 +137,22 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters(' +emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal(' +emp');
-            
+
             result = filter._parseSpecialCharacters('+');
             expect(result.characters).to.deep.equal(['+']);
             expect(result.actualFilterString).to.equal('');
         });
-        
+
         it("Test parse escaping of startsWith symbol", () => {
             let result = filter._parseSpecialCharacters('\\+emp');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('+emp');
-            
+
             result = filter._parseSpecialCharacters('\\+');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('+');
         });
-        
+
         it("Test parse negate of startsWith symbol", () => {
             let result = filter._parseSpecialCharacters('!+emp');
             expect(result.characters).to.deep.equal(['!', '+']);
@@ -161,24 +161,24 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters('+!emp');
             expect(result.characters).to.deep.equal(['+', '!']);
             expect(result.actualFilterString).to.equal('emp');
-            
+
             result = filter._parseSpecialCharacters('!+');
             expect(result.characters).to.deep.equal(['!', '+']);
             expect(result.actualFilterString).to.equal('');
-            
+
             result = filter._parseSpecialCharacters('+!');
             expect(result.characters).to.deep.equal(['+', '!']);
             expect(result.actualFilterString).to.equal('');
-            
+
             result = filter._parseSpecialCharacters('!+!+e');
             expect(result.characters).to.deep.equal(['!', '+']);
             expect(result.actualFilterString).to.equal('!+e');
-            
+
             result = filter._parseSpecialCharacters('!+e+!');
             expect(result.characters).to.deep.equal(['!', '+']);
             expect(result.actualFilterString).to.equal('e+!');
         });
-        
+
         it("Test parse negate of startsWith symbol with escaping", () => {
             let result = filter._parseSpecialCharacters('\\!+emp');
             expect(result.characters).to.deep.equal([]);
@@ -195,16 +195,16 @@ describe("Filter test", () => {
             result = filter._parseSpecialCharacters('+\\!emp');
             expect(result.characters).to.deep.equal(['+']);
             expect(result.actualFilterString).to.equal('!emp');
-            
+
             result = filter._parseSpecialCharacters('\\!+');
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('!+');
-            
+
             result = filter._parseSpecialCharacters('!\\+');
             expect(result.characters).to.deep.equal(['!']);
             expect(result.actualFilterString).to.equal('+');
         });
-        
+
         it("Test parse escaping of escape symbols", () => {
             let result = filter._parseSpecialCharacters('\\emp');
             expect(result.characters).to.deep.equal([]);
@@ -214,7 +214,7 @@ describe("Filter test", () => {
             expect(result.characters).to.deep.equal([]);
             expect(result.actualFilterString).to.equal('\\emp');
         });
-        
+
         it("Test parse without special symbols", () => {
             let result = filter._parseSpecialCharacters('');
             expect(result.characters).to.deep.equal([]);
@@ -236,13 +236,13 @@ describe("Filter test", () => {
             expect(filter.apply.bind(null, undefined)).to.throw(Error);
             expect(filter.apply.bind(null, {})).to.throw(Error);
         });
-        
+
         it("Test apply by one column with empty filter", () => {
             let filterByColumns = null;
             let result = filter.apply(data, filterByColumns);
             expect(result).to.be.deep.equal(data);
 
-            filterByColumns = { };
+            filterByColumns = {};
             result = filter.apply(data, filterByColumns);
             expect(result).to.be.deep.equal(data);
 
@@ -262,15 +262,15 @@ describe("Filter test", () => {
             result = filter.apply(data, filterByColumns);
             expect(result).to.be.deep.equal(data);
         });
-        
+
         it("Test apply by one column without special symbols", () => {
             const filterByColumns = { id: '1' };
             let result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(1);
             expect(result[0].id).to.be.equal(1);
-            
+
             delete filterByColumns.id;
-            
+
             filterByColumns.name = 'петр';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(2);
@@ -283,14 +283,14 @@ describe("Filter test", () => {
             expect(result[0].id).to.be.equal(2);
             expect(result[1].id).to.be.equal(4);
         });
-        
+
         it("Test apply by one column with special symbols and empty filter", () => {
             const filterByColumns = { id: '!' };
             let result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(0);
-            
+
             delete filterByColumns.id;
-            
+
             filterByColumns.name = '=';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(3);
@@ -313,7 +313,7 @@ describe("Filter test", () => {
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(0);
         });
-        
+
         it("Test apply by one column with special symbols", () => {
             const filterByColumns = { id: '!1' };
             let result = filter.apply(data, filterByColumns);
@@ -324,11 +324,11 @@ describe("Filter test", () => {
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(7);
             expect(result.find(item => item.id === 1)).to.be.an('undefined');
-            
+
             filterByColumns.id = '100|1000';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(0);
-            
+
             filterByColumns.id = '|';
             result = filter.apply(data, filterByColumns);
             expect(result).to.be.deep.equal(data);
@@ -363,9 +363,9 @@ describe("Filter test", () => {
             filterByColumns.id = '!1|!3';
             result = filter.apply(data, filterByColumns);
             expect(result).to.be.deep.equal(data);
-            
+
             delete filterByColumns.id;
-            
+
             filterByColumns.name = '=Петров Иван || =иванов александр';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(2);
@@ -413,14 +413,14 @@ describe("Filter test", () => {
             filterByColumns.id = '1';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(0);
-            
+
             filterByColumns.id = '=4';
             filterByColumns.name = '=Петров ИВАН';
             result = filter.apply(data, filterByColumns);
             expect(result.length).to.be.equal(1);
             expect(result[0].id).to.be.equal(4);
         });
-        
+
         it("Test apply with string conversion", () => {
             const filterByColumns = { isWorked: 'true' };
             let result = filter.apply(data, filterByColumns);
@@ -469,7 +469,7 @@ describe("Filter test", () => {
             expect(result[0].id).to.be.equal(4);
         });
     });
-    
+
     describe("Test apply common filter", () => {
         it("Test apply empty filter", () => {
             let commonFilter = { text: '' };
@@ -484,12 +484,12 @@ describe("Filter test", () => {
             result = filter.apply(data, null, commonFilter);
             expect(result).to.be.deep.equal(data);
         });
-        
+
         it("Test apply empty filter with special symbols", () => {
             let commonFilter = { text: '!' };
             let result = filter.apply(data, null, commonFilter);
             expect(result.length).to.be.equal(0);
-            
+
             commonFilter.text = '!=';
             commonFilter.filterableColumns = ['name', 'position'];
             result = filter.apply(data, null, commonFilter);
@@ -505,7 +505,7 @@ describe("Filter test", () => {
             expect(result[1].id).to.be.equal(7);
             expect(result[2].id).to.be.equal(0);
         });
-        
+
         it("Test apply filter in common case", () => {
             let commonFilter = { text: 'с' };
             let result = filter.apply(data, null, commonFilter);
@@ -562,7 +562,7 @@ describe("Filter test", () => {
     });
 
     it("Test apply", () => {
-        const filterByColumns = {id: '1'};
+        const filterByColumns = { id: '1' };
         const commonFilter = { text: 'же' };
         let result = filter.apply(data, filterByColumns, commonFilter);
         expect(result.length).to.be.equal(1);
