@@ -1,18 +1,35 @@
 ﻿import React from 'react';
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class GridCheckbox extends React.Component {
+    static propTypes = {
+        extraProps: PropTypes.shape({
+            getKeyColumn: PropTypes.func.isRequired,
+            saveCheckboxToColletion: PropTypes.func.isRequired,
+            removeCheckboxFromColletion: PropTypes.func.isRequired,
+            recordCheckedChanged: PropTypes.func,
+        }).isRequired,
+        rowData: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.inputRef = React.createRef();
+    }
+
     componentDidMount() {
-        this.props.extraProps.saveCheckboxToColletion(ReactDOM.findDOMNode(this));
+        this.props.extraProps.saveCheckboxToColletion(this.inputRef.current);
     }
 
     componentWillUnmount() {
-        this.props.extraProps.removeCheckboxFromColletion(ReactDOM.findDOMNode(this));
+        this.props.extraProps.removeCheckboxFromColletion(this.inputRef.current);
     }
 
     _toggleChecked = e => {
-        if (typeof this.props.extraProps.recordCheckedChanged === 'function') {
-            this.props.extraProps.recordCheckedChanged(this.props.rowData, e.target.checked, this._shiftKey);
+        const { rowData, extraProps } = this.props;
+        if (typeof extraProps.recordCheckedChanged === 'function') {
+            extraProps.recordCheckedChanged(rowData, e.target.checked, this._shiftKey);
         }
     }
 
@@ -21,8 +38,17 @@ export default class GridCheckbox extends React.Component {
     }
 
     render() {
+        const { rowData, extraProps } = this.props;
+
         return (
-            <input type="checkbox" data-key={this.props.rowData[this.props.extraProps.getKeyColumn().columnName]} defaultChecked={this.props.rowData.isChecked} onChange={this._toggleChecked} onClick={this._onClick} />
+            <input
+                ref={this.inputRef}
+                type="checkbox"
+                data-key={rowData[extraProps.getKeyColumn().columnName]}
+                defaultChecked={rowData.isChecked}
+                onChange={this._toggleChecked}
+                onClick={this._onClick}
+            />
         );
     }
 }

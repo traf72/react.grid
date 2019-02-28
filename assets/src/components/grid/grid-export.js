@@ -2,14 +2,14 @@
 import Formatter from '../formatter';
 import moment from '../moment';
 import sortBy from 'lodash/sortBy';
-import { showWarning } from '../alert/alert';
+import { showWarning } from '../alert';
 
 const headerBackgroundColor = '#EDEDEF';
 const formatter = new Formatter();
-const exportSettings = {};
+let exportSettings;
 
 export default function exportToXlsx(settings) {
-    Object.assign(exportSettings, settings);
+    exportSettings = { ...settings }
     exportSettings.exportableColumns = prepareColumns(settings.columns);
 
     const exportData = [];

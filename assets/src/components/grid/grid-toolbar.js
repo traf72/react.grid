@@ -1,16 +1,37 @@
 ﻿import React from 'react';
+import PropTypes from 'prop-types';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
 import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class GridToolbar extends React.Component {
+    static propTypes = {
+        extraProps: PropTypes.shape({
+            getCommonFilterText: PropTypes.func.isRequired,
+            saveCheckedRecordsInfoElem: PropTypes.func.isRequired,
+            removeCheckedRecordsInfoElem: PropTypes.func.isRequired,
+            changeFilter: PropTypes.func,
+            isShowFilter: PropTypes.func.isRequired,
+            isWithCheckboxColumn: PropTypes.func.isRequired,
+            isShowPageSizeSelector: PropTypes.func.isRequired,
+            updateCheckedRecordsInfo: PropTypes.func,
+            pageSizeChanged: PropTypes.func,
+            showOnlyCheckedRecordsChanged: PropTypes.func,
+            getCheckedRecordsKeys: PropTypes.func,
+            getCurrentPageSize: PropTypes.func,
+            getPageSizes: PropTypes.func,
+        }).isRequired,
+    }
+    
     constructor(props) {
         super(props);
 
-        this.state = { searchText: this.props.extraProps.getCommonFilterText() };
+        this.checkedRecordsInfo = React.createRef();
+        this.commonSearch = React.createRef();
+        this.state = { searchText: props.extraProps.getCommonFilterText() };
     }
 
     componentDidMount() {
-        this.props.extraProps.saveCheckedRecordsInfoElem(this.refs.checkedRecordsInfo);
+        this.props.extraProps.saveCheckedRecordsInfoElem(this.checkedRecordsInfo.current);
     }
 
     componentWillUnmount() {
@@ -22,15 +43,14 @@ export default class GridToolbar extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        if (this.refs.commonSearch && this.refs.commonSearch.value !== this.props.extraProps.getCommonFilterText()) {
+        const commonSearch = this.commonSearch.current;
+        if (commonSearch && commonSearch.value !== this.props.extraProps.getCommonFilterText()) {
             this.setState({ searchText: this.props.extraProps.getCommonFilterText() });
         }
     }
 
     _updateCheckedRecordsInfo = () => {
-        if (typeof this.props.extraProps.updateCheckedRecordsInfo === 'function') {
-            this.props.extraProps.updateCheckedRecordsInfo();
-        }
+        this._callFunctionIfExist('updateCheckedRecordsInfo');
     }
 
     _searchChanged = e => {
@@ -57,14 +77,16 @@ export default class GridToolbar extends React.Component {
     }
 
     _pageSizeChanged = e => {
-        if (typeof this.props.extraProps.pageSizeChanged === 'function') {
-            this.props.extraProps.pageSizeChanged(e.target.value);
-        }
+        this._callFunctionIfExist('pageSizeChanged', e.target.value);
     }
 
     _onlyCheckedChanged = e => {
-        if (typeof this.props.extraProps.showOnlyCheckedRecordsChanged === 'function') {
-            this.props.extraProps.showOnlyCheckedRecordsChanged(e.target.checked);
+        this._callFunctionIfExist('showOnlyCheckedRecordsChanged', e.target.checked);
+    }
+
+    _callFunctionIfExist(funcName, ...params) {
+        if (typeof this.props.extraProps[funcName] === 'function') {
+            this.props.extraProps[funcName](...params);
         }
     }
 
@@ -78,7 +100,7 @@ export default class GridToolbar extends React.Component {
         if (this.props.extraProps.isShowFilter()) {
             return (
                 <div className="search-block">
-                    <input ref="commonSearch" type="search" className="form-control" name="search" placeholder="Search..."
+                    <input ref={this.commonSearch} type="search" className="form-control" name="search" placeholder="Search..."
                         onChange={this._searchChanged} onKeyPress={this._handleFilterKeyPress} onPaste={this._handleFilterPaste}
                         value={this.state.searchText} onMouseUp={this._searchMouseUp}
                     />
@@ -91,7 +113,7 @@ export default class GridToolbar extends React.Component {
         if (this.props.extraProps.isWithCheckboxColumn()) {
             return (
                 <label className="only-checked">
-                    <input type="checkbox" onChange={this._onlyCheckedChanged} /> Only checked (<span ref="checkedRecordsInfo">{this.props.extraProps.getCheckedRecordsKeys().length}</span>)
+                    <input type="checkbox" onChange={this._onlyCheckedChanged} /> Only checked (<span ref={this.checkedRecordsInfo}>{this.props.extraProps.getCheckedRecordsKeys().length}</span>)
                 </label>
             );
         }

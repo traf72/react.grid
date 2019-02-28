@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import PropTypes from 'prop-types';
 
 const hideFilterString = 'Hide filter'
 const showFilterString = 'Show filter'
@@ -53,5 +54,14 @@ const IconsHeader = props => {
     );
 }
 
+IconsHeader.propTypes = {
+    gridId: PropTypes.string.isRequired,
+    columnsFilterVisibilityChanged: PropTypes.func.isRequired,
+    isColumnsFilterDisplayed: PropTypes.func.isRequired,
+    isShowColumnsFilter: PropTypes.func.isRequired,
+    isExportEnabled: PropTypes.func.isRequired,
+    exportFunc: PropTypes.func,
+    refreshFunc: PropTypes.func,
+}
 
 export default IconsHeader;

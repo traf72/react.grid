@@ -4,6 +4,7 @@ import take from 'lodash/take';
 import orderBy from 'lodash/orderBy';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Griddle from '../../libs/griddle-react';
 import setOps from '../../libs/setOps';
 import Loader from '../loader';
@@ -29,13 +30,100 @@ const defaultAsyncDelay = 20;
 const defaultPageSizes = [10, 15, 20, 25, 50, 100];
 const defaultNoDataMessage = 'No results found';
 const expandColumnName = 'isExpanded';
+const defaultKeyColumn = '__id__';
 
 // TODO Вариант с данными с сервера нужно ещё допиливать, как минимум фильтрацию и сортировку
 export default class Grid extends React.PureComponent {
+    static propTypes = {
+        resultsPerPage: PropTypes.number,
+        serverData: PropTypes.bool,
+        rowMetadata: PropTypes.shape({
+            bodyCssClassName: PropTypes.func,
+        }),
+        results: PropTypes.arrayOf(PropTypes.object),
+        defaultCheckedRecordsKeys: PropTypes.arrayOf(PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ])),
+        defaultExpandedRecordsKeys: PropTypes.arrayOf(PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ])),
+        showFilter: PropTypes.bool,
+        showPageSizeSelector: PropTypes.bool,
+        showColumnsFilter: PropTypes.bool,
+        displayColumnsFilter: PropTypes.bool,
+        withCheckboxColumn: PropTypes.bool,
+        withGrouping: PropTypes.bool,
+        isRefresh: PropTypes.bool,
+        selectable: PropTypes.bool,
+        currentPage: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
+        defaultSelectedRow: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
+        commonFilter: PropTypes.shape({
+            values: PropTypes.arrayOf(PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.shape({
+                    text: PropTypes.string,
+                    filterType: PropTypes.string,
+                }),
+            ])),
+            append: PropTypes.bool,
+        }),
+        columnFilter: PropTypes.arrayOf(PropTypes.shape({
+            values: PropTypes.arrayOf(PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.shape({
+                    text: PropTypes.string,
+                    filterType: PropTypes.string,
+                }),
+            ])),
+            colName: PropTypes.string.isRequired,
+            append: PropTypes.bool,
+        })),
+        sortOptions: PropTypes.shape({
+            columnName: PropTypes.string.isRequired,
+            direction: PropTypes.string,
+        }),
+        externalDataUrl: PropTypes.string,
+        refreshFunc: PropTypes.func,
+        checkedRecordsChanged: PropTypes.func,
+        selectedRowChanged: PropTypes.func,
+        onChangePageSize: PropTypes.func,
+        mapData: PropTypes.func,
+        export: PropTypes.shape({
+            sheetName: PropTypes.string,
+            fileName: PropTypes.string,
+            beforeHeaderExport: PropTypes.func,
+            afterHeaderExport: PropTypes.func,
+            beforeBodyExport: PropTypes.func,
+            afterBodyExport: PropTypes.func,
+            customExport: PropTypes.func,
+        }),
+        noDataMessage: PropTypes.string,
+    }
+
+    static defaultProps = {
+        rowMetadata: {},
+        defaultCheckedRecordsKeys: [],
+        defaultExpandedRecordsKeys: [],
+        showFilter: true,
+        showPageSizeSelector: true,
+        showColumnsFilter: true,
+        displayColumnsFilter: false,
+    }
+
     constructor(props) {
         super(props);
 
         this._gridId = uuid.v4();
+
+        this.overlay = React.createRef();
 
         this._initProperties();
         this._setInitialPageSize(props.resultsPerPage);
@@ -171,14 +259,14 @@ export default class Grid extends React.PureComponent {
         // TODO В варианте с серверными данными так по идее делать нельзя
         if (!this.getKeyColumn()) {
             this._keyColumn = {
-                columnName: Grid.defaultKeyColumn,
+                columnName: defaultKeyColumn,
                 keyColumn: true,
                 visible: false,
             };
             this._columnMetadata.push(this.getKeyColumn());
         }
-        if (this.getKeyColumn().columnName === Grid.defaultKeyColumn) {
-            this._allGridData.forEach((item, index) => item[Grid.defaultKeyColumn] = index);
+        if (this.getKeyColumn().columnName === defaultKeyColumn) {
+            this._allGridData.forEach((item, index) => item[defaultKeyColumn] = index);
         }
     }
 
@@ -386,7 +474,7 @@ export default class Grid extends React.PureComponent {
     _applySortOptions(sortOptions) {
         if (sortOptions) {
             this._currentSortColumn = sortOptions.columnName;
-            this._isCurrentSortAscending = !this.props.sortOptions.direction || this.props.sortOptions.direction.toLowerCase() !== 'desc';
+            this._isCurrentSortAscending = !sortOptions.direction || sortOptions.direction.toLowerCase() !== 'desc';
         }
     }
 
@@ -1020,16 +1108,16 @@ export default class Grid extends React.PureComponent {
 
     showLoader() {
         this._overlayCounter++;
-        let overlay = $(this.refs.overlay);
+        const overlay = $(this.overlay.current);
         this._setLoaderPosition(overlay.find('.loader'));
-        $(overlay).removeClass('hidden');
+        overlay.removeClass('hidden');
     }
 
     hideLoader() {
         this._overlayCounter--;
         if (this._overlayCounter <= 0) {
             this._overlayCounter = 0;
-            $(this.refs.overlay).addClass('hidden');
+            $(this.overlay.current).addClass('hidden');
         }
     }
 
@@ -1130,7 +1218,7 @@ export default class Grid extends React.PureComponent {
     render() {
         return (
             <div className="custom-grid">
-                <div className="overlay hidden" ref="overlay">
+                <div className="overlay hidden" ref={this.overlay}>
                     <Loader />
                 </div>
                 { /* https://griddlegriddle.github.io/v0-docs/customization.html */}
@@ -1168,15 +1256,3 @@ export default class Grid extends React.PureComponent {
         );
     }
 }
-
-Grid.defaultProps = {
-    rowMetadata: {},
-    defaultCheckedRecordsKeys: [],
-    defaultExpandedRecordsKeys: [],
-    showFilter: true,
-    showPageSizeSelector: true,
-    showColumnsFilter: true,
-    displayColumnsFilter: false,
-};
-
-Grid.defaultKeyColumn = '__id__';

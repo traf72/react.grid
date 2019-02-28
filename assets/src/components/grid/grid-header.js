@@ -1,21 +1,36 @@
 ﻿import React from 'react';
+import PropTypes from 'prop-types';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
 import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class CustomHeaderComponent extends React.Component {
+    static propTypes = {
+        gridId: PropTypes.string.isRequired,
+        columnName: PropTypes.string.isRequired,
+        displayName: PropTypes.string.isRequired,
+        getColumnFilter: PropTypes.func.isRequired,
+        isShowColumnFilter: PropTypes.func.isRequired,
+        setFilterByColumn: PropTypes.func.isRequired,
+        isColumnSortable: PropTypes.func.isRequired,
+        getCurrentSortColumn: PropTypes.func.isRequired,
+        isCurrentSortAscending: PropTypes.func.isRequired,
+        isColumnsFilterDisplayed: PropTypes.func.isRequired,
+        getColumnTitle: PropTypes.func.isRequired,
+    }
+
     constructor(props) {
         super(props);
 
+        this.columnFilterInput = React.createRef();
         this.state = {
-            columnFilter: this.props.getColumnFilter(this.props.columnName)
+            columnFilter: props.getColumnFilter(props.columnName)
         };
     }
 
     componentWillReceiveProps(props) {
         let columnFilter = props.getColumnFilter(props.columnName);
-        if (this.refs.columnFilterInput &&
-            props.isShowColumnFilter(props.columnName) &&
-            this.refs.columnFilterInput.value !== columnFilter) {
+        const filterInput = this.columnFilterInput.current;
+        if (filterInput && props.isShowColumnFilter(props.columnName) && filterInput.value !== columnFilter) {
             this._updateColumnFilterState(columnFilter);
         }
     }
@@ -28,7 +43,7 @@ export default class CustomHeaderComponent extends React.Component {
         this._applyColumnFilterChanges(this.props.columnName, e.target.value);
     }
 
-    _applyColumnFilterChanges(colName, filterValue) {
+    _applyColumnFilterChanges = (colName, filterValue) => {
         this._updateColumnFilterState(filterValue);
         this.props.setFilterByColumn(colName, filterValue);
     }
@@ -62,23 +77,33 @@ export default class CustomHeaderComponent extends React.Component {
 
     _searchInputMouseUp = e => {
         if (detectIE()) {
-            handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges.bind(this, this.props.columnName));
+            handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges(this.props.columnName));
         }
     }
 
     _renderSortArrow() {
-        if (this.props.columnName === this.props.getCurrentSortColumn()) {
-            return this.props.isCurrentSortAscending()
+        const { columnName, getCurrentSortColumn, isCurrentSortAscending } = this.props;
+
+        if (columnName === getCurrentSortColumn()) {
+            return isCurrentSortAscending()
                 ? <span className="glyphicon glyphicon-chevron-up"></span>
                 : <span className="glyphicon glyphicon-chevron-down"></span>;
         }
     }
 
     _renderFilterBlock() {
-        if (this.props.isShowColumnFilter(this.props.columnName)) {
+        const {
+            isShowColumnFilter,
+            columnName,
+            gridId,
+            isColumnsFilterDisplayed,
+        } = this.props;
+
+        if (isShowColumnFilter(columnName)) {
             return (
-                <div id={this.props.gridId + '-column-filter-' + this.props.columnName} className={this.props.isColumnsFilterDisplayed() ? '' : 'hidden'} style={{ fontWeight: 'normal' }}>
-                    <input ref="columnFilterInput"
+                <div id={gridId + '-column-filter-' + columnName} className={isColumnsFilterDisplayed() ? '' : 'hidden'} style={{ fontWeight: 'normal' }}>
+                    <input
+                        ref={this.columnFilterInput}
                         className="form-control"
                         type="search"
                         onClick={this._columnFilterClick}
@@ -92,10 +117,12 @@ export default class CustomHeaderComponent extends React.Component {
     }
 
     render() {
+        const { getColumnTitle, columnName, displayName } = this.props;
+
         return (
             <div>
-                <div style={{ float: 'left' }} title={this.props.getColumnTitle(this.props.columnName)}>
-                    {this.props.displayName}
+                <div style={{ float: 'left' }} title={getColumnTitle(columnName)}>
+                    {displayName}
                 </div>
                 {this._renderSortBlock()}
                 {this._renderFilterBlock()}

@@ -1,13 +1,14 @@
 ﻿import React from 'react';
+import PropTypes from 'prop-types';
 
 const GridCollapse = ({ extraProps, rowData }) => {
-    function collapseRow(e) {
+    function collapseRow() {
         if (typeof extraProps.onRowCollapse === 'function') {
             extraProps.onRowCollapse(rowData);
         }
     }
 
-    function expandRow(e) {
+    function expandRow() {
         if (typeof extraProps.onRowExpand === 'function') {
             extraProps.onRowExpand(rowData);
         }
@@ -22,6 +23,14 @@ const GridCollapse = ({ extraProps, rowData }) => {
     } else {
         return <span className="glyphicon glyphicon-triangle-right" onClick={expandRow}></span>
     }
+}
+
+GridCollapse.propTypes = {
+    extraProps: PropTypes.shape({
+        onRowCollapse: PropTypes.func,
+        onRowExpand: PropTypes.func,
+    }),
+    rowData: PropTypes.object.isRequired,
 }
 
 export default GridCollapse;
