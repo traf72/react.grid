@@ -1,5 +1,5 @@
 import './index.less';
-import '@babel/polyfill';
+import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Grid from './components/grid/grid';

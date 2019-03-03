@@ -11,11 +11,12 @@ module.exports = function (config) {
         singleRun: false,
 
         files: [
-            '../node_modules/@babel/polyfill/dist/polyfill.min.js',
+            './src/polyfills.js',
             './test/**/*.spec.js'
         ],
 
         preprocessors: {
+            './src/polyfills.js': ['webpack'],
             './test/**/*.spec.js': ['webpack']
         },
 
