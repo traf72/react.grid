@@ -1,28 +1,27 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.NODE_ENV !== 'production'
 const path = require('path');
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     mode: 'development',
-    entry: {
-        'index': './assets/src/index.js',
-    },
+    entry: './assets/src/index.js',
     output: {
-        path: path.resolve(__dirname, './bundles/js'),
-        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
     },
     plugins: [
-        new CopyWebpackPlugin([
-            {
-                from: './node_modules/bootstrap/dist/css/*.min.css',
-                to: '../css/bootstrap/css/[name].[ext]',
-            },
-            {
-                from: './node_modules/bootstrap/dist/fonts',
-                to: '../css/bootstrap/fonts',
-            },
-        ]),
+        new CleanWebpackPlugin(['dist/*']),
+        new HtmlWebpackPlugin({ template: './assets/index.html' }),
+        new MiniCssExtractPlugin({ filename: `[name].css` }),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })
     ],
     module: {
         rules: [
@@ -36,17 +35,25 @@ module.exports = {
                 use: [
                     devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
                     'css-loader',
-                    'less-loader'
+                    'less-loader',
                 ],
             },
             {
-                test: require.resolve('jquery'),
-                loader: 'expose-loader?$!expose-loader?jQuery',
-            },
-            {
-                test: /\.(jpe?g|png|gif)$/i, loader: 'file-loader'
+                test: /\.(jpe?g|png|gif|ttf|woff2?|eot|svg)$/i,
+                loader: 'file-loader',
             },
         ],
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /node_modules/,
+                    name: 'vendor',
+                    chunks: 'all',
+                },
+            }
+        }
     },
     stats: {
         warnings: false,
