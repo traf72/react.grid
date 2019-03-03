@@ -32,11 +32,12 @@ const defaultNoDataMessage = 'No results found';
 const expandColumnName = 'isExpanded';
 const defaultKeyColumn = '__id__';
 
-// TODO Вариант с данными с сервера нужно ещё допиливать, как минимум фильтрацию и сортировку
+// TODO Вариант с данными с сервера нужно ещё дорабатывать, как минимум фильтрацию и сортировку
 export default class Grid extends React.PureComponent {
     static propTypes = {
         resultsPerPage: PropTypes.number,
-        serverData: PropTypes.bool,
+        isServerData: PropTypes.bool,
+        serverDataUrl: PropTypes.string,
         rowMetadata: PropTypes.shape({
             bodyCssClassName: PropTypes.func,
         }),
@@ -49,6 +50,7 @@ export default class Grid extends React.PureComponent {
             filterable: PropTypes.bool,
             sortable: PropTypes.bool,
             exportable: PropTypes.bool,
+            showTitle: PropTypes.bool,
             order: PropTypes.number,
             cssClassName: PropTypes.string,
             columnType: PropTypes.string,
@@ -112,7 +114,6 @@ export default class Grid extends React.PureComponent {
             columnName: PropTypes.string.isRequired,
             direction: PropTypes.string,
         }),
-        externalDataUrl: PropTypes.string,
         refreshFunc: PropTypes.func,
         checkedRecordsChanged: PropTypes.func,
         selectedRowChanged: PropTypes.func,
@@ -159,7 +160,7 @@ export default class Grid extends React.PureComponent {
     }
 
     componentDidMount() {
-        if (this.props.serverData) {
+        if (this.props.isServerData) {
             this.showLoader();
             this._getData();
         }
@@ -220,7 +221,7 @@ export default class Grid extends React.PureComponent {
         this._columnMetadata = cloneDeep(props.columnMetadata);
         this._clearPreviousToggledRecord();
 
-        this._allGridData = this._allData = props.serverData ? [] : cloneDeep(props.results);
+        this._allGridData = this._allData = props.isServerData ? [] : cloneDeep(props.results);
 
         this._setKeyColumn();
         this._filter = new Filter(this.getKeyColumn().columnName);
@@ -777,7 +778,7 @@ export default class Grid extends React.PureComponent {
     _setPage = async page => {
         this.showLoader();
         this._currentPage = page;
-        if (this.props.serverData) {
+        if (this.props.isServerData) {
             this._getData();
         } else {
             await delay(defaultAsyncDelay);
@@ -803,7 +804,7 @@ export default class Grid extends React.PureComponent {
         this._currentPage = 0;
         this._currentSortColumn = sortColumn;
         this._isCurrentSortAscending = isAsc;
-        if (this.props.serverData) {
+        if (this.props.isServerData) {
             this._getData();
         } else {
             await delay(defaultAsyncDelay);
@@ -900,7 +901,7 @@ export default class Grid extends React.PureComponent {
             this.showLoader();
             this._clearPreviousToggledRecord();
             this._currentPage = 0;
-            if (this.props.serverData) {
+            if (this.props.isServerData) {
                 // При серверном поиске нужно делать ограничение хотя бы от 2-х символов и желательно запускать поиск по кнопке "Найти"
                 this._getData();
             } else {
@@ -966,7 +967,7 @@ export default class Grid extends React.PureComponent {
         this._currentPageSize = size;
         this._currentPage = this._calculateCurrentPage(Math.round(this.getCurrentPage() * factor),
             this.getPagesCount(this._allGridData.length));
-        if (this.props.serverData) {
+        if (this.props.isServerData) {
             this._getData();
         } else {
             // Почему-то, если здесь задержка меньше 50, то overlay не всегда показывается
@@ -992,7 +993,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _getData() {
-        $.get(this.props.externalDataUrl, {
+        $.get(this.props.serverDataUrl, {
             // TODO Нужно ещё отправлять данные для фильтрации по столбцам
             'Paging.PageIndex': this.getCurrentPage(),
             'Paging.PageSize': this.getCurrentPageSize(),
