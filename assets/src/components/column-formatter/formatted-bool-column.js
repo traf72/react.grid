@@ -1,10 +1,10 @@
 ﻿import React from 'react';
 import Formatter from '../formatter';
 
-export const FormattedBoolColumn = ({ data }) => {
+export const FormattedBoolColumn = ({ value }) => {
     return (
         <span>
-            {new Formatter().formatBool(data)}
+            {new Formatter().formatBool(value)}
         </span>
     );
 }

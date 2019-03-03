@@ -1,19 +1,19 @@
 ﻿import React from 'react';
 import Formatter from '../formatter';
 
-export const FormattedDateTimeColumn = ({ data }) => {
+export const FormattedDateTimeColumn = ({ value }) => {
     function getFormattedValue() {
         let dateStr;
-        if (moment.isToday(data)) {
+        if (moment.isToday(value)) {
             dateStr = 'Today';
-        } else if (moment.isYesterday(data)) {
+        } else if (moment.isYesterday(value)) {
             dateStr = 'Yesterday';
         } else {
             let format = 'D MMM';
-            format = moment().isSame(moment(data), 'year') ? format : `${format} YYYY`;
-            dateStr = moment(data).format(format);
+            format = moment().isSame(moment(value), 'year') ? format : `${format} YYYY`;
+            dateStr = moment(value).format(format);
         }
-        return `${dateStr} ${new Formatter().formatByDefault('time', data)}`;
+        return `${dateStr} ${new Formatter().formatByDefault('time', value)}`;
     }
 
     return (
