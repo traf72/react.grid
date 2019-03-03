@@ -107,6 +107,7 @@ function saveExportedFile(exportData) {
     const sheetName = exportSettings.sheetName ? exportSettings.sheetName : 'Sheet';
     const fileName = exportSettings.fileName ? exportSettings.fileName : 'ExportedData';
     alert('Not supported in this version');
+    return { always: fn => fn() };
 
     // return $.post(urls.export.exportXlsx, { fileName: fileName, sheetName: sheetName, data: exportData })
     // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)
