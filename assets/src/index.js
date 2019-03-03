@@ -2,7 +2,7 @@ import './index.less';
 import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Grid from './components/grid/grid';
+import Grid from './components/grid';
 import { delay } from './components/utils';
 import cities from 'cities.json';
 
