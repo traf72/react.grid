@@ -3,7 +3,7 @@ import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Grid from './components/grid/grid';
-import runAsync from './components/async';
+import { delay } from './components/utils';
 import cities from 'cities.json';
 
 const columnMetadata = [
@@ -40,11 +40,12 @@ class Sample extends React.PureComponent {
         this.refresh();
     }
 
-    _getData(isRefresh) {
-        runAsync(() => this.setState({
+    async _getData(isRefresh) {
+        await delay(200);
+        this.setState({
             data: cities.slice(1),
             isRefresh,
-        }), 200);
+        });
     }
 
     refresh = () => {

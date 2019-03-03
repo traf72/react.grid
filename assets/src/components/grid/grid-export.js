@@ -4,10 +4,11 @@ import moment from '../moment';
 import sortBy from 'lodash/sortBy';
 
 const headerBackgroundColor = '#EDEDEF';
-const formatter = new Formatter();
+let formatter;
 let exportSettings;
 
 export default function exportToXlsx(settings) {
+    formatter = new Formatter();
     exportSettings = { ...settings }
     exportSettings.exportableColumns = prepareColumns(settings.columns);
 

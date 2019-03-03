@@ -13,8 +13,7 @@ import Filter, { orCharacter as orFilterCharacter, negateCharacter as negateFilt
 import Sorter from '../sorter';
 import Converter from '../converter';
 import ColumnDefaultFormatter from '../column-formatter';
-import runAsync from '../async';
-import { restoreDataOrder } from '../utils';
+import { restoreDataOrder, delay } from '../utils';
 import exportToXlsx from './grid-export';
 import GridToolbar from './grid-toolbar';
 import IconsHeader from './grid-icons-header';
@@ -775,13 +774,14 @@ export default class Grid extends React.PureComponent {
         }
     }
 
-    _setPage = page => {
+    _setPage = async page => {
         this.showLoader();
         this._currentPage = page;
         if (this.props.serverData) {
             this._getData();
         } else {
-            runAsync(() => this._setPageOnClient(), defaultAsyncDelay);
+            await delay(defaultAsyncDelay);
+            this._setPageOnClient();
         }
     }
 
@@ -797,7 +797,7 @@ export default class Grid extends React.PureComponent {
         });
     }
 
-    _changeSort = (sortColumn, isAsc) => {
+    _changeSort = async (sortColumn, isAsc) => {
         this.showLoader();
         this._clearPreviousToggledRecord();
         this._currentPage = 0;
@@ -806,7 +806,8 @@ export default class Grid extends React.PureComponent {
         if (this.props.serverData) {
             this._getData();
         } else {
-            runAsync(() => this._sortOnClient(), defaultAsyncDelay);
+            await delay(defaultAsyncDelay);
+            this._sortOnClient();
         }
     }
 
@@ -892,10 +893,10 @@ export default class Grid extends React.PureComponent {
         }
     }
 
-    _applyAllFilters(delay = filterDelayInMilliseconds) {
+    _applyAllFilters(sleep = filterDelayInMilliseconds) {
         // Делаем задержку перед поиском, иначе он будет запускаться на каждый введённый символ
         clearTimeout(this.filterTimeout);
-        this.filterTimeout = setTimeout(() => {
+        this.filterTimeout = setTimeout(async () => {
             this.showLoader();
             this._clearPreviousToggledRecord();
             this._currentPage = 0;
@@ -903,10 +904,10 @@ export default class Grid extends React.PureComponent {
                 // При серверном поиске нужно делать ограничение хотя бы от 2-х символов и желательно запускать поиск по кнопке "Найти"
                 this._getData();
             } else {
-                runAsync(() => this._filterOnClient(), defaultAsyncDelay);
+                await delay(defaultAsyncDelay);
+                this._filterOnClient();
             }
-        },
-            delay);
+        }, sleep);
     }
 
     _filterOnClient() {
@@ -958,7 +959,7 @@ export default class Grid extends React.PureComponent {
         setOps.popUid();
     }
 
-    _setPageSize = size => {
+    _setPageSize = async size => {
         this.showLoader();
         this._clearPreviousToggledRecord();
         const factor = this.getCurrentPageSize() / size;
@@ -969,7 +970,8 @@ export default class Grid extends React.PureComponent {
             this._getData();
         } else {
             // Почему-то, если здесь задержка меньше 50, то overlay не всегда показывается
-            runAsync(() => this._setPageSizeOnClient(), 50);
+            await delay(50);
+            this._setPageSizeOnClient();
         }
         this.onChangePageSize(size);
     }
@@ -1056,26 +1058,24 @@ export default class Grid extends React.PureComponent {
         }
     }
 
-    _exportFunc = () => {
+    _exportFunc = async () => {
         if (this.props.export.customExport === 'function') {
             this.props.export.customExport(); // TODO передать все необходимые параметры
             return;
         }
 
         this.showLoader();
-
-        runAsync(() => {
-            exportToXlsx({
-                data: this._allGridData,
-                columns: this._columnMetadata,
-                sheetName: this.props.export.sheetName,
-                fileName: this.props.export.fileName,
-                beforeHeaderExport: this.props.export.beforeHeaderExport,
-                afterHeaderExport: this.props.export.afterHeaderExport,
-                beforeBodyExport: this.props.export.beforeBodyExport,
-                afterBodyExport: this.props.export.afterBodyExport,
-            }).always(() => this.hideLoader());
-        }, defaultAsyncDelay);
+        await delay(defaultAsyncDelay);
+        exportToXlsx({
+            data: this._allGridData,
+            columns: this._columnMetadata,
+            sheetName: this.props.export.sheetName,
+            fileName: this.props.export.fileName,
+            beforeHeaderExport: this.props.export.beforeHeaderExport,
+            afterHeaderExport: this.props.export.afterHeaderExport,
+            beforeBodyExport: this.props.export.beforeBodyExport,
+            afterBodyExport: this.props.export.afterBodyExport,
+        }).always(() => this.hideLoader());
     }
 
     _saveCheckedRecordsInfoElem = elem => {
