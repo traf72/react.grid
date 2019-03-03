@@ -31,6 +31,11 @@ const defaultPageSizes = [10, 15, 20, 25, 50, 100];
 const defaultNoDataMessage = 'No results found';
 const expandColumnName = 'isExpanded';
 const defaultKeyColumn = '__id__';
+const filterTypes = {
+    equal: 'equal',
+    notEqual: 'not-equal',
+    not: 'not',
+}
 
 // TODO Вариант с данными с сервера нужно ещё дорабатывать, как минимум фильтрацию и сортировку
 export default class Grid extends React.PureComponent {
@@ -94,17 +99,17 @@ export default class Grid extends React.PureComponent {
                 PropTypes.string,
                 PropTypes.shape({
                     text: PropTypes.string,
-                    filterType: PropTypes.string,
+                    filterType: PropTypes.oneOf(Object.values(filterTypes)),
                 }),
             ])),
             append: PropTypes.bool,
         }),
-        columnFilter: PropTypes.arrayOf(PropTypes.shape({
+        columnsFilter: PropTypes.arrayOf(PropTypes.shape({
             values: PropTypes.arrayOf(PropTypes.oneOfType([
                 PropTypes.string,
                 PropTypes.shape({
                     text: PropTypes.string,
-                    filterType: PropTypes.string,
+                    filterType: PropTypes.oneOf(Object.values(filterTypes)),
                 }),
             ])),
             colName: PropTypes.string.isRequired,
@@ -513,13 +518,13 @@ export default class Grid extends React.PureComponent {
                 filterStrings.push(val);
             } else if (val.text && typeof val.text === 'string') {
                 switch (val.filterType) {
-                    case 'equal':
+                    case filterTypes.equal:
                         filterStrings.push(`${equalFilterCharacter}${val.text}`);
                         break;
-                    case 'not-equal':
+                    case filterTypes.notEqual:
                         filterStrings.push(`${negateFilterCharacter}${equalFilterCharacter}${val.text}`);
                         break;
-                    case 'not':
+                    case filterTypes.not:
                         filterStrings.push(`${negateFilterCharacter}${val.text}`);
                         break;
                     default:

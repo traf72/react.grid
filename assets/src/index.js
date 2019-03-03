@@ -32,8 +32,13 @@ const columnMetadata = [
 ];
 
 class Sample extends React.PureComponent {
-    state = {
-        data: []
+    constructor(props) {
+        super(props);
+
+        this.gridRef = React.createRef();
+        this.state = {
+            data: []
+        }
     }
 
     componentDidMount() {
@@ -49,13 +54,14 @@ class Sample extends React.PureComponent {
     }
 
     refresh = () => {
-        this.refs.grid.showLoader();
+        this.gridRef.current.showLoader();
         this._getData(true);
     }
 
     render() {
         return (
-            <Grid ref="grid"
+            <Grid
+                ref={this.gridRef}
                 tableClassName="grid table"
                 results={this.state.data}
                 isRefresh={this.state.isRefresh}
