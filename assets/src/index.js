@@ -21,13 +21,13 @@ const columnMetadata = [
         columnName: 'lat',
         displayName: 'Latitude',
         cssClassName: 'latitude-column',
-        dataType: 'number',
+        columnType: 'number',
     },
     {
         columnName: 'lng',
         displayName: 'Longitude',
         cssClassName: 'longitude-column',
-        dataType: 'number',
+        columnType: 'number',
     },
 ];
 
@@ -43,7 +43,7 @@ class Sample extends React.PureComponent {
     async _getData(isRefresh) {
         await delay(200);
         this.setState({
-            data: cities.slice(1),
+            data: cities.map(c => ({...c, lat: +c.lat, lng: +c.lng})),
             isRefresh,
         });
     }
@@ -60,8 +60,6 @@ class Sample extends React.PureComponent {
                 results={this.state.data}
                 isRefresh={this.state.isRefresh}
                 resultsPerPage={30}
-                showFilter
-                showPageSizeSelector
                 withCheckboxColumn
                 columnMetadata={columnMetadata}
                 selectable

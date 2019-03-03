@@ -1,10 +1,10 @@
 ﻿import React from 'react';
 import Formatter from '../formatter';
 
-export const FormattedDateColumn = ({ metadata, value }) => {
+export const FormattedDateColumn = ({ metadata, data }) => {
     return (
         <span>
-            {new Formatter().formatDate(metadata.columnFormat, value)}
+            {new Formatter().formatDate(metadata.columnFormat, data)}
         </span>
     );
 }
