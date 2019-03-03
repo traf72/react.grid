@@ -2,7 +2,6 @@
 import Formatter from '../formatter';
 import moment from '../moment';
 import sortBy from 'lodash/sortBy';
-import { showWarning } from '../alert';
 
 const headerBackgroundColor = '#EDEDEF';
 const formatter = new Formatter();
@@ -106,7 +105,7 @@ function exportBody(exportData) {
 function saveExportedFile(exportData) {
     const sheetName = exportSettings.sheetName ? exportSettings.sheetName : 'Sheet';
     const fileName = exportSettings.fileName ? exportSettings.fileName : 'ExportedData';
-    showWarning('Not supported in this version');
+    alert('Not supported in this version');
 
     // return $.post(urls.export.exportXlsx, { fileName: fileName, sheetName: sheetName, data: exportData })
     // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)

@@ -1,4 +1,5 @@
-﻿import './grid.less';
+﻿import 'bootstrap/dist/css/bootstrap.min.css';
+import './grid.less';
 import drop from 'lodash/drop';
 import take from 'lodash/take';
 import orderBy from 'lodash/orderBy';
@@ -40,6 +41,28 @@ export default class Grid extends React.PureComponent {
         rowMetadata: PropTypes.shape({
             bodyCssClassName: PropTypes.func,
         }),
+        columnMetadata: PropTypes.arrayOf(PropTypes.shape({
+            columnName: PropTypes.string.isRequired,
+            displayName: PropTypes.string,
+            columnTitle: PropTypes.string,
+            keyColumn: PropTypes.bool,
+            visible: PropTypes.bool,
+            filterable: PropTypes.bool,
+            sortable: PropTypes.bool,
+            exportable: PropTypes.bool,
+            order: PropTypes.number,
+            cssClassName: PropTypes.string,
+            columnType: PropTypes.string,
+            columnFormat: PropTypes.string,
+            toStringConverter: PropTypes.func,
+            customSortFunc: PropTypes.func,
+            urlField: PropTypes.string,
+            url: PropTypes.string,
+            customComponent: PropTypes.element,
+            customComponentProps: PropTypes.object,
+            customHeaderComponent: PropTypes.element,
+            customHeaderComponentProps: PropTypes.object,
+        })),
         results: PropTypes.arrayOf(PropTypes.object),
         defaultCheckedRecordsKeys: PropTypes.arrayOf(PropTypes.oneOfType([
             PropTypes.string,
@@ -106,6 +129,7 @@ export default class Grid extends React.PureComponent {
             customExport: PropTypes.func,
         }),
         noDataMessage: PropTypes.string,
+        tableClassName: PropTypes.string,
     }
 
     static defaultProps = {
