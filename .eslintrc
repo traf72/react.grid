@@ -22,7 +22,8 @@
     
   },
   "rules": {
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "prefer-const": 2
   },
   "settings": {
     "react": {

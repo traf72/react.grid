@@ -32,7 +32,7 @@ export default class Sorter {
     sortStringCollectionAsNumbers(collection, sortColumn, direction) {
         let notNumericItems = [];
         let numericItems = [];
-        for (let item of collection) {
+        for (const item of collection) {
             const isNotNumeric = isNaN(parseFloat(item[sortColumn]));
             if (isNotNumeric) {
                 notNumericItems.push(item);

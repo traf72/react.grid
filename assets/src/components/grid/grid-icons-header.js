@@ -11,7 +11,7 @@ const IconsHeader = props => {
     }
 
     function toggleColumnsFilter(isDisplay) {
-        let columnFilters = $(`[id^=${props.gridId}-column-filter]`);
+        const columnFilters = $(`[id^=${props.gridId}-column-filter]`);
         let title;
         if (isDisplay) {
             columnFilters.removeClass('hidden');

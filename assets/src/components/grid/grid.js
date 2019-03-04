@@ -272,7 +272,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _removeNotActualColumnsFromColumnsFilter() {
-        for (let columnName in this._filterByColumns) {
+        for (const columnName in this._filterByColumns) {
             if (!this._filterableColumns.includes(columnName)) {
                 delete this._filterByColumns[columnName];
             }
@@ -344,7 +344,7 @@ export default class Grid extends React.PureComponent {
 
     _applyColumnsDataType() {
         const columnsWithDataType = this._columnMetadata.filter(column => column.columnType);
-        for (let column of columnsWithDataType) {
+        for (const column of columnsWithDataType) {
             if (column.customComponent === undefined) {
                 column.customComponent = this._columnDefaultFormatter.getDefaultColumnClass(column.columnType);
             }
@@ -389,7 +389,7 @@ export default class Grid extends React.PureComponent {
     _fillColumnsToStringConverters() {
         this._columnsToStringConverters = {};
         const columnsWithConvertFunctions = this._columnMetadata.filter(column => column.toStringConverter);
-        for (let column of columnsWithConvertFunctions) {
+        for (const column of columnsWithConvertFunctions) {
             this._columnsToStringConverters[column.columnName] = column.toStringConverter;
         }
     }
@@ -419,7 +419,7 @@ export default class Grid extends React.PureComponent {
                     return;
             }
         } else if (this.props.selectable && this._isSelectedRowKeyPresent()) {
-            let rowIndex = this._allGridData.findIndex(x => x[this.getKeyColumn().columnName] === this.props.defaultSelectedRow);
+            const rowIndex = this._allGridData.findIndex(x => x[this.getKeyColumn().columnName] === this.props.defaultSelectedRow);
             if (~rowIndex) {
                 this._currentPage = Math.floor(rowIndex / this.getCurrentPageSize());
                 return;
@@ -479,7 +479,7 @@ export default class Grid extends React.PureComponent {
     }
 
     _applyExternalFiltersIfNeed() {
-        let self = this;
+        const self = this;
 
         if (this.props.commonFilter && this.props.commonFilter.values && this.props.commonFilter.values.length) {
             this._setCommonFilter(getFullFilterText(this.props.commonFilter.values, this.getCommonFilterText(), this.props.commonFilter.append), false);
@@ -487,15 +487,15 @@ export default class Grid extends React.PureComponent {
 
         if (this.props.columnsFilter && this.props.columnsFilter.length) {
             this._isColumnsFilterDisplayed = true;
-            for (let columnFilter of this.props.columnsFilter) {
-                let fullFilter = getFullFilterText(columnFilter.values, this._filterByColumns[columnFilter.colName], columnFilter.append);
+            for (const columnFilter of this.props.columnsFilter) {
+                const fullFilter = getFullFilterText(columnFilter.values, this._filterByColumns[columnFilter.colName], columnFilter.append);
                 this._setFilterByColumn(columnFilter.colName, fullFilter, false);
             }
         }
 
         function getFullFilterText(values, currentFilterText, isAppend) {
-            let externalFilterText = self._makeFilterString(values);
-            let currentFilter = currentFilterText ? currentFilterText : '';
+            const externalFilterText = self._makeFilterString(values);
+            const currentFilter = currentFilterText ? currentFilterText : '';
             return isAppend && currentFilter !== '' ? `${currentFilter}${orFilterCharacter}${externalFilterText}` : externalFilterText;
         }
     }
@@ -512,8 +512,8 @@ export default class Grid extends React.PureComponent {
             return '';
         }
 
-        let filterStrings = [];
-        for (let val of filterValues) {
+        const filterStrings = [];
+        for (const val of filterValues) {
             if (typeof val === 'string') {
                 filterStrings.push(val);
             } else if (val.text && typeof val.text === 'string') {
@@ -588,10 +588,10 @@ export default class Grid extends React.PureComponent {
     }
 
     _markExpandableRows() {
-        let parentsWithChildren = this._allGridData.filter(r => r.parentKey != null).map(r => r.parentKey);
-        let keyColumn = this.getKeyColumn().columnName;
-        for (let record of this._allGridData) {
-            let recordKey = record[keyColumn];
+        const parentsWithChildren = this._allGridData.filter(r => r.parentKey != null).map(r => r.parentKey);
+        const keyColumn = this.getKeyColumn().columnName;
+        for (const record of this._allGridData) {
+            const recordKey = record[keyColumn];
             if (parentsWithChildren.includes(recordKey)) {
                 record[expandColumnName] = ~this.getExpandedRecordsKeys().indexOf(recordKey);
             } else {
@@ -858,12 +858,12 @@ export default class Grid extends React.PureComponent {
             return;
         }
 
-        let result = [];
-        let parentRows = this._allGridData.filter(r => r.parentKey == null);
-        let keyColumn = this.getKeyColumn().columnName;
-        for (let parentRow of parentRows) {
+        const result = [];
+        const parentRows = this._allGridData.filter(r => r.parentKey == null);
+        const keyColumn = this.getKeyColumn().columnName;
+        for (const parentRow of parentRows) {
             result.push(parentRow);
-            let childRows = this._allGridData.filter(r => r.parentKey == parentRow[keyColumn]);
+            const childRows = this._allGridData.filter(r => r.parentKey == parentRow[keyColumn]);
             result.push(...childRows);
         }
 
@@ -931,7 +931,7 @@ export default class Grid extends React.PureComponent {
             this._handleHeaderChecked();
         }
 
-        let pagesCount = this.getPagesCount(this._allGridData.length);
+        const pagesCount = this.getPagesCount(this._allGridData.length);
         this.setState({
             results: results,
             currentPage: this.getCurrentPage(),
@@ -958,7 +958,7 @@ export default class Grid extends React.PureComponent {
         // однако при большом кол-ве выбранных записей этот вариант очень сильно проигрывает
         // return this._allGridData.filter(item => this.getCheckedRecordsKeys().includes(item[this.getKeyColumn().columnName]));
 
-        let keyCol = this.getKeyColumn();
+        const keyCol = this.getKeyColumn();
         setOps.pushUid(function () { return this[keyCol.columnName]; });
         const filteredData = setOps.intersection(this._allGridData, this.getCheckedRecordsKeys().map(key => ({ [keyCol.columnName]: key })));
         this._allGridData = this.getCurrentSortColumn() ? filteredData : restoreDataOrder(this._allData, filteredData, keyCol.columnName);
@@ -988,7 +988,7 @@ export default class Grid extends React.PureComponent {
             this._checkRecords(results);
         }
 
-        let pagesCount = this.getPagesCount(this._allGridData.length);
+        const pagesCount = this.getPagesCount(this._allGridData.length);
         this.setState({
             results: results,
             currentPage: this.getCurrentPage(),
@@ -1019,7 +1019,7 @@ export default class Grid extends React.PureComponent {
                 this._handleHeaderChecked();
             }
 
-            let pagesCount = this.getPagesCount(data.totalCount);
+            const pagesCount = this.getPagesCount(data.totalCount);
             this.setState({
                 results: results,
                 currentPage: this.getCurrentPage(),
@@ -1220,7 +1220,7 @@ export default class Grid extends React.PureComponent {
     }
 
     getColumnTitle = colName => {
-        let column = this._columnMetadata.find(c => c.columnName === colName);
+        const column = this._columnMetadata.find(c => c.columnName === colName);
         return column ? column.columnTitle : null;
     }
 

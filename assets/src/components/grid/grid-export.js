@@ -63,9 +63,9 @@ function exportHeader(exportData) {
 }
 
 function exportBody(exportData) {
-    for (let row of exportSettings.data) {
+    for (const row of exportSettings.data) {
         const cells = [];
-        for (let col of exportSettings.exportableColumns) {
+        for (const col of exportSettings.exportableColumns) {
             if (typeof col.customCellExport === 'function') {
                 cells.push(col.customCellExport(col, row));
                 continue;

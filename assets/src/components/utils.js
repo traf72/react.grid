@@ -18,7 +18,7 @@ export function isObjectEmpty(obj) {
     // Otherwise, does it have any properties of its own?
     // Note that this doesn't handle
     // toString and valueOf enumeration bugs in IE < 9
-    for (let key in obj) {
+    for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) return false;
     }
     return true;
@@ -27,7 +27,7 @@ export function isObjectEmpty(obj) {
 // Функция склонения слова в зависимости от стоящего рядом числа
 // https://truemisha.ru/blog/javascript/numbers-and-words.html
 export function wordForm(num, word) {
-    let cases = [2, 0, 1, 1, 1, 2];
+    const cases = [2, 0, 1, 1, 1, 2];
     return word[(num % 100 > 4 && num % 100 < 20) ? 2 : cases[(num % 10 < 5) ? num % 10 : 5]];
 }
 
@@ -46,18 +46,18 @@ export function restoreDataOrder(originalData, filteredData, keyColumn) {
 }
 
 export function detectIE() {
-    let ua = window.navigator.userAgent;
-    let msie = ua.indexOf('MSIE ');
+    const ua = window.navigator.userAgent;
+    const msie = ua.indexOf('MSIE ');
 
     if (msie > 0) {
         // IE 10 or older => return version number
         return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
     }
 
-    let trident = ua.indexOf('Trident/');
+    const trident = ua.indexOf('Trident/');
     if (trident > 0) {
         // IE 11 => return version number
-        let rv = ua.indexOf('rv:');
+        const rv = ua.indexOf('rv:');
         return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
     }
 
@@ -66,16 +66,16 @@ export function detectIE() {
 
 export function handleClearSearchInputInIE(elem, callback) {
     // http://stackoverflow.com/questions/14498396/event-fired-when-clearing-text-input-on-ie10-with-clear-icon#answer-14498921
-    let oldValue = elem.value;
+    const oldValue = elem.value;
     if (oldValue === '') {
         return;
     }
 
-    let jqElem = $(elem);
+    const jqElem = $(elem);
     // When this event is fired after clicking on the clear button
     // the value is not cleared yet. We have to wait for it.
     setTimeout(() => {
-        let newValue = jqElem.val();
+        const newValue = jqElem.val();
         if (newValue === '') {
             callback('');
         }

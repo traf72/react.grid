@@ -63,7 +63,7 @@ export default class GridToolbar extends React.Component {
     }
 
     _handleFilterKeyPress = e => {
-        let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
+        const filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
         if (e.target.value !== filterText) {
             this._applyFilterChanges(filterText);
         }

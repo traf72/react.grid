@@ -37,7 +37,7 @@ export default class Filter {
 
         let filteredData = inputData;
         if (filterByColumns) {
-            for (let key in filterByColumns) {
+            for (const key in filterByColumns) {
                 filteredData = this._applyFilterByColumn(filterByColumns[key], key, filteredData);
             }
         }
@@ -68,7 +68,7 @@ export default class Filter {
 
         const filterFunctions = this._getFilterFunctions(filterText);
         const filteredDataArray = [];
-        for (let column of filterableColumns) {
+        for (const column of filterableColumns) {
             filteredDataArray.push(this._combineFilterFunctions(filterFunctions, this._or, column, inputData)());
         }
 
@@ -103,7 +103,7 @@ export default class Filter {
             filterString = filterString.trim();
             const specialCharacters = this._parseSpecialCharacters(filterString);
             let filterFunction = this._filterFunctionsMapping.default;
-            for (let character of specialCharacters.characters) {
+            for (const character of specialCharacters.characters) {
                 if (character in this._filterFunctionsMapping) {
                     filterFunction = this._filterFunctionsMapping[character];
                     break;

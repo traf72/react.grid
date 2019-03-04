@@ -28,7 +28,7 @@ export default class CustomHeaderComponent extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        let columnFilter = props.getColumnFilter(props.columnName);
+        const columnFilter = props.getColumnFilter(props.columnName);
         const filterInput = this.columnFilterInput.current;
         if (filterInput && props.isShowColumnFilter(props.columnName) && filterInput.value !== columnFilter) {
             this._updateColumnFilterState(columnFilter);
@@ -49,7 +49,7 @@ export default class CustomHeaderComponent extends React.Component {
     }
 
     _handleColumnFilterKeyPress = e => {
-        let filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
+        const filterText = getFilterTextDependOnKeyPressed(e.key, e.target.value);
         if (e.target.value !== filterText) {
             this._applyColumnFilterChanges(this.props.columnName, filterText);
         }
