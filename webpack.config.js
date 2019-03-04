@@ -1,3 +1,4 @@
+/* eslint-disable */
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -28,7 +29,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: [/node_modules/, /libs/],
-                loader: 'babel-loader',
+                use: ['babel-loader', 'eslint-loader'],
             },
             {
                 test: /\.(le|c)ss$/,
@@ -40,7 +41,7 @@ module.exports = {
             },
             {
                 test: /\.(jpe?g|png|gif|ttf|woff2?|eot|svg)$/i,
-                loader: 'file-loader',
+                use: 'file-loader',
             },
         ],
     },

@@ -398,7 +398,7 @@ export default class Grid extends React.PureComponent {
         this._columnMetadata.filter(col => col.visible !== false && !col.customHeaderComponent)
             .forEach(col => {
                 col.customHeaderComponent = CustomHeaderComponent;
-                col.customHeaderComponentProps = this._getCustomHeaderComponentProps(col);
+                col.customHeaderComponentProps = this._getCustomHeaderComponentProps();
             });
     }
 
@@ -540,7 +540,7 @@ export default class Grid extends React.PureComponent {
         this._isColumnsFilterDisplayed = !this.isColumnsFilterDisplayed();
     }
 
-    _getCustomHeaderComponentProps(column) {
+    _getCustomHeaderComponentProps() {
         return {
             getColumnTitle: this.getColumnTitle,
             getColumnFilter: this.getColumnFilter,

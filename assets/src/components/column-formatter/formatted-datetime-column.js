@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import Formatter from '../formatter';
+import moment from '../moment';
 
 export const FormattedDateTimeColumn = ({ data }) => {
     function getFormattedValue() {

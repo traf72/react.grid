@@ -27,7 +27,7 @@ export default class ColumnDefaultFormatter {
         return new Formatter().getDataTypeDefaultFormat(dataType);
     }
 
-    getDefaultColumnToStringConverter(dataType, format) {
+    getDefaultColumnToStringConverter(dataType) {
         if (!dataType || !dataType.trim()) {
             return null;
         }

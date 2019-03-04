@@ -44,8 +44,8 @@ export default class GridToolbar extends React.Component {
 
     componentWillReceiveProps(props) {
         const commonSearch = this.commonSearch.current;
-        if (commonSearch && commonSearch.value !== this.props.extraProps.getCommonFilterText()) {
-            this.setState({ searchText: this.props.extraProps.getCommonFilterText() });
+        if (commonSearch && commonSearch.value !== props.extraProps.getCommonFilterText()) {
+            this.setState({ searchText: props.extraProps.getCommonFilterText() });
         }
     }
 

@@ -48,17 +48,16 @@ function exportHeader(exportData) {
         font: { isBold: true },
     };
 
-    for (let col of exportSettings.exportableColumns) {
+    exportSettings.exportableColumns.forEach(col => {
         if (typeof col.customHeaderExport === 'function') {
             headerCells.push(col.customHeaderExport(col, headerDefaultStyle));
-            continue;
+        } else {
+            headerCells.push({
+                value: col.displayName ? col.displayName : col.columnName,
+                style: headerDefaultStyle,
+            });
         }
-
-        headerCells.push({
-            value: col.displayName ? col.displayName : col.columnName,
-            style: headerDefaultStyle,
-        });
-    }
+    });
 
     exportData.push(headerCells);
 }
@@ -103,11 +102,17 @@ function exportBody(exportData) {
     }
 }
 
-function saveExportedFile(exportData) {
-    const sheetName = exportSettings.sheetName ? exportSettings.sheetName : 'Sheet';
-    const fileName = exportSettings.fileName ? exportSettings.fileName : 'ExportedData';
+function saveExportedFile(exportData) { // eslint-disable-line
     alert('Not supported in this version');
-    return { always: fn => fn() };
+    return {
+        done: fn => fn(),
+        fail: fn => fn(),
+        then: fn => fn(),
+        always: fn => fn(),
+     };
+
+    // const sheetName = exportSettings.sheetName ? exportSettings.sheetName : 'Sheet';
+    // const fileName = exportSettings.fileName ? exportSettings.fileName : 'ExportedData';
 
     // return $.post(urls.export.exportXlsx, { fileName: fileName, sheetName: sheetName, data: exportData })
     // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)

@@ -13,7 +13,7 @@ numeral.register('locale',
             billion: 'млрд',
             trillion: 'трлн'
         },
-        ordinal(number) {
+        ordinal() {
             return '-й';
         },
         currency: {
