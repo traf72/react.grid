@@ -123,8 +123,10 @@ export default class Grid extends React.PureComponent {
         checkedRecordsChanged: PropTypes.func,
         selectedRowChanged: PropTypes.func,
         onChangePageSize: PropTypes.func,
+        onError: PropTypes.func,
         mapData: PropTypes.func,
         export: PropTypes.shape({
+            exportUrl: PropTypes.string.isRequired,
             sheetName: PropTypes.string,
             fileName: PropTypes.string,
             beforeHeaderExport: PropTypes.func,
@@ -145,6 +147,7 @@ export default class Grid extends React.PureComponent {
         showPageSizeSelector: true,
         showColumnsFilter: true,
         displayColumnsFilter: false,
+        onError: message => alert(message),
     }
 
     constructor(props) {
@@ -1029,7 +1032,7 @@ export default class Grid extends React.PureComponent {
                 externalSortColumn: this.getCurrentSortColumn(),
                 externalSortAscending: this.isCurrentSortAscending(),
             });
-        });
+        }).fail(() => this.props.onError('An error occurred while fetching data from server'));
     }
 
     _setLoaderPosition(loader) {
@@ -1075,13 +1078,16 @@ export default class Grid extends React.PureComponent {
         exportToXlsx({
             data: this._allGridData,
             columns: this._columnMetadata,
+            exportUrl: this.props.export.exportUrl,
             sheetName: this.props.export.sheetName,
             fileName: this.props.export.fileName,
             beforeHeaderExport: this.props.export.beforeHeaderExport,
             afterHeaderExport: this.props.export.afterHeaderExport,
             beforeBodyExport: this.props.export.beforeBodyExport,
             afterBodyExport: this.props.export.afterBodyExport,
-        }).always(() => this.hideLoader());
+        })
+        .fail(() => this.props.onError('An error occurred while exporting data'))
+        .always(() => this.hideLoader());
     }
 
     _saveCheckedRecordsInfoElem = elem => {

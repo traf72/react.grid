@@ -102,21 +102,19 @@ function exportBody(exportData) {
     }
 }
 
-function saveExportedFile(exportData) { // eslint-disable-line
-    alert('Not supported in this version');
-    return {
-        done: fn => fn(),
-        fail: fn => fn(),
-        then: fn => fn(),
-        always: fn => fn(),
-     };
+function saveExportedFile(exportData) {
+    const {
+        sheetName = 'Sheet',
+        fileName = 'ExportedData',
+        exportUrl
+    } = exportSettings;
 
-    // const sheetName = exportSettings.sheetName ? exportSettings.sheetName : 'Sheet';
-    // const fileName = exportSettings.fileName ? exportSettings.fileName : 'ExportedData';
-
-    // return $.post(urls.export.exportXlsx, { fileName: fileName, sheetName: sheetName, data: exportData })
-    // .done(() => location.href = `${urls.export.downloadExportedXlsx}?fileName=${fileName}`)
-    // .fail(xhr => showError('Request error'));
+    return $.post(exportUrl, { fileName, sheetName, data: exportData })
+        .done(downloadUrl => {
+            if (downloadUrl) {
+                location.href = downloadUrl;
+            }
+        });
 }
 
 function getFormattedValue(type, value) {
