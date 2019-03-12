@@ -1,7 +1,6 @@
 ﻿import React from 'react';
 import PropTypes from 'prop-types';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
-import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class CustomHeaderComponent extends React.Component {
     static propTypes = {
@@ -75,12 +74,6 @@ export default class CustomHeaderComponent extends React.Component {
         }
     }
 
-    _searchInputMouseUp = e => {
-        if (detectIE()) {
-            handleClearSearchInputInIE(e.target, this._applyColumnFilterChanges(this.props.columnName));
-        }
-    }
-
     _renderSortArrow() {
         const { columnName, getCurrentSortColumn, isCurrentSortAscending } = this.props;
 
@@ -109,7 +102,7 @@ export default class CustomHeaderComponent extends React.Component {
                         onClick={this._columnFilterClick}
                         value={this.state.columnFilter}
                         onChange={this._columnFilterChanged} onKeyPress={this._handleColumnFilterKeyPress}
-                        onPaste={this._handleColumnFilterPaste} onMouseUp={this._searchInputMouseUp}
+                        onPaste={this._handleColumnFilterPaste}
                     />
                 </div>
             );

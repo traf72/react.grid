@@ -45,43 +45,6 @@ export function restoreDataOrder(originalData, filteredData, keyColumn) {
     });
 }
 
-export function detectIE() {
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-
-    if (msie > 0) {
-        // IE 10 or older => return version number
-        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
-    }
-
-    const trident = ua.indexOf('Trident/');
-    if (trident > 0) {
-        // IE 11 => return version number
-        const rv = ua.indexOf('rv:');
-        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
-    }
-
-    return false;
-}
-
-export function handleClearSearchInputInIE(elem, callback) {
-    // http://stackoverflow.com/questions/14498396/event-fired-when-clearing-text-input-on-ie10-with-clear-icon#answer-14498921
-    const oldValue = elem.value;
-    if (oldValue === '') {
-        return;
-    }
-
-    const jqElem = $(elem);
-    // When this event is fired after clicking on the clear button
-    // the value is not cleared yet. We have to wait for it.
-    setTimeout(() => {
-        const newValue = jqElem.val();
-        if (newValue === '') {
-            callback('');
-        }
-    }, 1);
-}
-
 // Суммирует деньги
 export function sumMoney(sum1, sum2) {
     // Суммируем в копейках, чтобы не потерять точность

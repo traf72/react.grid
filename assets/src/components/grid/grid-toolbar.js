@@ -1,7 +1,6 @@
 ﻿import React from 'react';
 import PropTypes from 'prop-types';
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
-import { detectIE, handleClearSearchInputInIE } from '../utils';
 
 export default class GridToolbar extends React.Component {
     static propTypes = {
@@ -90,19 +89,13 @@ export default class GridToolbar extends React.Component {
         }
     }
 
-    _searchMouseUp = e => {
-        if (detectIE()) {
-            handleClearSearchInputInIE(e.target, this._applyFilterChanges.bind(this));
-        }
-    }
-
     _showFilter() {
         if (this.props.extraProps.isShowFilter()) {
             return (
                 <div className="search-block">
                     <input ref={this.commonSearch} type="search" className="form-control" name="search" placeholder="Search..."
                         onChange={this._searchChanged} onKeyPress={this._handleFilterKeyPress} onPaste={this._handleFilterPaste}
-                        value={this.state.searchText} onMouseUp={this._searchMouseUp}
+                        value={this.state.searchText}
                     />
                 </div>
             );
