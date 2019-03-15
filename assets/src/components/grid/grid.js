@@ -1,5 +1,6 @@
 ﻿import 'bootstrap/dist/css/bootstrap.min.css';
 import './grid.less';
+import '../font-awesome';
 import drop from 'lodash/drop';
 import take from 'lodash/take';
 import orderBy from 'lodash/orderBy';

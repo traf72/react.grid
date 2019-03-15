@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const hideFilterString = 'Hide filter'
 const showFilterString = 'Show filter'
@@ -25,13 +26,21 @@ const IconsHeader = props => {
 
     function getExportIcon() {
         if (props.isExportEnabled()) {
-            return <span title="Export to Excel" className="glyphicon glyphicon-export" onClick={props.exportFunc}></span>;
+            return (
+                <span title="Export" onClick={props.exportFunc}>
+                    <FontAwesomeIcon icon="file-export" fixedWidth />
+                </span>
+            );
         }
     }
 
     function getRefreshIcon() {
         if (typeof props.refreshFunc === 'function') {
-            return <span title="Refresh" className="glyphicon glyphicon-refresh" onClick={props.refreshFunc}></span>;
+            return (
+                <span title="Refresh" onClick={props.refreshFunc}>
+                    <FontAwesomeIcon icon="sync-alt" fixedWidth />
+                </span>
+            );
         }
     }
 
@@ -39,7 +48,8 @@ const IconsHeader = props => {
         if (props.isShowColumnsFilter()) {
             return (
                 <span id={props.gridId + '-columns-filter-icon'} title={props.isColumnsFilterDisplayed() ? hideFilterString : showFilterString}
-                    className="glyphicon glyphicon-filter" onClick={filterVisibilityChanged}>
+                    onClick={filterVisibilityChanged}>
+                    <FontAwesomeIcon icon="filter" fixedWidth />
                 </span>
             );
         }

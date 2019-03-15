@@ -1,6 +1,6 @@
 ## The project is an add-on for the library https://griddlegriddle.github.io/v0-docs/.
 
-There were added the functionality of filtering (with wildcards), multiple records selection, collapse/expand rows, export to Excel and so on.
+There were added the functionality of filtering (with wildcards), multiple records selection, collapse/expand rows, export and so on.
 
 Here is the steps to run the example:
 

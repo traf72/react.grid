@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const GridCollapse = ({ extraProps, rowData }) => {
     function collapseRow() {
@@ -18,11 +19,9 @@ const GridCollapse = ({ extraProps, rowData }) => {
         return null;
     }
 
-    if (rowData.isExpanded) {
-        return <span className="glyphicon glyphicon-triangle-bottom" onClick={collapseRow}></span>
-    } else {
-        return <span className="glyphicon glyphicon-triangle-right" onClick={expandRow}></span>
-    }
+    return rowData.isExpanded
+        ? <FontAwesomeIcon icon="caret-down" fixedWidth onClick={collapseRow} />
+        : <FontAwesomeIcon icon="caret-right" fixedWidth onClick={expandRow} />;
 }
 
 GridCollapse.propTypes = {

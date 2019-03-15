@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getFilterTextDependOnKeyPressed, handleFilterPastedText } from './grid-common';
 
 export default class CustomHeaderComponent extends React.Component {
@@ -78,9 +79,8 @@ export default class CustomHeaderComponent extends React.Component {
         const { columnName, getCurrentSortColumn, isCurrentSortAscending } = this.props;
 
         if (columnName === getCurrentSortColumn()) {
-            return isCurrentSortAscending()
-                ? <span className="glyphicon glyphicon-chevron-up"></span>
-                : <span className="glyphicon glyphicon-chevron-down"></span>;
+            const icon = isCurrentSortAscending() ? 'chevron-up' : 'chevron-down';
+            return <FontAwesomeIcon icon={icon} fixedWidth />;
         }
     }
 
