@@ -7,6 +7,13 @@ const path = require('path');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
+cssLoaderOptions = [
+    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+    'css-loader'
+];
+
+lessLoaderOptions = [...cssLoaderOptions, 'less-loader'];
+
 module.exports = {
     mode: 'development',
     entry: './assets/src/index.js',
@@ -32,12 +39,12 @@ module.exports = {
                 use: ['babel-loader', 'eslint-loader'],
             },
             {
-                test: /\.(le|c)ss$/,
-                use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'less-loader',
-                ],
+                test: /\.css$/,
+                use: cssLoaderOptions,
+            },
+            {
+                test: /\.less$/,
+                use: lessLoaderOptions,
             },
             {
                 test: /\.(jpe?g|png|gif|ttf|woff2?|eot|svg)$/i,

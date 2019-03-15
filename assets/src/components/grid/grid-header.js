@@ -97,7 +97,7 @@ export default class CustomHeaderComponent extends React.Component {
                 <div id={gridId + '-column-filter-' + columnName} className={isColumnsFilterDisplayed() ? '' : 'hidden'} style={{ fontWeight: 'normal' }}>
                     <input
                         ref={this.columnFilterInput}
-                        className="form-control"
+                        className="form-control form-control-sm"
                         type="search"
                         onClick={this._columnFilterClick}
                         value={this.state.columnFilter}

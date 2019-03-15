@@ -93,7 +93,7 @@ export default class GridToolbar extends React.Component {
         if (this.props.extraProps.isShowFilter()) {
             return (
                 <div className="search-block">
-                    <input ref={this.commonSearch} type="search" className="form-control" name="search" placeholder="Search..."
+                    <input ref={this.commonSearch} type="search" className="form-control form-control-sm" name="search" placeholder="Search..."
                         onChange={this._searchChanged} onKeyPress={this._handleFilterKeyPress} onPaste={this._handleFilterPaste}
                         value={this.state.searchText}
                     />
@@ -105,7 +105,7 @@ export default class GridToolbar extends React.Component {
     _showOnlyCheckedFilter() {
         if (this.props.extraProps.isWithCheckboxColumn()) {
             return (
-                <label className="only-checked">
+                <label className="only-checked mt-2">
                     <input type="checkbox" onChange={this._onlyCheckedChanged} /> Only checked (<span ref={this.checkedRecordsInfo}>{this.props.extraProps.getCheckedRecordsKeys().length}</span>)
                 </label>
             );
@@ -118,7 +118,7 @@ export default class GridToolbar extends React.Component {
                 <div className="page-size-selector form-inline">
                     <div className="form-group">
                         <label htmlFor="pageSize">Page size:</label>
-                        <select className="form-control" id="pageSize" style={{ marginLeft: '10px', width: '70px' }}
+                        <select className="form-control form-control-sm" id="pageSize" style={{ marginLeft: '10px', width: '70px' }}
                             value={this.props.extraProps.getCurrentPageSize()} onChange={this._pageSizeChanged}
                         >
                             {this.props.extraProps.getPageSizes().map(item => <option key={item}>{item}</option>)}

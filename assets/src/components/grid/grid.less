@@ -5,8 +5,21 @@
 .custom-grid {
     position: relative;
 
+    .hidden {
+        display: none;
+    }
+
     .table {
         margin-bottom: 0;
+        border-collapse: collapse;
+
+        th {
+            text-align: left;
+        }
+
+        td, th {
+            background-color: #fff;
+        }
     }
 
     .griddle {
@@ -39,7 +52,6 @@
                 }
 
                 .only-checked {
-                    margin-top: 6px;
                     margin-bottom: @top-section-elems-margin-bottom;
                     float: left;
                 }
@@ -86,7 +98,7 @@
 
             th {
                 padding-top: 2px !important;
-                padding-bottom: 2px !important;
+                padding-bottom: 3px !important;
                 vertical-align: top !important;
             }
 
@@ -128,6 +140,12 @@
 
             .griddle-previous, .griddle-page, .griddle-next {
                 margin-top: 3px !important;
+            }
+        }
+
+        .griddle-next, .griddle-previous {
+            button {
+                cursor: pointer;
             }
         }
     }

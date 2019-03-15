@@ -47,7 +47,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.3.1",
     "cities.json": "^1.1.5",
     "create-react-class": "^15.6.3",
     "jquery": "^3.3.1",

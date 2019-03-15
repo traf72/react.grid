@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.less';
 import './polyfills';
 import React from 'react';
